@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import L from "leaflet";
 import {  MapContainer, TileLayer, FeatureGroup } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
-//import { useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from './map-providers';
@@ -11,29 +9,27 @@ const App = () => {
   const [center, setCenter] = useState ({ lat: 18.4821, lng: -69.9099 });
   const ZOOM_LEVEL = 12;
   const mapRef = useRef();
-  const [polygons, setPolygons] = useState([]); // State to store polygon information
+  const [polygons, setPolygons] = useState([]); 
   
 
 
   const _created = (e) => {
-    /*let newArr = e.layer._latlngs[0].map((latlng) =>{
-      return `${latlng.lat},${latlng.lng}`;
-    })*/
-    const newPolygon = { _id: e.layer._leaflet_id}
+    const newPolygon = { _id: e.layer._leaflet_id};
     newPolygon.coordinates = e.layer._latlngs[0].map((latlng) => ({
       lat: latlng.lat,
       lng: latlng.lng,
     }));
+
     setPolygons((polygons) => [...polygons, newPolygon]);
     console.log(e);
   }
 
   const _edited = (e) => {
     console.log(e);
-    const { layers: {_layers}} = e
+    const { layers: {_layers}} = e;
 
-    const editedIds = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-    console.log(editedIds)
+    const editedIds = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id );
+    console.log(editedIds);
     
     setPolygons((polygons) => {
       polygons.map( (p) =>{
@@ -93,7 +89,6 @@ const App = () => {
                     marker: false,
                     polyline: false  
                   }}
-                
                 />
               </FeatureGroup>
               <TileLayer 
@@ -118,4 +113,4 @@ const App = () => {
     </>
   );
 }
-export default App
+export default App;
