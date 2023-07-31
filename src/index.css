@@ -1,5 +1,22 @@
-
 .leaflet-container{
-  height: 500px;
-  width: 70%;
+  height: 600px;
+  width: 800px;
 }
+main{
+  display: flex;
+ 
+}
+
+.commandsContainer{
+  margin: 0 10px;
+  
+}
+
+.commands{
+  max-width: 500px;
+}
+
+.command{
+  word-break: break-all;
+}
+
