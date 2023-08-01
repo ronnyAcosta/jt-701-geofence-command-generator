@@ -17,7 +17,7 @@ const App = () => {
   const deletedRef = useRef(false);
   
   const COMMANDS_QTY = 10;
-  
+
   const _created = (e) => {  
     const newGeofence = { _id: e.layer._leaflet_id};
     newGeofence.coordinates = e.layer._latlngs[0].map((latlng) => ({
@@ -41,8 +41,8 @@ const App = () => {
       console.log(editedIds);
       
       setGeofences((geofences) => {
-        geofences.map( (g) =>{
-          editedIds.map(id =>{
+        editedIds.map(id => {
+          geofences.map( (g) =>{
             if(g._id === id){
               g.coordinates = _layers[id]._latlngs[0];
             }
@@ -62,15 +62,15 @@ const App = () => {
       const deletedIds = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
       
       setGeofences((geofences) => {
-        geofences.map( (g) =>{
-          deletedIds.map(id =>{
+        deletedIds.map((id) =>{
+            geofences.map( (g) =>{
             if(g._id === id){
               geofences.splice(geofences.indexOf(g),1);
             }
           }) 
-        }) 
+        })
         return [...geofences];
-      });     
+      });    
     }
   };
   
@@ -114,6 +114,7 @@ const App = () => {
               if(geofences.indexOf(geofence) < COMMANDS_QTY){
                 return(
                   <Command 
+                    key = {index}
                     index = {index}
                     geofence = {geofence}
                   />
@@ -121,6 +122,7 @@ const App = () => {
               }else{
                 return(
                   <Error 
+                    key = {index}
                     index = {index}
                   />
                 )

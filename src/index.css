@@ -1,6 +1,6 @@
 .leaflet-container{
   height: 600px;
-  width: 800px;
+  min-width: 60vw;
 }
 main{
   display: flex;
@@ -8,15 +8,19 @@ main{
 }
 
 .commandsContainer{
-  margin: 0 10px;
+  margin: 0 20px;
   
 }
 
 .commands{
-  max-width: 500px;
+  
 }
 
 .command{
   word-break: break-all;
+  
 }
 
+.copy{
+  cursor: pointer;
+}

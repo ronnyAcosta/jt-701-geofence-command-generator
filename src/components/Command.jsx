@@ -1,4 +1,6 @@
 import React from 'react';
+import { IonIcon } from '@ionic/react';
+import { copyOutline } from 'ionicons/icons';
 
 const Command = (props) =>{
   const ddddToDdmm = (coordinate) =>{
@@ -25,12 +27,22 @@ const Command = (props) =>{
   });
     command += ')';
     console.log(command);
-    return command;
+    return (command);
   }
-
+  const copyContent = (e) => {
+    const content = e.target.parentNode.innerText;
+    navigator.clipboard.writeText(content)
+    .then(() =>{
+      alert("Contenido copiado")
+    }).catch("Error al leer contenido");
+  }
   return(
     <div key={props.index}>
-      Geofence {props.index + 1}: <span className='command'>{getCommand(props.geofence.coordinates, props.index+1)}</span>
+      Geofence {props.index + 1}: 
+      <span className='command'>
+        {getCommand(props.geofence.coordinates, props.index+1)}
+        {props.geofence.coordinates.length <= 10 ? <IonIcon className='copy' slot="end" icon={copyOutline} onClick={copyContent}></IonIcon> : ""}
+      </span>
     </div>
   )
 }
