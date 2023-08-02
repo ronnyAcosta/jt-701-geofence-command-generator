@@ -128,7 +128,8 @@ const App = () => {
                 )
               }
             })}
-          </div>        
+          </div>
+          <div id="copied">Content Copied</div>        
         </div>
       </main>   
     </>

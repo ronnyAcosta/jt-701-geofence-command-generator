@@ -55,3 +55,14 @@ main{
   flex-direction: column;
   margin-bottom: 5px;
 }
+
+
+
+#copied{
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+#copied.visible{
+  opacity: 1;
+}

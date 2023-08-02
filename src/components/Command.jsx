@@ -33,7 +33,12 @@ const Command = (props) =>{
     const content = e.target.parentNode.innerText;
     navigator.clipboard.writeText(content)
     .then(() =>{
-      alert("Contenido copiado")
+      document.getElementById("copied").classList.add('visible');
+    })
+    .then( () =>{
+      setTimeout(() =>{
+        document.getElementById("copied").classList.remove('visible')
+      }, 1000)
     }).catch("Error al leer contenido");
   }
   return(
