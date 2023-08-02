@@ -63,7 +63,7 @@ const App = () => {
       
       setGeofences((geofences) => {
         deletedIds.map((id) =>{
-            geofences.map( (g) =>{
+          geofences.map( (g) =>{
             if(g._id === id){
               geofences.splice(geofences.indexOf(g),1);
             }
@@ -109,7 +109,7 @@ const App = () => {
         
         <div className='commandsContainer'>
           <h3>Commands:</h3>
-          <div className='commands'>
+          <div className='commandsBox'>
             {geofences.map((geofence, index) => {
               if(geofences.indexOf(geofence) < COMMANDS_QTY){
                 return(
@@ -119,7 +119,7 @@ const App = () => {
                     geofence = {geofence}
                   />
                 )
-              }else{
+              }else {
                 return(
                   <Error 
                     key = {index}

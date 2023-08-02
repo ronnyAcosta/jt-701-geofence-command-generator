@@ -1,6 +1,6 @@
 .leaflet-container{
   height: 600px;
-  min-width: 60vw;
+  min-width: 58vw;
 }
 main{
   display: flex;
@@ -8,19 +8,50 @@ main{
 }
 
 .commandsContainer{
+  position: relative;
+  top: 0px;
   margin: 0 20px;
+  width: 36.5vw;
   
 }
 
-.commands{
-  
+.commandsBox{
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  max-height: 50vh;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #096fa8;
+  color: white;
+  font-weight: 600;
 }
 
 .command{
   word-break: break-all;
-  
+  margin: 0px 5px;
+  background-color: #07bcff;
+  border-radius: 5px;
+  padding: 5px;
+  color: #140f07;
 }
 
 .copy{
+  position: relative;
+  top: 0.15rem;
   cursor: pointer;
+  margin-left: 5px;
+}
+.copy:hover{
+  color: blue; 
+}
+
+.copy:active{
+  color: aqua;
+}
+
+.test{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
 }
