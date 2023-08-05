@@ -17,7 +17,7 @@ const Command = (props) =>{
 
   const getCommand = (coordinates, index) =>{
     if(coordinates.length > 10){
-      return "Límite de coordenadas superado. Edite la geocerca"
+      return "Coordinate limit exceeded. Edit the geofence."
       
     }
     
@@ -37,7 +37,7 @@ const Command = (props) =>{
     })
     .then( () =>{
       setTimeout(() =>{
-        document.getElementById("copied").classList.remove('visible')
+        document.getElementById("copied").classList.remove('visible');
       }, 1000)
     }).catch("Error al leer contenido");
   }

@@ -1,17 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+
+*{
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  
+}
+header{
+  background-color: #096fa8;
+  padding: 1px;
+  color: white;
+}
+
+h1{
+  font-size: 1.8rem;
+  margin: 10px;
+}
+body{
+  
+}
 .leaflet-container{
   height: 600px;
   min-width: 58vw;
+  margin-left: 5px;
 }
 main{
   display: flex;
+  margin-top: 10px;
  
 }
 
 .commandsContainer{
   position: relative;
   top: 0px;
-  margin: 0 20px;
-  width: 36.5vw;
+  margin: 0 30px 0 15px;
+  width: 37.5vw;
   
 }
 
@@ -21,6 +43,7 @@ main{
   border-radius: 5px;
   max-height: 50vh;
   width: 100%;
+  margin-top: 15px;
   overflow-y: auto;
   background-color: #096fa8;
   color: white;
@@ -36,6 +59,8 @@ main{
   color: #140f07;
 }
 
+
+
 .copy{
   position: relative;
   top: 0.15rem;
@@ -43,7 +68,7 @@ main{
   margin-left: 5px;
 }
 .copy:hover{
-  color: blue; 
+  color: #096fa8; 
 }
 
 .copy:active{
@@ -59,6 +84,10 @@ main{
 
 
 #copied{
+  margin: 5px 0px;
+  border-radius: 5px;
+  padding: 0px;
+  color: #140f07;
   opacity: 0;
   transition: opacity 0.5s;
 }

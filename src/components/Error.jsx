@@ -2,8 +2,8 @@ import React from 'react';
 
 const Error = (props) => {
   return(
-    <div key={props.index}>
-      Geofence {props.index + 1}: <span className='error' >Límite de comandos superado. Elimine las geocercas innecesarias</span>
+    <div className='test' key={props.index}>
+      Geofence {props.index + 1}: <span className='command' >Command limit exceeded. Remove unnecessary geofences.</span>
     </div>
   )
 }

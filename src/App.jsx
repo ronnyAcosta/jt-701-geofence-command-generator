@@ -82,7 +82,7 @@ const App = () => {
 
   return(
     <>
-      <h2>JT701 - Geofences Commands Generator</h2>
+      <header><h1>JT701 - Geofences Commands Generator</h1></header>
 
       <main>
         <MapContainer center={center} zoom={ZOOM_LEVEL} ref={mapRef} >
@@ -129,7 +129,7 @@ const App = () => {
               }
             })}
           </div>
-          <div id="copied">Content Copied</div>        
+          <div id="copied">Copied to clipboard</div>        
         </div>
       </main>   
     </>
