@@ -8,16 +8,18 @@
 header{
   background-color: #096fa8;
   padding: 1px;
-  color: white;
+  color: aliceblue;
 }
 
 h1{
   font-size: 1.8rem;
   margin: 10px;
 }
+/*
 body{
-  
+  background-color: ;
 }
+*/
 .leaflet-container{
   height: 600px;
   min-width: 58vw;
@@ -41,7 +43,8 @@ main{
   padding: 10px;
   border: 1px solid black;
   border-radius: 5px;
-  max-height: 50vh;
+  min-height: 40vh;
+  max-height: 60vh;
   width: 100%;
   margin-top: 15px;
   overflow-y: auto;
