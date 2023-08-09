@@ -107,8 +107,8 @@ const App = () => {
           />
         </MapContainer>
         
-        <div className='commandsContainer'>
-          <h3>Commands:</h3>
+        <div className='commandsList'>
+          <h3>Commands</h3>
           <div className='commandsBox'>
             {geofences.map((geofence, index) => {
               if(geofences.indexOf(geofence) < COMMANDS_QTY){

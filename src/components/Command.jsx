@@ -42,7 +42,7 @@ const Command = (props) =>{
     }).catch("Error al leer contenido");
   }
   return(
-    <div className='test' key={props.index}>
+    <div className='commandContainer' key={props.index}>
       Geofence {props.index + 1}: 
       <span className='command'>
         {getCommand(props.geofence.coordinates, props.index+1)}
