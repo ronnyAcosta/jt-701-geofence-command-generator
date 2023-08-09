@@ -82,7 +82,7 @@ const App = () => {
 
   return(
     <>
-      <header><h1>JT701 - Geofences Commands Generator</h1></header>
+      <header><h1>JT701 - Geofence Commands Generator</h1></header>
 
       <main>
         <MapContainer center={center} zoom={ZOOM_LEVEL} ref={mapRef} >
