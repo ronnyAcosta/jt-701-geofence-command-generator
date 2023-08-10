@@ -17,7 +17,11 @@ const Command = (props) =>{
 
   const getCommand = (coordinates, index) =>{
     if(coordinates.length > 10){
-      return "Coordinate limit exceeded. Edit the geofence."
+      return(
+        <span className='error'>
+          Coordinate limit exceeded. Edit the geofence.
+        </span>
+      )
       
     }
     
@@ -27,7 +31,12 @@ const Command = (props) =>{
   });
     command += ')';
     console.log(command);
-    return (command);
+    return (
+      <span className='command'>
+        {command}
+        {props.geofence.coordinates.length <= 10 ? <IonIcon className='copy' slot="end" icon={copyOutline} onClick={copyContent}></IonIcon> : ""}
+      </span>
+    );
   }
   const copyContent = (e) => {
     const content = e.target.parentNode.innerText;
@@ -44,10 +53,7 @@ const Command = (props) =>{
   return(
     <div className='commandContainer' key={props.index}>
       Geofence {props.index + 1}: 
-      <span className='command'>
-        {getCommand(props.geofence.coordinates, props.index+1)}
-        {props.geofence.coordinates.length <= 10 ? <IonIcon className='copy' slot="end" icon={copyOutline} onClick={copyContent}></IonIcon> : ""}
-      </span>
+      {getCommand(props.geofence.coordinates, props.index+1)}
     </div>
   )
 }

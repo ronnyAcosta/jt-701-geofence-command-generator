@@ -54,13 +54,15 @@ main{
 
 .command{
   word-break: break-all;
+  
+}
+.command, .error{
   margin: 0px 5px;
   background-color: #07bcff;
   border-radius: 5px;
   padding: 5px;
   color: #140f07;
 }
-
 
 
 .copy{
@@ -112,7 +114,7 @@ main{
   }
 
   .leaflet-container{
-    height: 60vh;
+    height: 58vh;
     min-width: 85vw;
     width: 100%;
     margin-left: 0px;
