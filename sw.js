@@ -1,10 +1,10 @@
 const CACHE_ELEMENTS = [
-    "./",
-    "./src/index.css",
-    "./src/App.css",
-    "./src/App.jsx",
-    "./src/main.jsx",
-    "./src/map-providers.js",
+    "/",
+    "/src/index.css",
+    "/src/App.css",
+    "/src/App.jsx",
+    "/src/main.jsx",
+    "/src/map-providers.js",
     "https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap"
 ]
 
