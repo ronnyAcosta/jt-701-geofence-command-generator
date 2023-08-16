@@ -8,7 +8,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import osm from './map-providers';
 
 const App = () => {
-  const [center, setCenter] = useState ({ lat: 18.4821, lng: -69.9099 });
+  const [center] = useState ({ lat: 18.4821, lng: -69.9099 });
   const ZOOM_LEVEL = 13;
   const mapRef = useRef();
   const [geofences, setGeofences] = useState([]);
@@ -46,7 +46,9 @@ const App = () => {
             if(g._id === id){
               g.coordinates = _layers[id]._latlngs[0];
             }
-          }) 
+            return 0;
+          })
+          return 0;
         }) 
         return [...geofences];
       })
@@ -67,7 +69,9 @@ const App = () => {
             if(g._id === id){
               geofences.splice(geofences.indexOf(g),1);
             }
-          }) 
+            return 0;
+          })
+          return 0; 
         })
         return [...geofences];
       });    

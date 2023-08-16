@@ -62,7 +62,7 @@ const Command = (props) =>{
 
 Command.propTypes = {
   index: PropTypes.number,
-  geofence: {coordinates: PropTypes.array}
+  geofence: PropTypes.object
 }
 
 export default Command;
