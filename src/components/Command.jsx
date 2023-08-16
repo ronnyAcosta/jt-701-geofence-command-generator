@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonIcon } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
+import PropTypes from 'prop-types'
 
 const Command = (props) =>{
   const ddddToDdmm = (coordinate) =>{
@@ -58,4 +59,10 @@ const Command = (props) =>{
   )
 }
 
+Command.propTypes = {
+  index: PropTypes.number,
+  geofence: PropTypes.object
+}
+
 export default Command;
+
