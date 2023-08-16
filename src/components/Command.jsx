@@ -20,7 +20,7 @@ const Command = (props) =>{
     if(coordinates.length > 10){
       return(
         <span className='error'>
-          Coordinate limit exceeded. Edit the geofence.
+          Coordinates limit exceeded. Edit the geofence.
         </span>
       )
       
@@ -50,7 +50,7 @@ const Command = (props) =>{
       setTimeout(() =>{
         document.getElementById("copied").classList.remove('visible');
       }, 1000)
-    }).catch("Error al leer contenido");
+    }).catch("Error at reading content");
   }
   return(
     <div className='commandContainer' key={props.index}>
