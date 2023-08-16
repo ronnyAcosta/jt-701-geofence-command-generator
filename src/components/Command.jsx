@@ -29,6 +29,7 @@ const Command = (props) =>{
     let command = `(P29,1,${index},1,${coordinates.length}`;
     coordinates.map(c => {
       command += `,${ddddToDdmm(c.lng)},${ddddToDdmm(c.lat)}`;
+      return 0;
   });
     command += ')';
     console.log(command);
@@ -61,7 +62,7 @@ const Command = (props) =>{
 
 Command.propTypes = {
   index: PropTypes.number,
-  geofence: PropTypes.object
+  geofence: {coordinates: PropTypes.array}
 }
 
 export default Command;
