@@ -1,17 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {  MapContainer, TileLayer, FeatureGroup } from "react-leaflet";
+import React, { useState, useEffect, useRef, useReducer } from 'react';
+import {  MapContainer, TileLayer, FeatureGroup} from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import Command from './components/Command';
 import Error from './components/Error';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from './map-providers';
+import { GeofencesReducer } from './reducers/GeofencesReducer';
+
 
 const App = () => {
+
+  
   const [center] = useState ({ lat: 18.4821, lng: -69.9099 });
   const ZOOM_LEVEL = 13;
   const mapRef = useRef();
-  const [geofences, setGeofences] = useState([]);
+  const [geofences, dispatch] = useReducer(GeofencesReducer, []);
 
   const editedRef = useRef(false);
   const deletedRef = useRef(false);
@@ -19,69 +23,57 @@ const App = () => {
   const COMMANDS_QTY = 10;
 
   const _created = (e) => {  
-    const newGeofence = { _id: e.layer._leaflet_id};
-    newGeofence.coordinates = e.layer._latlngs[0].map((latlng) => ({
-      lat: latlng.lat,
-      lng: latlng.lng,
-    }));
-
-    setGeofences((geofences) => [...geofences, newGeofence]);  
-    console.log(e);
-    
+    const action = {
+      type: "add",
+      payload: { 
+        _id: e.layer._leaflet_id,
+        coordinates: e.layer._latlngs[0].map((latlng) => ({
+          lat: latlng.lat,
+          lng: latlng.lng,
+        }))
+      }
+    }
+    dispatch(action);     
   }
 
   const _edited = (e) => {
     if (!editedRef.current) {
       editedRef.current = true;
-      
-      console.log(e);
       const { layers: {_layers}} = e;
-  
-      const editedIds = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id );
-      console.log(editedIds);
       
-      setGeofences((geofences) => {
-        editedIds.map(id => {
-          geofences.map( (g) =>{
-            if(g._id === id){
-              g.coordinates = _layers[id]._latlngs[0];
-            }
-            return 0;
-          })
-          return 0;
-        }) 
-        return [...geofences];
-      })
+      const ids = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
+      
+      const action = {
+        type: "edit",
+        payload: ids.map( (id) =>{
+          return {
+            _id: id,
+            coordinates: _layers[id]._latlngs[0]
+          }
+        })
+      }     
+      dispatch(action)
+
     }   
+    
   };
  
   const _deleted = (e) => {
     if (!deletedRef.current) {
-      console.log(e);
       deletedRef.current = true;
       
       const { layers: {_layers}} = e;
-      const deletedIds = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-      
-      setGeofences((geofences) => {
-        deletedIds.map((id) =>{
-          geofences.map( (g) =>{
-            if(g._id === id){
-              geofences.splice(geofences.indexOf(g),1);
-            }
-            return 0;
-          })
-          return 0; 
-        })
-        return [...geofences];
-      });    
+      const action = {
+        type: "delete",
+        payload: Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
+      } 
+      dispatch(action)
     }
   };
   
   useEffect(() => {
     editedRef.current = false;
     deletedRef.current = false;
-    console.log(geofences);
   });
 
   return(
@@ -104,6 +96,7 @@ const App = () => {
                 polyline: false
               }}
             />
+            
           </FeatureGroup>
           <TileLayer 
             url={osm.maptiler.url}

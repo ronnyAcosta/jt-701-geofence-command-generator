@@ -32,7 +32,6 @@ const Command = (props) =>{
       return 0;
   });
     command += ')';
-    console.log(command);
     return (
       <span className='command'>
         {command}
