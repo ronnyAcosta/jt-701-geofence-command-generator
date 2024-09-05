@@ -70,14 +70,16 @@ main{
   top: 0.15rem;
   cursor: pointer;
   margin-left: 5px;
-}
-.copy:hover{
-  color: #096fa8; 
+  
+  &:hover{
+    color: #096fa8; 
+  }
+  
+  &:active{
+    color: aqua;
+  }
 }
 
-.copy:active{
-  color: aqua;
-}
 
 .commandContainer{
   display: flex;
@@ -94,11 +96,12 @@ main{
   color: #140f07;
   opacity: 0;
   transition: opacity 0.5s;
-}
 
+}
 #copied.visible{
   opacity: 1;
 }
+
 
 @media (max-width: 800px) {
   main{
