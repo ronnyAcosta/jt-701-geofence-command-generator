@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import {  MapContainer, TileLayer, FeatureGroup} from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
-import Command from './components/Command';
-import Error from './components/Error';
 import Geofences from './components/Geofences';
 
 import "leaflet/dist/leaflet.css";
@@ -10,27 +8,9 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import osm from './map-providers';
 import { GeofencesReducer } from './reducers/GeofencesReducer';
 
-const init = () =>{
-  const geofences = JSON.parse(localStorage.getItem("geofences"))
+import init from './helpers/init';
+import CommandsCointainer from './components/CommandsCointainer';
 
-  if(geofences){
-    let newId = 38;
-    
-    const cacheGeofences = geofences.map((geofence)=>{
-      geofence.cacheLoaded = true;
-      if(newId === 39){
-        newId++
-      }
-      geofence._id = newId
-      newId++;
-      return geofence;
-    });
-    return cacheGeofences;
-  }
-  else{
-    return []
-  }
-}
 
 const App = () => {
   
@@ -76,9 +56,7 @@ const App = () => {
         })
       }     
       dispatch(action)
-
-    }   
-    
+    }      
   };
  
   const handleDelete = (e) => {
@@ -90,6 +68,7 @@ const App = () => {
         type: "delete",
         payload: Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
       } 
+      
       dispatch(action)
     }
   };
@@ -130,28 +109,8 @@ const App = () => {
         
         <div className='commandsList'>
           <h3>Commands</h3>
+          <CommandsCointainer geofences={geofences} COMMANDS_QTY={COMMANDS_QTY} />
           
-          <div className='commandsBox'>
-            {geofences.map((geofence, index) => {
-              
-              if(geofences.indexOf(geofence) < COMMANDS_QTY){
-                return(
-                  <Command 
-                    key = {index}
-                    index = {index}
-                    geofence = {geofence}
-                  />
-                )
-              }else {
-                return(
-                  <Error 
-                    key = {index}
-                    index = {index}
-                  />
-                )
-              }
-            })}
-          </div>
           <div id="copied">Copied to clipboard</div>        
         </div>
       </main>   
