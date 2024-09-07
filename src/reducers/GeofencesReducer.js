@@ -1,10 +1,12 @@
+import { actions } from "../types/actions"
+
 export const geofencesReducer = (geofences = [], action) => {
   switch (action.type){
-    case "add":
+    case actions.add:
       return [...geofences, action.payload]
 
           
-    case "edit":
+    case actions.edit:
       geofences.map((geofence) => {
         return action.payload.map((edit) =>{
           if(geofence._id === edit._id){
@@ -15,7 +17,7 @@ export const geofencesReducer = (geofences = [], action) => {
          }) 
       return [...geofences]
 
-    case "delete":
+    case actions.delete:
       return geofences.filter(actual => !action.payload.includes(actual._id))
 
     default:

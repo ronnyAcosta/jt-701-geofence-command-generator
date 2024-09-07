@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Geofences from '../components/Geofences';
 import CommandsCointainer from '../components/CommandsCointainer';
 
+import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesActions';
 
 const AppScreen = () => {
   const dispatch = useDispatch()
@@ -20,47 +21,15 @@ const AppScreen = () => {
   const COMMANDS_QTY = 10;
 
   const handleCreate = (e) => { 
-    const action = {
-      type: "add",
-      payload: { 
-        _id: e.layer._leaflet_id,
-        coordinates: e.layer._latlngs[0].map((latlng) => ({
-          lat: latlng.lat,
-          lng: latlng.lng,
-        })),
-        cacheLoaded: false
-      }
-    }
-    dispatch(action);     
+    dispatch(addGeofence(e));     
   }
 
-  const handleEdit = (e) => {
-    const { layers: {_layers}} = e;
-    
-    const ids = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-    
-    const action = {
-      type: "edit",
-      payload: ids.map( (id) =>{
-        return {
-          _id: id,
-          coordinates: _layers[id]._latlngs[0]
-        }
-      })
-    }     
-    dispatch(action)
-          
+  const handleEdit = (e) => { 
+    dispatch(editGeofence(e))        
   };
  
   const handleDelete = (e) => {
-    
-    const { layers: {_layers}} = e;
-    const action = {
-      type: "delete",
-      payload: Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-    } 
-    dispatch(action)
-    
+    dispatch(deleteGeofence(e)) 
   };
   
   useEffect(() => {
@@ -87,9 +56,7 @@ const AppScreen = () => {
                 marker: false,
                 polyline: false
               }}
-            />
-            
-            
+            />  
             <Geofences geofences={geofences} />
           </FeatureGroup>
           <TileLayer 
