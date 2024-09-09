@@ -102,6 +102,27 @@ main{
   opacity: 1;
 }
 
+.title{
+  background-color: #096fa8;
+  margin: 0;
+  padding: 5px;
+  color: white;
+  text-align: center;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-bottom: 1px solid #07bcff !important; 
+    box-shadow: 0 1px 0 0 #07bcff !important; 
+}
+
+input[type="text"]:focus + label,
+input[type="email"]:focus + label,
+input[type="password"]:focus + label {
+    color: #07bcff !important;
+}
+
 
 @media (max-width: 800px) {
   main{

@@ -66,7 +66,7 @@ const AppScreen = () => {
         </MapContainer>
         
         <div className='commandsList'>
-          <h3>Commands</h3>
+          <h4 className=''>Commands</h4>
           <CommandsCointainer geofences={geofences} COMMANDS_QTY={COMMANDS_QTY} />
           
           <div id="copied">Copied to clipboard</div>        
