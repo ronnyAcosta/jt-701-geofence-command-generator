@@ -1,4 +1,4 @@
-export const auth = {
+export const authType = {
   login: '[Auth] login',
   logout: '[Auth] logout'
 }

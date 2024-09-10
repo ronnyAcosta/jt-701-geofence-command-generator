@@ -1,44 +1,47 @@
-import { actions } from "../types/actions";
+import { actionType } from "../types/actionType";
 
-
-const addGeofence = (e) => { 
-  //console.log(actions.add)
+const addGeofence = (e) => {
+  //console.log(actionType.add)
   return {
-    type: actions.add,
-    payload: { 
+    type: actionType.add,
+    payload: {
       _id: e.layer._leaflet_id,
       coordinates: e.layer._latlngs[0].map((latlng) => ({
         lat: latlng.lat,
         lng: latlng.lng,
       })),
-      cacheLoaded: false
-    }
-  }    
-}
+      cacheLoaded: false,
+    },
+  };
+};
 
-const editGeofence = (e) =>{
-  const { layers: {_layers}} = e;
-    
-  const ids = Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-    
+const editGeofence = (e) => {
+  const {
+    layers: { _layers },
+  } = e;
+
+  const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
+
   return {
-    type: actions.edit,
-    payload: ids.map( (id) =>{
+    type: actionType.edit,
+    payload: ids.map((id) => {
       return {
         _id: id,
-        coordinates: _layers[id]._latlngs[0]
-      }
-    })
-  }     
-}
+        coordinates: _layers[id]._latlngs[0],
+      };
+    }),
+  };
+};
 
-const deleteGeofence = (e) =>{
-  const { layers: {_layers}} = e;
-  
+const deleteGeofence = (e) => {
+  const {
+    layers: { _layers },
+  } = e;
+
   return {
-    type: actions.delete,
-    payload: Object.values(_layers).map(({ _leaflet_id}) => _leaflet_id )
-  }
-}
+    type: actionType.delete,
+    payload: Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id),
+  };
+};
 
-export {addGeofence, editGeofence, deleteGeofence}
+export { addGeofence, editGeofence, deleteGeofence };
