@@ -5,6 +5,17 @@
   margin: 0;
   
 }
+nav{
+  background-color: #096fa8;
+  padding: 0 0.5rem;
+  color: aliceblue;
+}
+
+.app-title{
+  font-size: 2rem;
+}
+
+
 header{
   background-color: #096fa8;
   padding: 0.4rem 0;
@@ -125,6 +136,10 @@ input[type="password"]:focus + label {
 
 
 @media (max-width: 800px) {
+  .app-title{
+    font-size: 1.6rem;
+  }
+
   main{
     flex-direction: column;
     justify-content: center;
@@ -162,8 +177,19 @@ input[type="password"]:focus + label {
 }
 
 @media (max-width: 485px) {
+  .app-title{
+    font-size: 1.1rem;
+  }
+
   h1{
     font-size: 1.15rem;
+  }
+  
+}
+
+@media (max-width: 360px) {
+  .app-title{
+    font-size: 0.95rem;
   }
   
 }

@@ -38,15 +38,10 @@ const RegisterScreen = () => {
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleSubmit}>
             <div className="row">
-              <div className="input-field col s6">
+              <div className="input-field col s12">
                 <i className="material-icons prefix">person</i>
-                <input id="name" name='name' type="text" className="validate" value={name} onBlur={handleBlur} onFocus={handleFocus} onChange={handleRegister} />
-                <label htmlFor="name">Name</label>
-              </div>
-              <div className="input-field col s6">
-                <i className="material-icons prefix">person</i>
-                <input id="lastName" name='lastName' type="text" className="validate" value={lastName} onBlur={handleBlur} onFocus={handleFocus} onChange={handleRegister} />
-                <label htmlFor="lastName">Last Name</label>
+                <input id="userName" name='userName' type="text" className="validate" value={name} onBlur={handleBlur} onFocus={handleFocus} onChange={handleRegister} />
+                <label htmlFor="userName">User Name</label>
               </div>
               <div className="input-field col s12">
                 <i className="material-icons prefix">email</i>
@@ -61,9 +56,9 @@ const RegisterScreen = () => {
               <div className="input-field col s12">
                 <i className="material-icons prefix">vpn_key</i>
                 <input id="confirmPassword" name='confirmPassword' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={confirmPassword} onChange={handleRegister} />
-                <label htmlFor="confirmPassword">Password</label>
+                <label htmlFor="confirmPassword">Confirm password</label>
               </div>
-              <button type='submit' className='btn blue waves-effect waves-light'>Enviar</button>
+              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
             </div>
           </form>
         </div>

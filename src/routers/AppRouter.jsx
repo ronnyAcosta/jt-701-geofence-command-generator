@@ -6,6 +6,7 @@ import {
 import LoginScreen from '../pages/LoginScreen';
 import AppScreen from '../pages/AppScreen';
 import RegisterScreen from '../pages/RegisterScreen';
+import NavBar from '../components/NavBar';
 
 const AppRouter = () => {
   const router = createBrowserRouter([

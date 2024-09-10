@@ -8,8 +8,8 @@ import osm from '../map-providers';
 import { useDispatch, useSelector } from 'react-redux';
 import Geofences from '../components/Geofences';
 import CommandsCointainer from '../components/CommandsCointainer';
-
 import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesActions';
+import NavBar from '../components/NavBar';
 
 const AppScreen = () => {
   const dispatch = useDispatch()
@@ -39,7 +39,7 @@ const AppScreen = () => {
 
   return(
     <>
-      <header><h1>JT701 - Geofence Commands Generator</h1></header>
+      <NavBar />
 
       <main>
         <MapContainer center={center} zoom={ZOOM_LEVEL} >

@@ -29,7 +29,7 @@ const LoginScreen = () => {
   return (
     <>
       <h1 className='title'>JT701 - Geofence Commands Generator</h1>
-      <div className='container'>
+      <div className='container '>
         <h3>Login</h3>
         <div className="divider"></div>
         <div className="row container">
@@ -45,7 +45,7 @@ const LoginScreen = () => {
                 <input id="password" name='password' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={password} onChange={handleLogin} />
                 <label htmlFor="password">Password</label>
               </div>
-              <button type='submit' className='btn blue waves-effect waves-light'>Enviar</button>
+              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
             </div>
           </form>
         </div>
