@@ -134,6 +134,13 @@ input[type="password"]:focus + label {
     color: #07bcff !important;
 }
 
+.error-message{
+  display: none;
+  font-style: italic;
+  font-size: small;
+  color: red;
+  margin-top: -8px;
+}
 
 @media (max-width: 800px) {
   .app-title{
