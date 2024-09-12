@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import { useDispatch } from 'react-redux';
 import { register } from '../actions/authAction';
+import { Link } from 'react-router-dom';
+
 
 const RegisterScreen = () => {
   
@@ -68,13 +70,12 @@ const RegisterScreen = () => {
     }
   }
   
-  
   return (
     <>
       <h1 className='title'>JT701 - Geofence Commands Generator</h1>
       <div className='container'>
         <h3>Register</h3>
-        <div className="divider mb-4"></div>
+        <div className="divider"></div>
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleRegister}>
             <div className="row">
@@ -89,6 +90,7 @@ const RegisterScreen = () => {
                 <input id="email" name='email' type="text" className="validate" value={email} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
                 <label htmlFor="email">Email</label>
                 <div className='center error-message'>Invalid email</div>
+                <div id='duplicatedEmail' className='center'>Email is alredy in use</div>
               </div>
               <div className="input-field col s12">
                 <i className="material-icons prefix">vpn_key</i>
@@ -102,8 +104,10 @@ const RegisterScreen = () => {
                 <label htmlFor="confirmPassword">Confirm password</label>
                 <div className='center error-message'>Wrong Password</div>
               </div>
-              <button type='Register' className='btn col s12 blue waves-effect waves-light'>Register</button>
+              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
             </div>
+            <hr />
+            <Link to="/login">Login into account</Link>
           </form>
         </div>
       </div>
