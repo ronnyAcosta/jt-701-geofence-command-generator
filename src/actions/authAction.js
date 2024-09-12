@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { auth } from "../firebase/config-firebase";
 import { authType } from "../types/authType";
 
@@ -9,6 +9,23 @@ const login = (uid, displayName) =>{
       uid,
       displayName
     }
+  }
+}
+
+const loginWithEmail = (email, password) =>{
+  return (dispatch) =>{
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user)
+      dispatch(login(user.uid, user.displayName))
+    })
+    .catch((error) => {
+      if(error.code === 'auth/invalid-credential'){
+        console.log(error.code)
+      }
+    });
   }
 }
 
@@ -51,4 +68,4 @@ const register = (userName, email, password) =>{
   }
 }
 
-export {login, logout, register}
+export {login, loginWithEmail, logout, register}

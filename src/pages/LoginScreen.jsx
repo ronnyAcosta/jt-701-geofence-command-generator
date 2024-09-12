@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-
+import { useDispatch } from 'react-redux';
+import { loginWithEmail } from '../actions/authAction';
+import { Link } from 'react-router-dom';
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+
   const [userLogin, setUserLogin] = useState({
     email: '',
     password: ''
@@ -17,6 +21,7 @@ const LoginScreen = () => {
   
   const handleSubmit = (e) =>{
     e.preventDefault()
+    dispatch(loginWithEmail(email, password));
     console.log(userLogin)
   }
   const handleFocus = (e) =>{
@@ -47,6 +52,8 @@ const LoginScreen = () => {
               </div>
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
             </div>
+            <hr />
+            <Link to="/register">Register</Link>
           </form>
         </div>
       </div>

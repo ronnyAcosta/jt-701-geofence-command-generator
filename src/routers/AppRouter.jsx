@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes,  } from 'react-router-dom';
 import LoginScreen from '../pages/LoginScreen';
 import AppScreen from '../pages/AppScreen';
 import RegisterScreen from '../pages/RegisterScreen';
@@ -10,6 +7,8 @@ import { auth } from '../firebase/config-firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../actions/authAction';
+import PublicRoutes from './PublicRoutes';
+import PrivateRoute from './PrivateRoute';
 
 
 const AppRouter = () => {
@@ -33,26 +32,15 @@ const AppRouter = () => {
     
   }, [dispatch, log])
   
-
-  const router = createBrowserRouter([
-    {
-      path: '/login',
-      element: <LoginScreen />,
-    },
-    {
-      path: '/register',
-      element: <RegisterScreen />,
-    },
-    {
-      path: '/',
-      element: <AppScreen />
-    }
-  ])
-  
-  
   return (
-    <RouterProvider router={router} />
-  )
-}
+    <Router>
+      <Routes>
+        <Route path='*' element={<PrivateRoute log={log} component={AppScreen} /> } />    
+        <Route exact path='/login' element={<PublicRoutes log={log} component={LoginScreen} /> } /> 
+        <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterScreen} /> } />   
+      </Routes>
+    </Router>)
+      
 
+}
 export default AppRouter
