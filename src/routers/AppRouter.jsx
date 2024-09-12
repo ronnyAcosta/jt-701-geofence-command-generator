@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -6,9 +6,34 @@ import {
 import LoginScreen from '../pages/LoginScreen';
 import AppScreen from '../pages/AppScreen';
 import RegisterScreen from '../pages/RegisterScreen';
-import NavBar from '../components/NavBar';
+import { auth } from '../firebase/config-firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { login } from '../actions/authAction';
+
 
 const AppRouter = () => {
+  const dispatch = useDispatch()
+
+  const [log, setLog] = useState(false)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user)=>{
+      if(user){
+        console.log('inicio sesión')
+        dispatch(login(user.uid, user.displayName))
+        setLog(true)
+        console.log(log)
+      } else{
+        setLog(false);
+        console.log(log)
+      }
+    })
+  
+    
+  }, [dispatch, log])
+  
+
   const router = createBrowserRouter([
     {
       path: '/login',

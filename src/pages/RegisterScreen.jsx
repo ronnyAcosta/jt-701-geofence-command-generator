@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 
+import { useDispatch } from 'react-redux';
+import { register } from '../actions/authAction';
+
 const RegisterScreen = () => {
+  
+  const dispatch = useDispatch();
+
   const [userRegister, setUserRegister] = useState({
     userName: '',
     email: '',
@@ -16,8 +22,18 @@ const RegisterScreen = () => {
       [e.target.name]: e.target.value
     })
   }
+
+  const handleFocus = (e) =>{
+    e.target.previousElementSibling.style.color = '#07bcff'
+  }
+
+  const handleBlur = (e) =>{
+    e.target.previousElementSibling.style.color = '#000'
+    e.target.style.borderBottom = '1px solid #9e9e9e'
+    e.target.nextSibling.style.color = '#9e9e9e'
+  }
   
-  const handleSubmit = (e) =>{
+  const handleRegister = (e) =>{
     e.preventDefault()
     const validator = {
       confirm: true
@@ -48,17 +64,10 @@ const RegisterScreen = () => {
 
     if(validator.confirm === true){
       console.log(userRegister)
+      dispatch(register(userName, email, password))
     }
   }
-  const handleFocus = (e) =>{
-    e.target.previousElementSibling.style.color = '#07bcff'
-  }
-
-  const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000'
-    e.target.style.borderBottom = '1px solid #9e9e9e'
-    e.target.nextSibling.style.color = '#9e9e9e'
-  }
+  
   
   return (
     <>
@@ -67,7 +76,7 @@ const RegisterScreen = () => {
         <h3>Register</h3>
         <div className="divider mb-4"></div>
         <div className="row container">
-          <form className="col s12" method='post' onSubmit={handleSubmit}>
+          <form className="col s12" method='post' onSubmit={handleRegister}>
             <div className="row">
               <div className="input-field col s12">
                 <i className="material-icons prefix">person</i>
@@ -93,7 +102,7 @@ const RegisterScreen = () => {
                 <label htmlFor="confirmPassword">Confirm password</label>
                 <div className='center error-message'>Wrong Password</div>
               </div>
-              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
+              <button type='Register' className='btn col s12 blue waves-effect waves-light'>Register</button>
             </div>
           </form>
         </div>

@@ -1,9 +1,18 @@
 import React, {useEffect} from 'react'
 import M from 'materialize-css'
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../actions/authAction';
+import { clearGeofences } from '../actions/geofencesActions';
 
 const NavBar = () => {
+  const dispatch = useDispatch();
   
+  const handleLogout = () =>{
+    dispatch(logout());
+    dispatch(clearGeofences());
+  }
+
   useEffect(() => {
     // Inicializar el dropdown
     const elems = document.querySelectorAll('.dropdown-trigger');
@@ -12,6 +21,7 @@ const NavBar = () => {
       constrainWidth: false, // Para que el menú no tenga el ancho del botón
     });
   }, []);
+
   return (
     <>
     
@@ -25,13 +35,13 @@ const NavBar = () => {
 
         <ul className="right hide-on-med-and-down">
           <li>
-            <button className="btn red waves-effect waves-light">Logout</button>
+            <button className="btn red waves-effect waves-light" onClick={handleLogout}>Logout</button>
           </li>
         </ul>
 
         <ul className="dropdown-content" id="dropdown1">
           <li>
-            <Link className="red-text waves-effect waves-red">Logout</Link>
+            <Link className="red-text waves-effect waves-red" onClick={handleLogout}>Logout</Link>
           </li>
         </ul>
       </div>

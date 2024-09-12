@@ -11,7 +11,7 @@ const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOO
 const preloadedState = {
   auth: {
     uid: "",
-    userName: ""
+    displayName: ""
   },
   geofences: init()
 }

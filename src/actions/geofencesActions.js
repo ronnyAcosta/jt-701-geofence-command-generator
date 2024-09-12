@@ -1,7 +1,6 @@
 import { actionType } from "../types/actionType";
 
-const addGeofence = (e) => {
-  //console.log(actionType.add)
+const addPayload = (e) =>{
   return {
     type: actionType.add,
     payload: {
@@ -13,9 +12,9 @@ const addGeofence = (e) => {
       cacheLoaded: false,
     },
   };
-};
+}
 
-const editGeofence = (e) => {
+const editPayload = (e) => {
   const {
     layers: { _layers },
   } = e;
@@ -33,7 +32,7 @@ const editGeofence = (e) => {
   };
 };
 
-const deleteGeofence = (e) => {
+const deletePayload = (e) =>{
   const {
     layers: { _layers },
   } = e;
@@ -42,6 +41,34 @@ const deleteGeofence = (e) => {
     type: actionType.delete,
     payload: Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id),
   };
+}
+
+const addGeofence = (e) => {
+  //console.log(actionType.add)
+  return (dispatch, getState) => {
+    dispatch(addPayload(e));
+    console.log(getState().auth)
+  };
 };
 
-export { addGeofence, editGeofence, deleteGeofence };
+
+
+const editGeofence = (e) =>{
+  return (dispatch, getState) =>{
+    dispatch(editPayload(e))
+  }
+}
+
+const deleteGeofence = (e) => {
+  return (dispatch, getState) =>{
+    dispatch(deletePayload(e));
+  }
+};
+
+const clearGeofences = () =>{
+  return(dispatch) =>{
+    dispatch({type: actionType.clear,})
+  }
+}
+
+export { addGeofence, editGeofence, deleteGeofence, clearGeofences };

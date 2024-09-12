@@ -1,7 +1,7 @@
 import { authType } from "../types/authType";
 const initState = {
   uid: "",
-  userName: ""
+  displayName: ""
 }
 
 export const authReducer = (auth = initState, action) =>{
