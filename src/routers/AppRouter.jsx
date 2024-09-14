@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Route, BrowserRouter as Router, Routes,  } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes  } from 'react-router-dom';
 import LoginScreen from '../pages/LoginScreen';
 import AppScreen from '../pages/AppScreen';
 import RegisterScreen from '../pages/RegisterScreen';
@@ -9,11 +9,12 @@ import { useDispatch } from 'react-redux';
 import { login } from '../actions/authAction';
 import PublicRoutes from './PublicRoutes';
 import PrivateRoute from './PrivateRoute';
+import EditUserInfo from '../pages/EditUserInfo';
 
 
 const AppRouter = () => {
   const dispatch = useDispatch()
-
+  
   const [log, setLog] = useState(false)
 
   useEffect(() => {
@@ -35,7 +36,8 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path='*' element={<PrivateRoute log={log} component={AppScreen} /> } />    
+        <Route path='/' element={<PrivateRoute log={log} component={AppScreen} /> } />
+        <Route exact path='/edit' element={<PrivateRoute log={log} component={EditUserInfo} /> } />    
         <Route exact path='/login' element={<PublicRoutes log={log} component={LoginScreen} /> } /> 
         <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterScreen} /> } />   
       </Routes>

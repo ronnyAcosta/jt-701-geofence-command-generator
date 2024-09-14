@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { loginWithEmail } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
+import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
+import GoogleButton from 'react-google-button';
+
 const LoginScreen = () => {
+
+  /* useEffect( () => {
+    redirectUser();
+  }, []) */
+  
+
   const dispatch = useDispatch();
 
   const [userLogin, setUserLogin] = useState({
@@ -19,6 +27,7 @@ const LoginScreen = () => {
     })
   }
   
+
   const handleSubmit = (e) =>{
     e.preventDefault()
     dispatch(loginWithEmail(email, password));
@@ -53,6 +62,10 @@ const LoginScreen = () => {
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
             </div>
             <hr />
+            <br />
+            {/* <GoogleButton onClick={()=>{googleLoginWithRedirect()}} /> */}
+            <GoogleButton onClick={()=>{dispatch(googleLoginWithPopUp())}} />
+            <br />
             <Link to="/register">Register</Link>
           </form>
         </div>
