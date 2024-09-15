@@ -45,9 +45,8 @@ const deletePayload = (e) =>{
 
 const addGeofence = (e) => {
   //console.log(actionType.add)
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(addPayload(e));
-    console.log(getState().auth)
   };
 };
 

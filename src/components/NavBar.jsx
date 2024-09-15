@@ -45,7 +45,7 @@ const NavBar = () => {
 
         <ul className="dropdown-content" id="dropdown1">
           <li>
-          <Link to='/edit' >{user.displayName}</Link>
+          <Link className='waves-effect waves-red test' to='/edit' >{user.displayName}</Link>
           </li>
           <li>
             <Link className="red-text waves-effect waves-red" onClick={handleLogout}>Logout</Link>

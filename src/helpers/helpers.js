@@ -23,4 +23,23 @@ const coordinatesFormatConverter = (coordinate) =>{
   return `${coordinate[0]}${coordinate[1]}` 
 }
 
-export {copyContent, coordinatesFormatConverter}
+const errorMessage = (element) =>{
+  const test = document.querySelector(element);
+  console.log(test)
+
+  document.querySelector(element).style.display = 'block';
+
+  setTimeout(()=>{
+    document.querySelector(element).classList.add('visible');
+  }, 10)
+  
+  setTimeout(()=>{
+    document.querySelector(element).classList.remove('visible');
+  }, 2000)
+
+  setTimeout(()=>{
+    document.querySelector(element).style.display = 'none'
+  }, 2500)
+}
+
+export {copyContent, coordinatesFormatConverter, errorMessage}

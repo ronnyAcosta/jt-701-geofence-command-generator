@@ -20,7 +20,7 @@ const LoginScreen = () => {
   })
   const {email, password} = userLogin;
   
-  const handleLogin = (e) =>{
+  const handleChange = (e) =>{
     setUserLogin({
       ...userLogin,
       [e.target.name]: e.target.value
@@ -51,12 +51,12 @@ const LoginScreen = () => {
             <div className="row">
               <div className="input-field col s12">
                 <i className="material-icons prefix">email</i>
-                <input id="email" name='email' type="email" className="validate" value={email} onBlur={handleBlur} onFocus={handleFocus} onChange={handleLogin} />
+                <input id="email" name='email' type="email" className="validate" value={email} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
                 <label htmlFor="email">Email</label>
               </div>
               <div className="input-field col s12">
                 <i className="material-icons prefix">vpn_key</i>
-                <input id="password" name='password' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={password} onChange={handleLogin} />
+                <input id="password" name='password' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={password} onChange={handleChange} />
                 <label htmlFor="password">Password</label>
               </div>
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
@@ -66,8 +66,10 @@ const LoginScreen = () => {
             {/* <GoogleButton onClick={()=>{googleLoginWithRedirect()}} /> */}
             <GoogleButton onClick={()=>{dispatch(googleLoginWithPopUp())}} />
             <br />
-            <Link to="/register">Register</Link>
+            <Link to="/register" className='col s12'>Register</Link>
+            <Link to='/restore' className='col s12' >Forgot Password</Link>
           </form>
+          <div id='invalidCredentials' className='center'>Invalid email or password</div>
         </div>
       </div>
     </>

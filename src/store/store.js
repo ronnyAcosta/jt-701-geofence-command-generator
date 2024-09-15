@@ -1,10 +1,10 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware, compose } from "redux";
 
-import { geofencesReducer } from "../reducers/geofencesReducer";
-import init from "../helpers/init";
-
 import { thunk } from "redux-thunk";
+
+import { geofencesReducer } from "../reducers/geofencesReducer";
 import { authReducer } from "../reducers/authReducer";
+import init from "../helpers/init";
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 

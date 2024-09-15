@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, getRedirectResult, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, updateProfile } from "firebase/auth";
 import { auth, googleAuthProvider } from "../firebase/config-firebase";
 import { authType } from "../types/authType";
+import { errorMessage } from "../helpers/helpers";
 
 const login = (uid, displayName) =>{
   return {
@@ -44,6 +45,7 @@ const loginWithEmail = (email, password) =>{
     .catch((error) => {
       if(error.code === 'auth/invalid-credential'){
         console.log(error.code)
+        errorMessage('#invalidCredentials')
       }
     });
   }
@@ -69,19 +71,8 @@ const register = (userName, email, password) =>{
       .catch((error)=>{
         if(error.code === 'auth/email-already-in-use'){
           console.log(error.code)
-          document.querySelector('#duplicatedEmail').style.display = 'block';
+          errorMessage('#duplicatedEmail');
         }
-        setTimeout(()=>{
-          document.querySelector('#duplicatedEmail').classList.add('visible');
-        }, 10)
-        
-        setTimeout(()=>{
-          document.querySelector('#duplicatedEmail').classList.remove('visible');
-        }, 2000)
-
-        setTimeout(()=>{
-          document.querySelector('#duplicatedEmail').style.display = 'none'
-        }, 2500)
       })
   }
 }

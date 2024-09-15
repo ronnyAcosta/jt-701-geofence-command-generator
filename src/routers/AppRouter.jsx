@@ -10,6 +10,7 @@ import { login } from '../actions/authAction';
 import PublicRoutes from './PublicRoutes';
 import PrivateRoute from './PrivateRoute';
 import EditUserInfo from '../pages/EditUserInfo';
+import RestorePassword from '../pages/RestorePassword';
 
 
 const AppRouter = () => {
@@ -39,7 +40,8 @@ const AppRouter = () => {
         <Route path='/' element={<PrivateRoute log={log} component={AppScreen} /> } />
         <Route exact path='/edit' element={<PrivateRoute log={log} component={EditUserInfo} /> } />    
         <Route exact path='/login' element={<PublicRoutes log={log} component={LoginScreen} /> } /> 
-        <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterScreen} /> } />   
+        <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterScreen} /> } />
+        <Route exact path='/restore' element={<PublicRoutes log={log} component={RestorePassword} /> } />      
       </Routes>
     </Router>)
       

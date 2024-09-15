@@ -25,9 +25,7 @@ const RegisterScreen = () => {
     })
   }
 
-  const handleFocus = (e) =>{
-    e.target.previousElementSibling.style.color = '#07bcff'
-  }
+  const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
 
   const handleBlur = (e) =>{
     e.target.previousElementSibling.style.color = '#000'
