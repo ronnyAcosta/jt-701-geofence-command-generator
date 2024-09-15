@@ -23,10 +23,7 @@ const coordinatesFormatConverter = (coordinate) =>{
   return `${coordinate[0]}${coordinate[1]}` 
 }
 
-const errorMessage = (element) =>{
-  const test = document.querySelector(element);
-  console.log(test)
-
+const showMessage = (element) =>{
   document.querySelector(element).style.display = 'block';
 
   setTimeout(()=>{
@@ -42,4 +39,4 @@ const errorMessage = (element) =>{
   }, 2500)
 }
 
-export {copyContent, coordinatesFormatConverter, errorMessage}
+export {copyContent, coordinatesFormatConverter, showMessage}

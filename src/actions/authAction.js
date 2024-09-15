@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, getRedirectResult, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, updateProfile } from "firebase/auth";
 import { auth, googleAuthProvider } from "../firebase/config-firebase";
 import { authType } from "../types/authType";
-import { errorMessage } from "../helpers/helpers";
+import { showMessage } from "../helpers/helpers";
 
 const login = (uid, displayName) =>{
   return {
@@ -17,14 +17,9 @@ const login = (uid, displayName) =>{
 const googleLoginWithPopUp = () =>{
   return (dispatch) =>{
     signInWithPopup(auth, googleAuthProvider)
-      .then(({user})=>{
-        console.log(user);
-        dispatch(login(user.uid, user.displayName))
-      })
-      .catch((error) => {
-        console.log(`Ha ocurrido un error ${error}`)
-        
-      });
+      .then(({user})=> dispatch(login(user.uid, user.displayName)))
+      
+      .catch((error) => console.log(`Ha ocurrido un error ${error}`));
   }
 }
 
@@ -45,7 +40,7 @@ const loginWithEmail = (email, password) =>{
     .catch((error) => {
       if(error.code === 'auth/invalid-credential'){
         console.log(error.code)
-        errorMessage('#invalidCredentials')
+        showMessage('#invalidCredentials')
       }
     });
   }
@@ -71,7 +66,7 @@ const register = (userName, email, password) =>{
       .catch((error)=>{
         if(error.code === 'auth/email-already-in-use'){
           console.log(error.code)
-          errorMessage('#duplicatedEmail');
+          showMessage('#duplicatedEmail');
         }
       })
   }

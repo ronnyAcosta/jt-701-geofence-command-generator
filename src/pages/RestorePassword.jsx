@@ -1,5 +1,8 @@
+import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { auth } from '../firebase/config-firebase';
+import { showMessage } from '../helpers/helpers';
 
 const RestorePassword = () => {
 
@@ -8,11 +11,16 @@ const RestorePassword = () => {
   const handleChange = (e) => setEmail(e.target.value);
   
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault()
-   
-    console.log(email)
+
+    await sendPasswordResetEmail(auth, email)
+      .then(() => showMessage('#emailSent'))
+      .catch((error)=>{
+        console.log(error)
+      })
   }
+
   const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
 
   const handleBlur = (e) => e.target.previousElementSibling.style.color = '#000';
@@ -39,7 +47,8 @@ const RestorePassword = () => {
             <Link to="/register" className='col s12'>Register</Link>
             <Link to='/login'className='col s12' >Login</Link>
           </form>
-          <div id='invalidCredentials' className='center'>Invalid email or password</div>
+          <div id='emailSent' className='center'>Password reset email sent</div>
+          <div id='invalidCredentials' className='center'>Email is not registered</div>
         </div>
       </div>
     </>
