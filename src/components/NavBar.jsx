@@ -21,6 +21,7 @@ const NavBar = () => {
       coverTrigger: false, // Para que el menú no cubra el botón
       constrainWidth: false, // Para que el menú no tenga el ancho del botón
     });
+    M.updateTextFields();
   }, []);
 
   return (

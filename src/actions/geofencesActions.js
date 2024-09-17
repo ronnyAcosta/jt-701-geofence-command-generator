@@ -1,3 +1,4 @@
+import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
 const addPayload = (e) =>{
@@ -9,6 +10,7 @@ const addPayload = (e) =>{
         lat: latlng.lat,
         lng: latlng.lng,
       })),
+      oldId: e.layer._leaflet_id,
       cacheLoaded: false,
     },
   };
@@ -19,6 +21,7 @@ const editPayload = (e) => {
     layers: { _layers },
   } = e;
 
+  console.log(_layers)
   const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
 
   return {
@@ -36,11 +39,18 @@ const deletePayload = (e) =>{
   const {
     layers: { _layers },
   } = e;
-
+  console.log(_layers)
   return {
     type: actionType.delete,
     payload: Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id),
   };
+}
+
+const reloadPayload = () =>{
+  return {
+    type: actionType.reload,
+    payload: init()
+  }
 }
 
 const addGeofence = (e) => {
@@ -70,4 +80,10 @@ const clearGeofences = () =>{
   }
 }
 
-export { addGeofence, editGeofence, deleteGeofence, clearGeofences };
+const reloadGeofences = () =>{
+  return(dispatch) =>{
+    dispatch(reloadPayload())
+  }
+}
+
+export { addGeofence, editGeofence, deleteGeofence, reloadGeofences, clearGeofences };

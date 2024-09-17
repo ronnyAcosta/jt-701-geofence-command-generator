@@ -74,6 +74,7 @@ const RegisterScreen = () => {
       <div className='container'>
         <h3>Register</h3>
         <div className="divider"></div>
+        <br />
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleRegister}>
             <div className="row">

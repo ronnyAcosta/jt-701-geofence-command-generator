@@ -31,6 +31,7 @@ const RestorePassword = () => {
       <div className='container '>
         <h3>Reset Password</h3>
         <div className="divider"></div>
+        <br />
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleSubmit}>
             <div className="row">
