@@ -7,11 +7,6 @@ import GoogleButton from 'react-google-button';
 
 const LoginScreen = () => {
 
-  /* useEffect( () => {
-    redirectUser();
-  }, []) */
-  
-
   const dispatch = useDispatch();
 
   const [userLogin, setUserLogin] = useState({
@@ -27,7 +22,6 @@ const LoginScreen = () => {
     })
   }
   
-
   const handleSubmit = (e) =>{
     e.preventDefault()
     dispatch(loginWithEmail(email, password));

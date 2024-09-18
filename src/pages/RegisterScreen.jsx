@@ -111,4 +111,4 @@ const RegisterScreen = () => {
   )
 }
 
-export default RegisterScreen
+export default RegisterScreen;
