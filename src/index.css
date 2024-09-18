@@ -109,7 +109,7 @@ main{
   transition: opacity 0.5s;
 
 }
-#copied.visible, #duplicatedEmail.visible, #invalidCredentials.visible, #emailSent.visible{
+#copied.visible, #duplicatedEmail.visible, #invalidCredentials.visible, #emailSent.visible, #dataUpdated.visible{
   opacity: 1;
 }
 
@@ -141,7 +141,7 @@ input[type="password"]:focus + label {
   color: red;
   margin-top: -8px;
 }
-#duplicatedEmail, #invalidCredentials, #emailSent{
+#duplicatedEmail, #invalidCredentials, #emailSent, #dataUpdated{
   font-style: italic;
   display: none;
   opacity: 0;

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { register } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
+import { error } from '../helpers/helpers';
 
 const RegisterScreen = () => {
   
@@ -18,7 +19,7 @@ const RegisterScreen = () => {
   const {userName, email, password, confirmPassword} = userRegister;
   
   const handleChange = (e) =>{
-    e.target.nextSibling.nextSibling.style.display = 'none'
+    e.target.nextSibling.nextSibling.style.display = 'none';
     setUserRegister({
       ...userRegister,
       [e.target.name]: e.target.value
@@ -35,31 +36,27 @@ const RegisterScreen = () => {
   
   const handleRegister = (e) =>{
     e.preventDefault()
-    const validator = {
-      confirm: true
-    };
+
+    const validator = { confirm: true };
     
-    const error = (prop) =>{
-      document.querySelector(prop).previousElementSibling.style.color = 'red'
-      document.querySelector(prop).style.borderBottom = '2px solid red';
-      document.querySelector(prop).nextSibling.style.color = 'red';
-      document.querySelector(prop).nextSibling.nextSibling.style.display = 'block';
-      validator.confirm = false;
-      console.log(validator)
-    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if(userName.length < 3){
+    if(userName.length < 3 || userName.length > 20){
       error('#userName')
+      validator.confirm = false;
     }
 
     if(emailRegex.test(email) === false){
       error('#email')
+      validator.confirm = false;
     }
+
     if(password.length < 8){
       error('#password');
+      validator.confirm = false;
     } else if(confirmPassword !== password){
         error('#confirmPassword');
+        validator.confirm = false;
       }
 
     if(validator.confirm === true){
@@ -82,7 +79,7 @@ const RegisterScreen = () => {
                 <i className="material-icons prefix">person</i>
                 <input id="userName" name='userName' type="text" className="validate" value={userName} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
                 <label htmlFor="userName">User Name</label>
-                <div className='center error-message'>Min lenght: 3</div>
+                <div className='center error-message'>Min lenght: 3  |  Max lenght: 20</div>
               </div>
               <div className="input-field col s12">
                 <i className="material-icons prefix">email</i>
@@ -101,7 +98,7 @@ const RegisterScreen = () => {
                 <i className="material-icons prefix">vpn_key</i>
                 <input id="confirmPassword" name='confirmPassword' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={confirmPassword} onChange={handleChange}  />
                 <label htmlFor="confirmPassword">Confirm password</label>
-                <div className='center error-message'>Wrong Password</div>
+                <div className='center error-message'>Password do not match</div>
               </div>
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
             </div>

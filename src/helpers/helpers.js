@@ -39,4 +39,11 @@ const showMessage = (element) =>{
   }, 2500)
 }
 
-export {copyContent, coordinatesFormatConverter, showMessage}
+const error = (prop) =>{
+  document.querySelector(prop).previousElementSibling.style.color = 'red'
+  document.querySelector(prop).style.borderBottom = '2px solid red';
+  document.querySelector(prop).nextSibling.style.color = 'red';
+  document.querySelector(prop).nextSibling.nextSibling.style.display = 'block';
+}
+
+export {copyContent, coordinatesFormatConverter, showMessage, error}

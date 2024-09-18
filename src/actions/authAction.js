@@ -13,6 +13,15 @@ const login = (uid, displayName) =>{
   }
 }
 
+const updateUserName = (uid, displayName) =>{
+  return {
+    type: authType.update,
+    payload: {
+      uid,
+      displayName
+    }
+  }
+}
 
 const googleLoginWithPopUp = () =>{
   return (dispatch) =>{
@@ -72,4 +81,4 @@ const register = (userName, email, password) =>{
   }
 }
 
-export {login, loginWithEmail, googleLoginWithPopUp, googleLoginWithRedirect, redirectUser, logout, register}
+export {login, loginWithEmail, googleLoginWithPopUp, googleLoginWithRedirect, redirectUser, logout, register, updateUserName}

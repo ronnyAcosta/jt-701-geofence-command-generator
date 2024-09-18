@@ -21,13 +21,10 @@ const AppRouter = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user)=>{
       if(user){
-        console.log('inicio sesión')
         dispatch(login(user.uid, user.displayName))
         setLog(true)
-        console.log(log)
       } else{
         setLog(false);
-        console.log(log)
       }
     })
   

@@ -39,7 +39,6 @@ const deletePayload = (e) =>{
   const {
     layers: { _layers },
   } = e;
-  console.log(_layers)
   return {
     type: actionType.delete,
     payload: Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id),
@@ -55,8 +54,9 @@ const reloadPayload = () =>{
 
 const addGeofence = (e) => {
   //console.log(actionType.add)
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(addPayload(e));
+    console.log(getState().geofences)
   };
 };
 
