@@ -25,8 +25,8 @@ const LoginScreen = () => {
   const handleSubmit = (e) =>{
     e.preventDefault()
     dispatch(loginWithEmail(email, password));
-    console.log(userLogin)
   }
+  
   const handleFocus = (e) =>{
     e.target.previousElementSibling.style.color = '#07bcff'
   }

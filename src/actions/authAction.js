@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getRedirectResult, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, updateProfile } from "firebase/auth";
 import { auth, googleAuthProvider } from "../firebase/config-firebase";
 import { authType } from "../types/authType";
 import { showMessage } from "../helpers/helpers";
@@ -34,17 +34,12 @@ const googleLoginWithPopUp = () =>{
 
 const googleLoginWithRedirect = () => signInWithRedirect(auth, googleAuthProvider)
 
-const redirectUser = async () =>{
-  const result = await getRedirectResult(auth);
-  console.log(result);
-}
-
 const loginWithEmail = (email, password) =>{
   return (dispatch) =>{
     signInWithEmailAndPassword(auth, email, password)
     .then(({user}) => {
-      console.log(user)
       dispatch(login(user.uid, user.displayName))
+      
     })
     .catch((error) => {
       if(error.code === 'auth/invalid-credential'){
@@ -65,7 +60,6 @@ const logout = () =>{
 
 const register = (userName, email, password) =>{
   return (dispatch) =>{
-    console.log('action auth')
     createUserWithEmailAndPassword(auth, email, password)
       .then(async ({user}) =>{
         await updateProfile(user, {displayName: userName});
@@ -81,4 +75,4 @@ const register = (userName, email, password) =>{
   }
 }
 
-export {login, loginWithEmail, googleLoginWithPopUp, googleLoginWithRedirect, redirectUser, logout, register, updateUserName}
+export {login, loginWithEmail, googleLoginWithPopUp, googleLoginWithRedirect, logout, register, updateUserName}

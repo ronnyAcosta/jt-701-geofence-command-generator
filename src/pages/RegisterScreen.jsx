@@ -60,7 +60,6 @@ const RegisterScreen = () => {
       }
 
     if(validator.confirm === true){
-      console.log(userRegister)
       dispatch(register(userName, email, password))
     }
   }
