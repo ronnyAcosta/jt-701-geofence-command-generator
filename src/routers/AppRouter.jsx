@@ -11,6 +11,7 @@ import PublicRoutes from './PublicRoutes';
 import PrivateRoute from './PrivateRoute';
 import EditUserInfo from '../pages/EditUserInfo';
 import RestorePassword from '../pages/RestorePassword';
+import { loadGeofences } from '../actions/geofencesActions';
 
 
 const AppRouter = () => {
@@ -22,6 +23,7 @@ const AppRouter = () => {
     onAuthStateChanged(auth, (user)=>{
       if(user){
         dispatch(login(user.uid, user.displayName))
+        dispatch(loadGeofences())
         setLog(true)
       } else{
         setLog(false);

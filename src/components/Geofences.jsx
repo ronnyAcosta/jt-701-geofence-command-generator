@@ -5,7 +5,7 @@ const Geofences = ({geofences}) => {
     <>
       {
       geofences.map((geofence)=>{
-        if(geofence.cacheLoaded === true){
+        if(geofence.dbLoaded === true){
           const g = [];
           geofence.coordinates.map((coord)=>{
             g.push([coord.lat, coord.lng]);

@@ -32,10 +32,10 @@ const AppScreen = () => {
     dispatch(deleteGeofence(e)) 
   };
   
-  useEffect(() => {
+  /* useEffect(() => {
     localStorage.setItem("geofences", JSON.stringify(geofences))
     console.log(geofences)
-  }, [geofences]);
+  }, [geofences]); */
 
   return(
     <>
