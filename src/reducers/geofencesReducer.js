@@ -23,8 +23,8 @@ export const geofencesReducer = (geofences = [], action) => {
     case actionType.load:
       return action.payload;
 
-    /* case actionType.clear:  // Usar Luego que esté creada la base de datos
-      return [] */
+    case actionType.clear:  // Usar Luego que esté creada la base de datos
+      return []
     default:
       return geofences;
   }

@@ -50,7 +50,7 @@ const load = (data) =>{
 }
 
 const addGeofence = (e) => {
-  //console.log(actionType.add)
+  console.log(e.layer._leaflet_id)
   return async (dispatch) => {
     const id = auth.currentUser.uid
     const data = {
@@ -60,7 +60,6 @@ const addGeofence = (e) => {
         lat: latlng.lat,
         lng: latlng.lng,
       })),
-      leafletId: e.layer._leaflet_id,
       dbLoaded: false,
     }
     const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
@@ -111,18 +110,17 @@ const loadGeofences = () =>{
       data.push(doc.data());
     });
 
-    
     for(let geofence of data){
-      if(newId.id === 39){
+      /* if(newId.id === 39){
         newId.id = newId.id + 1;
       }
       const docRef = doc(db, `users/${id}/geofences/${geofence.docId}`);
       
       await updateDoc(docRef, { _id: newId.id }).catch((error)=> console.log(error));
 
-      geofence._id = newId.id
+      geofence._id = newId.id */
       geofence.dbLoaded = true;
-      newId.id++;
+      //newId.id++;
     }
     
     console.log(data);
