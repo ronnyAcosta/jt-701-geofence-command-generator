@@ -2,7 +2,8 @@ import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
 import { auth, db } from "../firebase/config-firebase";
-import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
+import { coordinatesAreEqual } from "../helpers/helpers";
 
 
 const add = (data) =>{
@@ -61,7 +62,7 @@ const addGeofence = (e) => {
     }
     const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
     const docId = docRef.id;
-    console.log(docId)
+    //console.log(docId)
     await updateDoc(docRef, {
       docId: docId
     })
@@ -80,18 +81,26 @@ const editGeofence = (e) =>{
 }
 
 const deleteGeofence = (e) => {
-  return (dispatch) =>{
+  return async (dispatch, getState) =>{
+    const id = auth.currentUser.uid
     const {
       layers: { _layers },
     } = e;
-    console.log(_layers)
+    //console.log(_layers)
     const data = Object.values(_layers).map(({ _leaflet_id, _latlngs }) => {
       return {
         _id: _leaflet_id,
         coordinates: _latlngs[0]
       } 
     });
-    
+    console.log(data)
+    const deletedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id || coordinatesAreEqual(g.coordinates, geofence.coordinates)));
+    console.log(deletedGeofences);
+
+    for(let geofence of deletedGeofences){
+      await deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`))
+    }
+
     dispatch(remove(data));
   }
 };
@@ -105,7 +114,7 @@ const clearGeofences = () =>{
 const loadGeofences = () =>{
   return async(dispatch) =>{
     const id = auth.currentUser.uid;
-    console.log(id)
+    //console.log(id)
     const data = [];
     const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')))
 
@@ -117,7 +126,7 @@ const loadGeofences = () =>{
       geofence.dbLoaded = true;
     }
     
-    console.log(data);
+    //console.log(data);
     dispatch(load(data))
   }
 }
