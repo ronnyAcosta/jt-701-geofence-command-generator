@@ -1,3 +1,4 @@
+import { coordinatesAreEqual } from "../helpers/helpers";
 import { actionType } from "../types/actionType";
 
 export const geofencesReducer = (geofences = [], action) => {
@@ -17,8 +18,7 @@ export const geofencesReducer = (geofences = [], action) => {
       return [...geofences];
 
     case actionType.delete:
-      return geofences.filter((actual) => !action.payload.includes(actual._id));
-      
+      return geofences.filter((geofence) => !action.payload.some((g) => g._id === geofence._id || coordinatesAreEqual(g.coordinates, geofence.coordinates)));
 
     case actionType.load:
       return action.payload;

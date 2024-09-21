@@ -31,14 +31,11 @@ const edit = (e) => {
   };
 };
 
-const remove = (e) =>{
-  const {
-    layers: { _layers },
-  } = e;
-  console.log(_layers)
+const remove = (data) =>{
+  console.log(data)
   return {
     type: actionType.delete,
-    payload: Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id),
+    payload: data,
   };
 }
 
@@ -83,8 +80,19 @@ const editGeofence = (e) =>{
 }
 
 const deleteGeofence = (e) => {
-  return (dispatch, getState) =>{
-    dispatch(remove(e));
+  return (dispatch) =>{
+    const {
+      layers: { _layers },
+    } = e;
+    console.log(_layers)
+    const data = Object.values(_layers).map(({ _leaflet_id, _latlngs }) => {
+      return {
+        _id: _leaflet_id,
+        coordinates: _latlngs[0]
+      } 
+    });
+    
+    dispatch(remove(data));
   }
 };
 
@@ -96,31 +104,17 @@ const clearGeofences = () =>{
 
 const loadGeofences = () =>{
   return async(dispatch) =>{
-    console.log('Load')
     const id = auth.currentUser.uid;
     console.log(id)
     const data = [];
     const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')))
-    
-    const newId = {
-      id: 38
-    };
 
     response.forEach(async (doc) => {
       data.push(doc.data());
     });
 
     for(let geofence of data){
-      /* if(newId.id === 39){
-        newId.id = newId.id + 1;
-      }
-      const docRef = doc(db, `users/${id}/geofences/${geofence.docId}`);
-      
-      await updateDoc(docRef, { _id: newId.id }).catch((error)=> console.log(error));
-
-      geofence._id = newId.id */
       geofence.dbLoaded = true;
-      //newId.id++;
     }
     
     console.log(data);
