@@ -1,8 +1,8 @@
 import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
-/* import { auth, db } from "../firebase/config-firebase";
-import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore"; */
+import { auth, db } from "../firebase/config-firebase";
+import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
 
 
 const add = (data) =>{
@@ -50,16 +50,25 @@ const load = () =>{
 
 const addGeofence = (e) => {
   //console.log(actionType.add)
-  return (dispatch) => {
+  return async (dispatch) => {
+    const id = auth.currentUser.uid
     const data = {
+      date: new Date(),
       _id: e.layer._leaflet_id,
       coordinates: e.layer._latlngs[0].map((latlng) => ({
         lat: latlng.lat,
         lng: latlng.lng,
       })),
-      oldId: e.layer._leaflet_id,
+      leafletId: e.layer._leaflet_id,
       cacheLoaded: false,
     }
+    const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
+    const docId = docRef.id;
+    console.log(docId)
+    await updateDoc(docRef, {
+      docId: docId
+    })
+    data.docId = docId;
     dispatch(add(data));
     //console.log(getState().geofences)
   };
