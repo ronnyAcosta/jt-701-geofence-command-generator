@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import NavBar from '../components/NavBar';
 
-import { reloadGeofences } from '../actions/geofencesActions';
+import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName } from '../actions/authAction';
 import { error, showMessage } from '../helpers/helpers';
 
@@ -92,7 +92,7 @@ const EditUserInfo = () => {
   }
 
   const handleBack = () => {
-    dispatch(reloadGeofences());
+    dispatch(loadGeofences());
     navigate('/');
   }
 

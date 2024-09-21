@@ -20,7 +20,7 @@ export const geofencesReducer = (geofences = [], action) => {
       return geofences.filter((actual) => !action.payload.includes(actual._id));
       
 
-    case actionType.reload:
+    case actionType.load:
       return action.payload;
 
     /* case actionType.clear:  // Usar Luego que esté creada la base de datos

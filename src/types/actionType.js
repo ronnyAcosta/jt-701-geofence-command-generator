@@ -2,6 +2,6 @@ export const actionType = {
   add: '[Geofences] add',
   edit: '[Geofences] edit',
   delete: '[Geofences] delete',
-  reload: '[Geofences] reload',
+  load: '[Geofences] load',
   clear: '[Geofences] clear'
 }

@@ -1,7 +1,7 @@
 import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
-const addPayload = (e) =>{
+const add = (e) =>{
   return {
     type: actionType.add,
     payload: {
@@ -16,7 +16,7 @@ const addPayload = (e) =>{
   };
 }
 
-const editPayload = (e) => {
+const edit = (e) => {
   const {
     layers: { _layers },
   } = e;
@@ -35,7 +35,7 @@ const editPayload = (e) => {
   };
 };
 
-const deletePayload = (e) =>{
+const remove = (e) =>{
   const {
     layers: { _layers },
   } = e;
@@ -45,9 +45,9 @@ const deletePayload = (e) =>{
   };
 }
 
-const reloadPayload = () =>{
+const load = () =>{
   return {
-    type: actionType.reload,
+    type: actionType.load,
     payload: init()
   }
 }
@@ -55,7 +55,7 @@ const reloadPayload = () =>{
 const addGeofence = (e) => {
   //console.log(actionType.add)
   return (dispatch, getState) => {
-    dispatch(addPayload(e));
+    dispatch(add(e));
     console.log(getState().geofences)
   };
 };
@@ -64,13 +64,13 @@ const addGeofence = (e) => {
 
 const editGeofence = (e) =>{
   return (dispatch, getState) =>{
-    dispatch(editPayload(e))
+    dispatch(edit(e))
   }
 }
 
 const deleteGeofence = (e) => {
   return (dispatch, getState) =>{
-    dispatch(deletePayload(e));
+    dispatch(remove(e));
   }
 };
 
@@ -80,10 +80,10 @@ const clearGeofences = () =>{
   }
 }
 
-const reloadGeofences = () =>{
+const loadGeofences = () =>{
   return(dispatch) =>{
-    dispatch(reloadPayload())
+    dispatch(load())
   }
 }
 
-export { addGeofence, editGeofence, deleteGeofence, reloadGeofences, clearGeofences };
+export { addGeofence, editGeofence, deleteGeofence, loadGeofences, clearGeofences };
