@@ -1,18 +1,14 @@
 import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
-const add = (e) =>{
+/* import { auth, db } from "../firebase/config-firebase";
+import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore"; */
+
+
+const add = (data) =>{
   return {
     type: actionType.add,
-    payload: {
-      _id: e.layer._leaflet_id,
-      coordinates: e.layer._latlngs[0].map((latlng) => ({
-        lat: latlng.lat,
-        lng: latlng.lng,
-      })),
-      oldId: e.layer._leaflet_id,
-      cacheLoaded: false,
-    },
+    payload: data
   };
 }
 
@@ -54,9 +50,18 @@ const load = () =>{
 
 const addGeofence = (e) => {
   //console.log(actionType.add)
-  return (dispatch, getState) => {
-    dispatch(add(e));
-    console.log(getState().geofences)
+  return (dispatch) => {
+    const data = {
+      _id: e.layer._leaflet_id,
+      coordinates: e.layer._latlngs[0].map((latlng) => ({
+        lat: latlng.lat,
+        lng: latlng.lng,
+      })),
+      oldId: e.layer._leaflet_id,
+      cacheLoaded: false,
+    }
+    dispatch(add(data));
+    //console.log(getState().geofences)
   };
 };
 
