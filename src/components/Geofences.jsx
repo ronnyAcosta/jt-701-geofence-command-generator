@@ -1,5 +1,6 @@
 import React from 'react'
 import { Polygon } from 'react-leaflet';
+
 const Geofences = ({geofences}) => {
   return (
     <>
@@ -20,4 +21,4 @@ const Geofences = ({geofences}) => {
   )
 }
 
-export default Geofences
+export default Geofences;

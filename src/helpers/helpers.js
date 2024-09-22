@@ -14,6 +14,7 @@ const copyContent = (e) => {
 const coordinatesFormatConverter = (coordinate) =>{
   coordinate = String(coordinate).split(".");
   let dec = (Number(`0.${coordinate[1]}`)*60).toFixed(4);
+  
   if(dec < 10){
     coordinate[1] = String(`0${dec}`);
   }
@@ -28,15 +29,15 @@ const showMessage = (element) =>{
 
   setTimeout(()=>{
     document.querySelector(element).classList.add('visible');
-  }, 10)
+  }, 10);
   
   setTimeout(()=>{
     document.querySelector(element).classList.remove('visible');
-  }, 2000)
+  }, 2000);
 
   setTimeout(()=>{
     document.querySelector(element).style.display = 'none'
-  }, 2500)
+  }, 2500);
 }
 
 const error = (prop) =>{

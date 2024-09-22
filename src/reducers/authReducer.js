@@ -6,6 +6,7 @@ const initState = {
 
 export const authReducer = (auth = initState, action) =>{
   switch(action.type){
+    
     case authType.login:
       return action.payload;
 
@@ -14,7 +15,8 @@ export const authReducer = (auth = initState, action) =>{
 
     case authType.update:
       return action.payload;
-      default:
-        return auth;
+      
+    default:
+      return auth;
   } 
 }

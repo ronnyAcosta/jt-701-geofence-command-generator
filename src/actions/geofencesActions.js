@@ -35,7 +35,7 @@ const load = (data) =>{
 
 const addGeofence = (e) => {
   return async (dispatch) => {
-    const id = auth.currentUser.uid
+    const id = auth.currentUser.uid;
     const data = {
       date: new Date(),
       _id: e.layer._leaflet_id,
@@ -48,9 +48,8 @@ const addGeofence = (e) => {
     const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
     const docId = docRef.id;
     
-    await updateDoc(docRef, {
-      docId: docId
-    })
+    await updateDoc(docRef, { docId: docId });
+
     data.docId = docId;
     dispatch(add(data));
   };
@@ -62,9 +61,7 @@ const editGeofence = (e) =>{
   return async (dispatch, getState) =>{
     const id = auth.currentUser.uid;
 
-    const {
-      layers: { _layers },
-    } = e;
+    const { layers: { _layers } } = e;
 
     const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
     const data = ids.map((id) => {
@@ -93,10 +90,8 @@ const editGeofence = (e) =>{
 
 const deleteGeofence = (e) => {
   return async (dispatch, getState) =>{
-    const id = auth.currentUser.uid
-    const {
-      layers: { _layers },
-    } = e;
+    const id = auth.currentUser.uid;
+    const { layers: { _layers } } = e;
     
     const data = Object.values(_layers).map(({ _leaflet_id, _latlngs }) => {
       return {
@@ -117,7 +112,7 @@ const deleteGeofence = (e) => {
 
 const clearGeofences = () =>{
   return(dispatch) =>{
-    dispatch({type: actionType.clear,})
+    dispatch({type: actionType.clear,});
   }
 }
 
@@ -126,7 +121,7 @@ const loadGeofences = () =>{
     const id = auth.currentUser.uid;
    
     const data = [];
-    const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')))
+    const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')));
 
     response.forEach(async (doc) => {
       data.push(doc.data());
@@ -136,7 +131,7 @@ const loadGeofences = () =>{
       geofence.dbLoaded = true;
     }
     
-    dispatch(load(data))
+    dispatch(load(data));
   }
 }
 

@@ -26,4 +26,4 @@ const CommandsCointainer = ({geofences, COMMANDS_QTY}) => {
   )
 }
 
-export default CommandsCointainer
+export default CommandsCointainer;

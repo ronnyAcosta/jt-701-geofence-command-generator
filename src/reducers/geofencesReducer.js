@@ -3,6 +3,7 @@ import { actionType } from "../types/actionType";
 
 export const geofencesReducer = (geofences = [], action) => {
   switch (action.type) {
+    
     case actionType.add:
       return [...geofences, action.payload];
 
@@ -23,8 +24,9 @@ export const geofencesReducer = (geofences = [], action) => {
     case actionType.load:
       return action.payload;
 
-    case actionType.clear:  // Usar Luego que esté creada la base de datos
-      return []
+    case actionType.clear:
+      return [];
+    
     default:
       return geofences;
   }

@@ -1,24 +1,20 @@
-import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase/config-firebase';
 import { showMessage } from '../helpers/helpers';
 
 const RestorePassword = () => {
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
   
   const handleChange = (e) => setEmail(e.target.value);
   
 
   const handleSubmit = async (e) =>{
-    e.preventDefault()
+    e.preventDefault();
 
-    await sendPasswordResetEmail(auth, email)
-      .then(() => showMessage('#emailSent'))
-      .catch((error)=>{
-        console.log(error)
-      })
+    await sendPasswordResetEmail(auth, email).then(() => showMessage('#emailSent')).catch((error)=> console.log(error));
   }
 
   const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
@@ -56,4 +52,4 @@ const RestorePassword = () => {
   )
 }
 
-export default RestorePassword
+export default RestorePassword;

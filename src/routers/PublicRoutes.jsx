@@ -5,4 +5,4 @@ const PublicRoutes = ({log, component: Component}) => {
   return log?  <Navigate to='/' /> : <Component />
 }
 
-export default PublicRoutes
+export default PublicRoutes;

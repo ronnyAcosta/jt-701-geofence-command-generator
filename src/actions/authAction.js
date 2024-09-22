@@ -27,23 +27,22 @@ const googleLoginWithPopUp = () =>{
   return (dispatch) =>{
     signInWithPopup(auth, googleAuthProvider)
       .then(({user})=> dispatch(login(user.uid, user.displayName)))     
-      .catch((error) => console.log(`Ha ocurrido un error ${error}`));
+      .catch((error) => console.log(`An error has occurred ${error}`));
   }
 }
 
-const googleLoginWithRedirect = () => signInWithRedirect(auth, googleAuthProvider)
+const googleLoginWithRedirect = () => signInWithRedirect(auth, googleAuthProvider);
 
 const loginWithEmail = (email, password) =>{
   return (dispatch) =>{
     signInWithEmailAndPassword(auth, email, password)
     .then(({user}) => {
-      dispatch(login(user.uid, user.displayName))
+      dispatch(login(user.uid, user.displayName));
       
     })
     .catch((error) => {
       if(error.code === 'auth/invalid-credential'){
-        console.log(error.code)
-        showMessage('#invalidCredentials')
+        showMessage('#invalidCredentials');
       }
     });
   }
@@ -52,7 +51,7 @@ const loginWithEmail = (email, password) =>{
 const logout = () =>{
   return async (dispatch) =>{
     await signOut(auth).then(() =>{
-      dispatch({type: authType.logout})
+      dispatch({type: authType.logout});
     })
   }
 }
@@ -62,8 +61,7 @@ const register = (userName, email, password) =>{
     createUserWithEmailAndPassword(auth, email, password)
       .then(async ({user}) =>{
         await updateProfile(user, {displayName: userName});
-        
-        dispatch(login(user.uid, user.displayName ))
+        dispatch(login(user.uid, user.displayName ));
       })
       .catch((error)=>{
         if(error.code === 'auth/email-already-in-use'){

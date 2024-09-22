@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Route, BrowserRouter as Router, Routes  } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import PublicRoutes from './PublicRoutes';
+import PrivateRoute from './PrivateRoute';
+
 import LoginScreen from '../pages/LoginScreen';
 import AppScreen from '../pages/AppScreen';
 import RegisterScreen from '../pages/RegisterScreen';
-import { auth } from '../firebase/config-firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { useDispatch } from 'react-redux';
-import { login } from '../actions/authAction';
-import PublicRoutes from './PublicRoutes';
-import PrivateRoute from './PrivateRoute';
 import EditUserInfo from '../pages/EditUserInfo';
 import RestorePassword from '../pages/RestorePassword';
+
+import { auth } from '../firebase/config-firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+
+import { login } from '../actions/authAction';
 import { loadGeofences } from '../actions/geofencesActions';
 
 
@@ -46,4 +50,4 @@ const AppRouter = () => {
       
 
 }
-export default AppRouter
+export default AppRouter;
