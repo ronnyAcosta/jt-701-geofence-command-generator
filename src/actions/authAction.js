@@ -26,8 +26,7 @@ const updateUserName = (uid, displayName) =>{
 const googleLoginWithPopUp = () =>{
   return (dispatch) =>{
     signInWithPopup(auth, googleAuthProvider)
-      .then(({user})=> dispatch(login(user.uid, user.displayName)))
-      
+      .then(({user})=> dispatch(login(user.uid, user.displayName)))     
       .catch((error) => console.log(`Ha ocurrido un error ${error}`));
   }
 }

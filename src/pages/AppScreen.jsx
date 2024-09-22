@@ -21,7 +21,8 @@ const AppScreen = () => {
   const COMMANDS_QTY = 10;
 
   const handleCreate = (e) => { 
-    dispatch(addGeofence(e));     
+    dispatch(addGeofence(e)); 
+    console.log(e)    
   }
 
   const handleEdit = (e) => { 

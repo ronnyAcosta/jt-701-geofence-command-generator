@@ -1,9 +1,8 @@
-import init from "../helpers/init";
 import { actionType } from "../types/actionType";
 
 import { auth, db } from "../firebase/config-firebase";
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
-import { coordinatesAreEqual, matchingCoordinate } from "../helpers/helpers";
+import { coordinatesAreEqual} from "../helpers/helpers";
 
 
 const add = (data) =>{
@@ -21,7 +20,6 @@ const edit = (data) => {
 };
 
 const remove = (data) =>{
-  console.log(data)
   return {
     type: actionType.delete,
     payload: data,
@@ -36,7 +34,6 @@ const load = (data) =>{
 }
 
 const addGeofence = (e) => {
-  console.log(e.layer._leaflet_id)
   return async (dispatch) => {
     const id = auth.currentUser.uid
     const data = {
@@ -50,37 +47,45 @@ const addGeofence = (e) => {
     }
     const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
     const docId = docRef.id;
-    //console.log(docId)
+    
     await updateDoc(docRef, {
       docId: docId
     })
     data.docId = docId;
     dispatch(add(data));
-    //console.log(getState().geofences)
   };
 };
 
 
 
 const editGeofence = (e) =>{
-  return (dispatch, getState) =>{
+  return async (dispatch, getState) =>{
+    const id = auth.currentUser.uid;
+
     const {
       layers: { _layers },
     } = e;
-    console.log(getState().geofences)
-    console.log(_layers)
 
     const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
     const data = ids.map((id) => {
       return {
         _id: id,
-        coordinates: _layers[id]._latlngs[0],
+        coordinates: _layers[id]._latlngs[0].map((coordinate)=>{
+          return {
+            lat: coordinate.lat,
+            lng: coordinate.lng
+          }
+        }),
       };
     })
-    console.log(data)
-    /* const editedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id || matchingCoordinate(g.coordinates, geofence.coordinates)));
-
-    console.log(editedGeofences); */
+    
+    const editedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id));
+    
+    for(let i = 0; i < editedGeofences.length ; i++){
+      await updateDoc(doc(db, `users/${id}/geofences/${editedGeofences[i].docId}`), {
+        coordinates: data[i].coordinates
+      }).catch((error) => console.log(error))
+    }
 
     dispatch(edit(data))
   }
@@ -92,16 +97,15 @@ const deleteGeofence = (e) => {
     const {
       layers: { _layers },
     } = e;
-    //console.log(_layers)
+    
     const data = Object.values(_layers).map(({ _leaflet_id, _latlngs }) => {
       return {
         _id: _leaflet_id,
         coordinates: _latlngs[0]
       } 
     });
-    //console.log(data)
+    
     const deletedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id || coordinatesAreEqual(g.coordinates, geofence.coordinates)));
-    //console.log(deletedGeofences);
 
     for(let geofence of deletedGeofences){
       await deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`))
@@ -120,7 +124,7 @@ const clearGeofences = () =>{
 const loadGeofences = () =>{
   return async(dispatch) =>{
     const id = auth.currentUser.uid;
-    //console.log(id)
+   
     const data = [];
     const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')))
 
@@ -132,7 +136,6 @@ const loadGeofences = () =>{
       geofence.dbLoaded = true;
     }
     
-    //console.log(data);
     dispatch(load(data))
   }
 }
