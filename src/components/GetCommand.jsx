@@ -1,8 +1,9 @@
 import React from 'react'
 import { IonIcon } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
-import { coordinatesFormatConverter } from '../helpers/helpers';
-import { copyContent } from '../helpers/helpers';
+
+import { coordinatesFormatConverter, copyContent } from '../helpers/helpers';
+
 
 const GetCommand = ({geofence, index}) => {
   if(geofence.coordinates.length > 10){
@@ -27,4 +28,4 @@ const GetCommand = ({geofence, index}) => {
   );
 }
 
-export default GetCommand
+export default GetCommand;

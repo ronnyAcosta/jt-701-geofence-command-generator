@@ -5,4 +5,4 @@ const PrivateRoute = ({log, component: Component}) => {
   return log?  <Component /> : <Navigate to='/login' />
 }
 
-export default PrivateRoute
+export default PrivateRoute;

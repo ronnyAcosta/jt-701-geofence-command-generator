@@ -29,25 +29,25 @@ const RegisterScreen = () => {
   const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
 
   const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000'
-    e.target.style.borderBottom = '1px solid #9e9e9e'
-    e.target.nextSibling.style.color = '#9e9e9e'
+    e.target.previousElementSibling.style.color = '#000';
+    e.target.style.borderBottom = '1px solid #9e9e9e';
+    e.target.nextSibling.style.color = '#9e9e9e';
   }
   
   const handleRegister = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
 
     const validator = { confirm: true };
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if(userName.length < 3 || userName.length > 20){
-      error('#userName')
+      error('#userName');
       validator.confirm = false;
     }
 
     if(emailRegex.test(email) === false){
-      error('#email')
+      error('#email');
       validator.confirm = false;
     }
 
@@ -60,7 +60,7 @@ const RegisterScreen = () => {
       }
 
     if(validator.confirm === true){
-      dispatch(register(userName, email, password))
+      dispatch(register(userName, email, password));
     }
   }
   

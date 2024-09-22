@@ -23,16 +23,16 @@ const LoginScreen = () => {
   }
   
   const handleSubmit = (e) =>{
-    e.preventDefault()
+    e.preventDefault();
     dispatch(loginWithEmail(email, password));
   }
   
   const handleFocus = (e) =>{
-    e.target.previousElementSibling.style.color = '#07bcff'
+    e.target.previousElementSibling.style.color = '#07bcff';
   }
 
   const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000'
+    e.target.previousElementSibling.style.color = '#000';
   }
   return (
     <>
@@ -58,7 +58,6 @@ const LoginScreen = () => {
             </div>
             <hr />
             <br />
-            {/* <GoogleButton onClick={()=>{googleLoginWithRedirect()}} /> */}
             <GoogleButton onClick={()=>{dispatch(googleLoginWithPopUp())}} />
             <br />
             <Link to="/register" className='col s12'>Register</Link>
@@ -71,4 +70,4 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default LoginScreen;

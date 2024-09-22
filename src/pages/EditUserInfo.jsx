@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 import NavBar from '../components/NavBar';
 
-import { reloadGeofences } from '../actions/geofencesActions';
+import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName } from '../actions/authAction';
 import { error, showMessage } from '../helpers/helpers';
 
 import { updateProfile, updatePassword, deleteUser } from 'firebase/auth';
-import { auth } from '../firebase/config-firebase';
+import { auth, db } from '../firebase/config-firebase';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 
 const EditUserInfo = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const EditUserInfo = () => {
   const {userName, newPassword, confirmNewPassword} = userInfo;
   
   const handleChange = (e) =>{
-    e.target.nextSibling.nextSibling.style.display = 'none'
+    e.target.nextSibling.nextSibling.style.display = 'none';
     setUserInfo({
       ...userInfo,
       [e.target.name]: e.target.value
@@ -35,22 +36,18 @@ const EditUserInfo = () => {
   const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
 
   const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000'
-    e.target.style.borderBottom = '1px solid #9e9e9e'
-    e.target.nextSibling.style.color = '#9e9e9e'
+    e.target.previousElementSibling.style.color = '#000';
+    e.target.style.borderBottom = '1px solid #9e9e9e';
+    e.target.nextSibling.style.color = '#9e9e9e';
   }
 
   const handleSubmit = async (e) =>{
-    e.preventDefault()
+    e.preventDefault();
     const validator = { confirm: true };
     
     if(newPassword.length >= 8){
       if(confirmNewPassword === newPassword){
-        await updatePassword(user, newPassword)
-          .then(()=>{
-            console.log('Password changed');
-          })
-          .catch((error)=> {console.log(error)})
+        await updatePassword(user, newPassword).catch((error)=> {console.log(error)});
 
       } else {
         error('#confirmNewPassword');
@@ -68,31 +65,36 @@ const EditUserInfo = () => {
       await updateProfile(user, {displayName: userName})
         .then( () => { 
           dispatch(updateUserName(user.uid, user.displayName));
+          
           setUserInfo({
             userName: user.displayName,
             newPassword: '',
             confirmNewPassword: ''
           }); 
+
           showMessage('#dataUpdated');
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => console.log(error));
     }
   }
 
   const handleDelete = async () =>{
+    const geofencesCollectionRef = collection(db, `users/${user.uid}/geofences`);
+
     if(window.confirm("Are you sure you want to delete your account?")){
-      await deleteUser(user).then(()=>{
-        dispatch(logout())
-        console.log("user deleted");
-      })
+      const geofencesSnapshot = await getDocs(geofencesCollectionRef);
+
+      geofencesSnapshot.docs.map(async (geofDoc)=> await deleteDoc(geofDoc.ref));
+
+      await deleteDoc(doc(db, `users/${user.uid}`)).catch((error)=>console.log(error));
+
+      await deleteUser(user).then(()=> dispatch(logout()))
       .catch((error)=>{ console.log(error )})
     }
   }
 
   const handleBack = () => {
-    dispatch(reloadGeofences());
+    dispatch(loadGeofences());
     navigate('/');
   }
 
@@ -139,4 +141,4 @@ const EditUserInfo = () => {
   )
 }
 
-export default EditUserInfo
+export default EditUserInfo;

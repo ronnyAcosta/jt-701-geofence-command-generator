@@ -14,6 +14,7 @@ const copyContent = (e) => {
 const coordinatesFormatConverter = (coordinate) =>{
   coordinate = String(coordinate).split(".");
   let dec = (Number(`0.${coordinate[1]}`)*60).toFixed(4);
+  
   if(dec < 10){
     coordinate[1] = String(`0${dec}`);
   }
@@ -28,15 +29,15 @@ const showMessage = (element) =>{
 
   setTimeout(()=>{
     document.querySelector(element).classList.add('visible');
-  }, 10)
+  }, 10);
   
   setTimeout(()=>{
     document.querySelector(element).classList.remove('visible');
-  }, 2000)
+  }, 2000);
 
   setTimeout(()=>{
     document.querySelector(element).style.display = 'none'
-  }, 2500)
+  }, 2500);
 }
 
 const error = (prop) =>{
@@ -46,4 +47,15 @@ const error = (prop) =>{
   document.querySelector(prop).nextSibling.nextSibling.style.display = 'block';
 }
 
-export {copyContent, coordinatesFormatConverter, showMessage, error}
+const coordinatesAreEqual = (cords1, cods2) => {
+  if (cords1.length !== cods2.length) return false;
+
+  return cords1.every((coord1, index) => {
+    const coord2 = cods2[index];
+    return coord1.lat === coord2.lat && coord1.lng === coord2.lng;
+  });
+}
+
+
+
+export {copyContent, coordinatesFormatConverter, showMessage, error, coordinatesAreEqual}

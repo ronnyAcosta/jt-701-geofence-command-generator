@@ -1,11 +1,12 @@
 import React from 'react'
 import { Polygon } from 'react-leaflet';
+
 const Geofences = ({geofences}) => {
   return (
     <>
       {
       geofences.map((geofence)=>{
-        if(geofence.cacheLoaded === true){
+        if(geofence.dbLoaded === true){
           const g = [];
           geofence.coordinates.map((coord)=>{
             g.push([coord.lat, coord.lng]);
@@ -20,4 +21,4 @@ const Geofences = ({geofences}) => {
   )
 }
 
-export default Geofences
+export default Geofences;

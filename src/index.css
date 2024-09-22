@@ -26,11 +26,7 @@ h1{
   font-size: 1.6rem;
   margin: 0 10px;
 }
-/*
-body{
-  background-color: ;
-}
-*/
+
 .leaflet-container{
   height: 91vh;
   min-width: 58vw;
