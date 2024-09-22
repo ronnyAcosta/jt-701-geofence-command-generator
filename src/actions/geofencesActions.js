@@ -3,7 +3,7 @@ import { actionType } from "../types/actionType";
 
 import { auth, db } from "../firebase/config-firebase";
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
-import { coordinatesAreEqual } from "../helpers/helpers";
+import { coordinatesAreEqual, matchingCoordinate } from "../helpers/helpers";
 
 
 const add = (data) =>{
@@ -69,6 +69,7 @@ const editGeofence = (e) =>{
     } = e;
     console.log(getState().geofences)
     console.log(_layers)
+
     const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
     const data = ids.map((id) => {
       return {
@@ -76,6 +77,11 @@ const editGeofence = (e) =>{
         coordinates: _layers[id]._latlngs[0],
       };
     })
+    console.log(data)
+    /* const editedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id || matchingCoordinate(g.coordinates, geofence.coordinates)));
+
+    console.log(editedGeofences); */
+
     dispatch(edit(data))
   }
 }

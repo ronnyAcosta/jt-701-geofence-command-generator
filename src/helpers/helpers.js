@@ -55,4 +55,11 @@ const coordinatesAreEqual = (cords1, cods2) => {
   });
 }
 
-export {copyContent, coordinatesFormatConverter, showMessage, error, coordinatesAreEqual}
+const matchingCoordinate = (geofence1, geofence2) =>{
+  const hasMatchingCoordinate = geofence1.some((coord,index) => coord.lat === geofence2[index].lat && coord.lng === geofence2[index].lng);
+
+  return hasMatchingCoordinate;
+      
+}
+
+export {copyContent, coordinatesFormatConverter, showMessage, error, coordinatesAreEqual, matchingCoordinate}
