@@ -92,7 +92,7 @@ const EditUserInfo = () => {
   }
 
   const handleBack = () => {
-    //dispatch(loadGeofences());
+    dispatch(loadGeofences());
     navigate('/');
   }
 
