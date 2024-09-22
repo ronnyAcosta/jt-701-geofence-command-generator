@@ -9,7 +9,8 @@ import { logout, updateUserName } from '../actions/authAction';
 import { error, showMessage } from '../helpers/helpers';
 
 import { updateProfile, updatePassword, deleteUser } from 'firebase/auth';
-import { auth } from '../firebase/config-firebase';
+import { auth, db } from '../firebase/config-firebase';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 
 const EditUserInfo = () => {
   const dispatch = useDispatch();
@@ -82,12 +83,22 @@ const EditUserInfo = () => {
   }
 
   const handleDelete = async () =>{
-    if(window.confirm("Are you sure you want to delete your account?")){
-      await deleteUser(user).then(()=>{
-        dispatch(logout())
-        console.log("user deleted");
-      })
-      .catch((error)=>{ console.log(error )})
+    const geofencesCollectionRef = collection(db, `users/${user.uid}/geofences`);
+
+    try{
+      if(window.confirm("Are you sure you want to delete your account?")){
+        const geofencesSnapshot = await getDocs(geofencesCollectionRef);
+
+        geofencesSnapshot.docs.map(async (geofDoc)=> await deleteDoc(geofDoc.ref))
+
+        await deleteDoc(doc(db, `users/${user.uid}`)).catch((error)=>console.log(error));
+  
+        await deleteUser(user).then(()=> dispatch(logout()))
+        .catch((error)=>{ console.log(error )})
+      }
+
+    }catch(error){
+      console.log(error)
     }
   }
 

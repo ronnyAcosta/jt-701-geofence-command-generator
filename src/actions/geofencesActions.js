@@ -108,7 +108,7 @@ const deleteGeofence = (e) => {
     const deletedGeofences = getState().geofences.filter((geofence) => data.some((g) => g._id === geofence._id || coordinatesAreEqual(g.coordinates, geofence.coordinates)));
 
     for(let geofence of deletedGeofences){
-      await deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`))
+      await deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`)).catch((error)=> console.log(error))
     }
 
     dispatch(remove(data));
