@@ -1,14 +1,26 @@
+const showMessage = (element) =>{
+  try{
+    if (element !== '#copied') document.querySelector(element).style.display = 'block';
+
+    setTimeout(()=>{
+      document.querySelector(element) && document.querySelector(element).classList.add('visible');
+    }, 10);
+    
+    setTimeout(()=>{
+      document.querySelector(element) && document.querySelector(element).classList.remove('visible');
+    }, 2000);
+
+    setTimeout(()=>{
+      if(document.querySelector(element) && element !== '#copied') { document.querySelector(element).style.display = 'none'; }  
+    }, 2500);
+  } catch(err){
+    console.log("An error occurred showing the message");
+  }
+}
+
 const copyContent = (e) => {
   const content = e.target.parentNode.innerText;
-  navigator.clipboard.writeText(content)
-  .then(() =>{
-    document.getElementById("copied").classList.add('visible');
-  })
-  .then( () =>{
-    setTimeout(() =>{
-      document.getElementById("copied").classList.remove('visible');
-    }, 1000)
-  }).catch("Error at reading content");
+  navigator.clipboard.writeText(content).then(() => showMessage("#copied") )
 }
 
 const coordinatesFormatConverter = (coordinate) =>{
@@ -24,21 +36,7 @@ const coordinatesFormatConverter = (coordinate) =>{
   return `${coordinate[0]}${coordinate[1]}` 
 }
 
-const showMessage = (element) =>{
-  document.querySelector(element).style.display = 'block';
 
-  setTimeout(()=>{
-    document.querySelector(element).classList.add('visible');
-  }, 10);
-  
-  setTimeout(()=>{
-    document.querySelector(element).classList.remove('visible');
-  }, 2000);
-
-  setTimeout(()=>{
-    document.querySelector(element).style.display = 'none'
-  }, 2500);
-}
 
 const error = (prop) =>{
   document.querySelector(prop).previousElementSibling.style.color = 'red'
