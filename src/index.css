@@ -124,11 +124,6 @@ input[type="password"]:focus {
     box-shadow: 0 1px 0 0 #07bcff !important; 
 }
 
-input[type="text"]:focus + label,
-input[type="email"]:focus + label,
-input[type="password"]:focus + label {
-    color: #07bcff !important;
-}
 
 .error-message{
   display: none;

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
 import GoogleButton from 'react-google-button';
+import FormField from '../components/FormField';
+import Toast from '../components/Toast';
 
 const LoginScreen = () => {
 
@@ -14,26 +16,26 @@ const LoginScreen = () => {
     password: ''
   })
   const {email, password} = userLogin;
-  
+
+  const [showInvalidCredentials, setShowInvalidCredentials] = useState(false);
+
   const handleChange = (e) =>{
     setUserLogin({
       ...userLogin,
       [e.target.name]: e.target.value
     })
   }
-  
+
   const handleSubmit = (e) =>{
     e.preventDefault();
-    dispatch(loginWithEmail(email, password));
-  }
-  
-  const handleFocus = (e) =>{
-    e.target.previousElementSibling.style.color = '#07bcff';
+    dispatch(loginWithEmail(email, password))
+      .catch((error) => {
+        if(error.code === 'auth/invalid-credential'){
+          setShowInvalidCredentials(true);
+        }
+      });
   }
 
-  const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000';
-  }
   return (
     <>
       <h1 className='title'>JT701 - Geofence Commands Generator</h1>
@@ -44,16 +46,24 @@ const LoginScreen = () => {
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleSubmit}>
             <div className="row">
-              <div className="input-field col s12">
-                <i className="material-icons prefix">email</i>
-                <input id="email" name='email' type="email" className="validate" value={email} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">vpn_key</i>
-                <input id="password" name='password' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={password} onChange={handleChange} />
-                <label htmlFor="password">Password</label>
-              </div>
+              <FormField
+                icon="email"
+                id="email"
+                name="email"
+                type="email"
+                label="Email"
+                value={email}
+                onChange={handleChange}
+              />
+              <FormField
+                icon="vpn_key"
+                id="password"
+                name="password"
+                type="password"
+                label="Password"
+                value={password}
+                onChange={handleChange}
+              />
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
             </div>
             <hr />
@@ -63,7 +73,12 @@ const LoginScreen = () => {
             <Link to="/register" className='col s12'>Register</Link>
             <Link to='/restore' className='col s12' >Forgot Password</Link>
           </form>
-          <div id='invalidCredentials' className='center'>Invalid email or password</div>
+          <Toast
+            id="invalidCredentials"
+            message="Invalid email or password"
+            show={showInvalidCredentials}
+            onHide={() => setShowInvalidCredentials(false)}
+          />
         </div>
       </div>
     </>

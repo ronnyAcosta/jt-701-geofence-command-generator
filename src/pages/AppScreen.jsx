@@ -7,6 +7,8 @@ import NavBar from '../components/NavBar';
 import CommandsCointainer from '../components/CommandsCointainer';
 
 import MapComponent from '../components/MapComponent';
+import CopiedToast from '../components/CopiedToast';
+import { CopyProvider } from '../context/CopyContext';
 
 const AppScreen = () => {
   
@@ -19,11 +21,13 @@ const AppScreen = () => {
       <NavBar />
       <main>
         <MapComponent geofences={geofences} />       
-        <div className='commandsList'>
-          <h4 className=''>Commands</h4>
-          <CommandsCointainer geofences={geofences} COMMANDS_QTY={COMMANDS_QTY} />          
-          <div id="copied">Copied to clipboard</div>        
-        </div>
+        <CopyProvider>
+          <div className='commandsList'>
+            <h4 className=''>Commands</h4>
+            <CommandsCointainer geofences={geofences} COMMANDS_QTY={COMMANDS_QTY} />
+            <CopiedToast />
+          </div>
+        </CopyProvider>
       </main>   
     </>
   );

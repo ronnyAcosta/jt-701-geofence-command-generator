@@ -4,10 +4,13 @@ import { useDispatch } from 'react-redux';
 import { register } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
-import { error } from '../helpers/helpers';
+import FormField from '../components/FormField';
+import Toast from '../components/Toast';
+
+const initialFieldState = { error: false, message: false };
 
 const RegisterScreen = () => {
-  
+
   const dispatch = useDispatch();
 
   const [userRegister, setUserRegister] = useState({
@@ -17,53 +20,68 @@ const RegisterScreen = () => {
     confirmPassword: ''
   })
   const {userName, email, password, confirmPassword} = userRegister;
-  
+
+  const [fields, setFields] = useState({
+    userName: { ...initialFieldState },
+    email: { ...initialFieldState },
+    password: { ...initialFieldState },
+    confirmPassword: { ...initialFieldState },
+  });
+
+  const [showDuplicatedEmail, setShowDuplicatedEmail] = useState(false);
+
+  const setFieldError = (name, error) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], error, message: error } }));
+
+  const clearFieldErrorColor = (name) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], error: false } }));
+
+  const clearFieldMessage = (name) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], message: false } }));
+
   const handleChange = (e) =>{
-    e.target.nextSibling.nextSibling.style.display = 'none';
+    clearFieldMessage(e.target.name);
     setUserRegister({
       ...userRegister,
       [e.target.name]: e.target.value
     })
   }
 
-  const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
-
-  const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000';
-    e.target.style.borderBottom = '1px solid #9e9e9e';
-    e.target.nextSibling.style.color = '#9e9e9e';
-  }
-  
   const handleRegister = (e) =>{
     e.preventDefault();
 
     const validator = { confirm: true };
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if(userName.length < 3 || userName.length > 20){
-      error('#userName');
+      setFieldError('userName', true);
       validator.confirm = false;
     }
 
     if(emailRegex.test(email) === false){
-      error('#email');
+      setFieldError('email', true);
       validator.confirm = false;
     }
 
     if(password.length < 8){
-      error('#password');
+      setFieldError('password', true);
       validator.confirm = false;
     } else if(confirmPassword !== password){
-        error('#confirmPassword');
+        setFieldError('confirmPassword', true);
         validator.confirm = false;
       }
 
     if(validator.confirm === true){
-      dispatch(register(userName, email, password));
+      dispatch(register(userName, email, password))
+        .catch((error) => {
+          if(error.code === 'auth/email-already-in-use'){
+            setShowDuplicatedEmail(true);
+          }
+        });
     }
   }
-  
+
   return (
     <>
       <h1 className='title'>JT701 - Geofence Commands Generator</h1>
@@ -74,36 +92,67 @@ const RegisterScreen = () => {
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleRegister}>
             <div className="row">
-              <div className="input-field col s12">
-                <i className="material-icons prefix">person</i>
-                <input id="userName" name='userName' type="text" className="validate" value={userName} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
-                <label htmlFor="userName">User Name</label>
-                <div className='center error-message'>Min lenght: 3  |  Max lenght: 20</div>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">email</i>
-                <input id="email" name='email' type="text" className="validate" value={email} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
-                <label htmlFor="email">Email</label>
-                <div className='center error-message'>Invalid email</div>
-                <div id='duplicatedEmail' className='center'>Email is alredy in use</div>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">vpn_key</i>
-                <input id="password" name='password' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={password} onChange={handleChange}  />
-                <label htmlFor="password">Password</label>
-                <div className='center error-message'>Min lenght: 8</div>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">vpn_key</i>
-                <input id="confirmPassword" name='confirmPassword' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={confirmPassword} onChange={handleChange}  />
-                <label htmlFor="confirmPassword">Confirm password</label>
-                <div className='center error-message'>Password do not match</div>
-              </div>
+              <FormField
+                icon="person"
+                id="userName"
+                name="userName"
+                label="User Name"
+                value={userName}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('userName')}
+                hasError={fields.userName.error}
+                showErrorMessage={fields.userName.message}
+                errorMessage="Min lenght: 3  |  Max lenght: 20"
+              />
+              <FormField
+                icon="email"
+                id="email"
+                name="email"
+                label="Email"
+                value={email}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('email')}
+                hasError={fields.email.error}
+                showErrorMessage={fields.email.message}
+                errorMessage="Invalid email"
+              />
+              <FormField
+                icon="vpn_key"
+                id="password"
+                name="password"
+                type="password"
+                label="Password"
+                value={password}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('password')}
+                hasError={fields.password.error}
+                showErrorMessage={fields.password.message}
+                errorMessage="Min lenght: 8"
+              />
+              <FormField
+                icon="vpn_key"
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                label="Confirm password"
+                value={confirmPassword}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('confirmPassword')}
+                hasError={fields.confirmPassword.error}
+                showErrorMessage={fields.confirmPassword.message}
+                errorMessage="Password do not match"
+              />
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
             </div>
             <hr />
             <Link to="/login">Login into account</Link>
           </form>
+          <Toast
+            id="duplicatedEmail"
+            message="Email is alredy in use"
+            show={showDuplicatedEmail}
+            onHide={() => setShowDuplicatedEmail(false)}
+          />
         </div>
       </div>
     </>

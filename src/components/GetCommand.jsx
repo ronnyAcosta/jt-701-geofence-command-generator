@@ -2,10 +2,20 @@ import React from 'react'
 import { IonIcon } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 
-import { coordinatesFormatConverter, copyContent } from '../helpers/helpers';
+import { coordinatesFormatConverter } from '../helpers/helpers';
+import { useCopyNotification } from '../context/CopyContext';
 
 
 const GetCommand = ({geofence, index}) => {
+  const { notifyCopied } = useCopyNotification();
+
+  const handleCopy = (e) => {
+    const content = e.target.parentNode.innerText;
+    navigator.clipboard.writeText(content)
+      .then(() => notifyCopied())
+      .catch(() => console.log("Error at reading content"));
+  };
+
   if(geofence.coordinates.length > 10){
     return(
       <span className='error'>
@@ -23,7 +33,7 @@ const GetCommand = ({geofence, index}) => {
   return (
     <span className='command'>
       {command}
-      {geofence.coordinates.length <= 10 ? <IonIcon className='copy' slot="end" icon={copyOutline} onClick={copyContent}></IonIcon> : ""}
+      {geofence.coordinates.length <= 10 ? <IonIcon className='copy' slot="end" icon={copyOutline} onClick={handleCopy}></IonIcon> : ""}
     </span>
   );
 }

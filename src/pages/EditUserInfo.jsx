@@ -3,14 +3,17 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import NavBar from '../components/NavBar';
+import FormField from '../components/FormField';
+import Toast from '../components/Toast';
 
 import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName } from '../actions/authAction';
-import { error, showMessage } from '../helpers/helpers';
 
 import { updateProfile, updatePassword, deleteUser } from 'firebase/auth';
 import { auth, db } from '../firebase/config-firebase';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+
+const initialFieldState = { error: false, message: false };
 
 const EditUserInfo = () => {
   const dispatch = useDispatch();
@@ -24,55 +27,64 @@ const EditUserInfo = () => {
     confirmNewPassword: ''
   })
   const {userName, newPassword, confirmNewPassword} = userInfo;
-  
+
+  const [fields, setFields] = useState({
+    userName: { ...initialFieldState },
+    newPassword: { ...initialFieldState },
+    confirmNewPassword: { ...initialFieldState },
+  });
+
+  const [showDataUpdated, setShowDataUpdated] = useState(false);
+
+  const setFieldError = (name, error) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], error, message: error } }));
+
+  const clearFieldErrorColor = (name) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], error: false } }));
+
+  const clearFieldMessage = (name) =>
+    setFields((prev) => ({ ...prev, [name]: { ...prev[name], message: false } }));
+
   const handleChange = (e) =>{
-    e.target.nextSibling.nextSibling.style.display = 'none';
+    clearFieldMessage(e.target.name);
     setUserInfo({
       ...userInfo,
       [e.target.name]: e.target.value
     })
   }
-  
-  const handleFocus = (e) => e.target.previousElementSibling.style.color = '#07bcff';
-
-  const handleBlur = (e) =>{
-    e.target.previousElementSibling.style.color = '#000';
-    e.target.style.borderBottom = '1px solid #9e9e9e';
-    e.target.nextSibling.style.color = '#9e9e9e';
-  }
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
     const validator = { confirm: true };
-    
+
     if(newPassword.length >= 8){
       if(confirmNewPassword === newPassword){
         await updatePassword(user, newPassword).catch((error)=> {console.log(error)});
 
       } else {
-        error('#confirmNewPassword');
+        setFieldError('confirmNewPassword', true);
         validator.confirm = false;
-      }  
+      }
     } else if(newPassword.length > 0){
-      error('#newPassword');
+      setFieldError('newPassword', true);
       validator.confirm = false;
     }
 
     if(userName.length < 3 || userName.length > 20){
-      error('#userName');
+      setFieldError('userName', true);
 
     } else if(validator.confirm){
       await updateProfile(user, {displayName: userName})
-        .then( () => { 
+        .then( () => {
           dispatch(updateUserName(user.uid, user.displayName));
-          
+
           setUserInfo({
             userName: user.displayName,
             newPassword: '',
             confirmNewPassword: ''
-          }); 
+          });
 
-          showMessage('#dataUpdated');
+          setShowDataUpdated(true);
         })
         .catch((error) => console.log(error));
     }
@@ -98,7 +110,7 @@ const EditUserInfo = () => {
     navigate('/');
   }
 
-  
+
   return (
     <>
       <NavBar />
@@ -109,33 +121,58 @@ const EditUserInfo = () => {
         <div className="row container">
           <form className="col s12" method='post' onSubmit={handleSubmit}>
             <div className="row">
-              <div className="input-field col s12">
-                <i className="material-icons prefix">account_circle</i>
-                <input id="userName" name='userName' type="text" className="validate active" value={userName} onBlur={handleBlur} onFocus={handleFocus} onChange={handleChange} />
-                <label htmlFor="userName">User name</label>
-                <div className='center error-message'>Min lenght: 3  |  Max lenght: 20</div>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">vpn_key</i>
-                <input id="newPassword" name='newPassword' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={newPassword} onChange={handleChange} />
-                <label htmlFor="newPassword">New password</label>
-                <div className='center error-message'>Min lenght: 8</div>
-              </div>
-              <div className="input-field col s12">
-                <i className="material-icons prefix">vpn_key</i>
-                <input id="confirmNewPassword" name='confirmNewPassword' type="password" className="validate" onBlur={handleBlur} onFocus={handleFocus} value={confirmNewPassword} onChange={handleChange} />
-                <label htmlFor="confirmNewPassword">Confirm new password</label>
-                <div className='center error-message'>Password do not match</div>
-              </div>
+              <FormField
+                icon="account_circle"
+                id="userName"
+                name="userName"
+                label="User name"
+                value={userName}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('userName')}
+                hasError={fields.userName.error}
+                showErrorMessage={fields.userName.message}
+                errorMessage="Min lenght: 3  |  Max lenght: 20"
+              />
+              <FormField
+                icon="vpn_key"
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                label="New password"
+                value={newPassword}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('newPassword')}
+                hasError={fields.newPassword.error}
+                showErrorMessage={fields.newPassword.message}
+                errorMessage="Min lenght: 8"
+              />
+              <FormField
+                icon="vpn_key"
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                type="password"
+                label="Confirm new password"
+                value={confirmNewPassword}
+                onChange={handleChange}
+                onBlurClearError={() => clearFieldErrorColor('confirmNewPassword')}
+                hasError={fields.confirmNewPassword.error}
+                showErrorMessage={fields.confirmNewPassword.message}
+                errorMessage="Password do not match"
+              />
               <button type='submit' className='btn col s12 blue waves-effect waves-light'>Submit</button>
             </div>
             <hr />
-            <br />        
+            <br />
           </form>
           <button onClick={handleBack} className='btn col s5  waves-effect waves-light'>Go Back</button>
-          <button onClick={handleDelete} className='btn col s5 offset-s2 red waves-effect waves-light'>Delete Account</button>  
+          <button onClick={handleDelete} className='btn col s5 offset-s2 red waves-effect waves-light'>Delete Account</button>
         </div>
-        <div id='dataUpdated' className='center'>Data updated successfully</div>
+        <Toast
+          id="dataUpdated"
+          message="Data updated successfully"
+          show={showDataUpdated}
+          onHide={() => setShowDataUpdated(false)}
+        />
       </div>
     </>
   )
