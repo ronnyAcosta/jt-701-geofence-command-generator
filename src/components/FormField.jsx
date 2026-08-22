@@ -3,19 +3,26 @@ import PropTypes from 'prop-types';
 
 const ACTIVE_COLOR = '#07bcff';
 const ERROR_COLOR = 'red';
+const ON_FOCUS_STYLE = {
+  borderBottom: '1px solid #07bcff',
+  boxShadow: '0 1px 0 0 #07bcff'
+};
+const ON_ERROR_STYLE = {
+  borderBottom: '2px solid red',
+};
 
 
 const FormField = ({
   icon,
   id,
   name,
-  type,
+  type = 'text',
   value,
   onChange,
   onBlurClearError,
   label,
   errorMessage,
-  hasError,
+  hasError = false,
   showErrorMessage,
   autoComplete,
 }) => {
@@ -32,14 +39,6 @@ const FormField = ({
   const messageVisible = showErrorMessage !== undefined ? showErrorMessage : hasError;
   
   const isLabelActive = focused || Boolean(value && value.length > 0);
-
-  const onFocusStyle = {
-    borderBottom: '1px solid #07bcff',
-    boxShadow: '0 1px 0 0 #07bcff'
-  }
-  const onErrorStyle = {
-    borderBottom: '2px solid red',
-  }
   
 
   const handleFocus = () => setFocused(true);
@@ -61,7 +60,7 @@ const FormField = ({
         type={type}
         autoComplete={autoComplete}
         className="validate"
-        style={ focused ? onFocusStyle : hasError ? onErrorStyle : undefined }
+                style={ focused ? ON_FOCUS_STYLE : hasError ? ON_ERROR_STYLE : undefined }
         value={value}
         onChange={onChange}
         onFocus={handleFocus}
@@ -99,11 +98,6 @@ FormField.propTypes = {
   hasError: PropTypes.bool,
   showErrorMessage: PropTypes.bool,
   autoComplete: PropTypes.string,
-};
-
-FormField.defaultProps = {
-  type: 'text',
-  hasError: false,
 };
 
 export default FormField;
