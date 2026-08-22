@@ -10,14 +10,14 @@ const CommandsCointainer = ({geofences, COMMANDS_QTY}) => {
         if(geofences.indexOf(geofence) < COMMANDS_QTY){
           return(
             <Command 
-              key = {index}
+              key = {geofence._id}
               index = {index}
               geofence = {geofence}
             />)
         } else {
           return(
             <Error 
-            key = {index}
+            key = {geofence._id}
             index = {index}
             />)
           }
