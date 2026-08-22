@@ -10146,7 +10146,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         this[this.currentView] = value;
         if (isHours) {
-          this['spanHours'].innerHTML = value;
+          this['spanHours'].textContent = value;
         } else {
           this['spanMinutes'].innerHTML = Timepicker._addLeadingZero(value);
         }
