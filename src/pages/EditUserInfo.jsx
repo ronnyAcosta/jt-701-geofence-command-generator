@@ -96,7 +96,7 @@ const EditUserInfo = () => {
     if(window.confirm("Are you sure you want to delete your account?")){
       const geofencesSnapshot = await getDocs(geofencesCollectionRef);
 
-      geofencesSnapshot.docs.map(async (geofDoc)=> await deleteDoc(geofDoc.ref));
+      await Promise.all(geofencesSnapshot.docs.map((geofDoc) => deleteDoc(geofDoc.ref)));
 
       await deleteDoc(doc(db, `users/${user.uid}`)).catch((error)=>console.log(error));
 

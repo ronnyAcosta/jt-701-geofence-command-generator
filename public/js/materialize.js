@@ -1562,16 +1562,16 @@ $jscomp.polyfill = function (e, r, p, m) {
     });var c = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(a);
     a = parseInt(c[1], 16);var d = parseInt(c[2], 16),
         c = parseInt(c[3], 16);return "rgba(" + a + "," + d + "," + c + ",1)";
+    }function hue2rgbHelper(a, c, b) {
+    0 > b && (b += 1);1 < b && --b;return b < 1 / 6 ? a + 6 * (c - a) * b : .5 > b ? c : b < 2 / 3 ? a + (c - a) * (2 / 3 - b) * 6 : a;
   }function U(a) {
-    function c(a, c, b) {
-      0 > b && (b += 1);1 < b && --b;return b < 1 / 6 ? a + 6 * (c - a) * b : .5 > b ? c : b < 2 / 3 ? a + (c - a) * (2 / 3 - b) * 6 : a;
-    }var d = /hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(a) || /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(a);a = parseInt(d[1]) / 360;var b = parseInt(d[2]) / 100,
+    var d = /hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(a) || /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(a);a = parseInt(d[1]) / 360;var b = parseInt(d[2]) / 100,
         f = parseInt(d[3]) / 100,
         d = d[4] || 1;if (0 == b) f = b = a = f;else {
       var n = .5 > f ? f * (1 + b) : f + b - f * b,
           k = 2 * f - n,
-          f = c(k, n, a + 1 / 3),
-          b = c(k, n, a);a = c(k, n, a - 1 / 3);
+          f = hue2rgbHelper(k, n, a + 1 / 3),
+          b = hue2rgbHelper(k, n, a);a = hue2rgbHelper(k, n, a - 1 / 3);
     }return "rgba(" + 255 * f + "," + 255 * b + "," + 255 * a + "," + d + ")";
   }function y(a) {
     if (a = /([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(a)) return a[2];
@@ -1642,10 +1642,8 @@ $jscomp.polyfill = function (e, r, p, m) {
     var d = C(c);if (h.arr(a)) {
       var b = a.length;2 !== b || h.obj(a[0]) ? h.fnc(c.duration) || (d.duration = c.duration / b) : a = { value: a };
     }return m(a).map(function (a, b) {
-      b = b ? 0 : c.delay;a = h.obj(a) && !h.pth(a) ? a : { value: a };h.und(a.delay) && (a.delay = b);return a;
-    }).map(function (a) {
-      return z(a, d);
-    });
+      b = b ? 0 : c.delay;a = h.obj(a) && !h.pth(a) ? a : { value: a };h.und(a.delay) && (a.delay = b);return z(a, d);
+  });
   }function ba(a, c) {
     var d = {},
         b;for (b in a) {
@@ -2371,7 +2369,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Use capture phase event handler to prevent click
         document.body.addEventListener('click', this._handleDocumentClickBound, true);
         document.body.addEventListener('touchend', this._handleDocumentClickBound);
-        document.body.addEventListener('touchmove', this._handleDocumentTouchmoveBound);
+        document.body.addEventListener('touchmove', this._handleDocumentTouchmoveBound, { passive: true });
         this.dropdownEl.addEventListener('keydown', this._handleDropdownKeydownBound);
       }
     }, {
@@ -5286,7 +5284,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         container.setAttribute('id', 'toast-container');
 
         // Add event handler
-        container.addEventListener('touchstart', Toast._onDragStart);
+        container.addEventListener('touchstart', Toast._onDragStart, { passive: true });
         container.addEventListener('touchmove', Toast._onDragMove);
         container.addEventListener('touchend', Toast._onDragEnd);
 
@@ -11018,14 +11016,15 @@ $jscomp.polyfill = function (e, r, p, m) {
           var transformString = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.options.shift * tween * i + "px) translateZ(" + this.options.dist * tween + "px)";
           this._updateItemStyle(el, centerTweenedOpacity, 0, transformString);
         }
+        var dist = this.options.dist;
 
         for (i = 1; i <= half; ++i) {
           // right side
           if (this.options.fullWidth) {
-            zTranslation = this.options.dist;
+            zTranslation = dist;
             tweenedOpacity = i === half && delta < 0 ? 1 - tween : 1;
           } else {
-            zTranslation = this.options.dist * (i * 2 + tween * dir);
+            zTranslation = dist * (i * 2 + tween * dir);
             tweenedOpacity = 1 - numVisibleOffset * (i * 2 + tween * dir);
           }
           // Don't show wrapped items.
@@ -11037,10 +11036,10 @@ $jscomp.polyfill = function (e, r, p, m) {
 
           // left side
           if (this.options.fullWidth) {
-            zTranslation = this.options.dist;
+            zTranslation = dist;
             tweenedOpacity = i === half && delta > 0 ? 1 - tween : 1;
           } else {
-            zTranslation = this.options.dist * (i * 2 - tween * dir);
+            zTranslation = dist * (i * 2 - tween * dir);
             tweenedOpacity = 1 - numVisibleOffset * (i * 2 - tween * dir);
           }
           // Don't show wrapped items.
