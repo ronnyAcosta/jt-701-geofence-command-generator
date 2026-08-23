@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCenterPoint, editCenterPoint } from '../actions/centerPointSetterAction';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
@@ -19,8 +19,7 @@ const ZoomCapture = ({ mapRef }) => {
 
 const CenterPointSetterMap = () => {
   const dispatch = useDispatch();
-  const [center] = useState({ lat: 18.4821, lng: -69.9099 });
-  const ZOOM_LEVEL = 13;
+  const centerPoint = useSelector(state => state.centerPoint);
 
   const mapRef = useRef(null);
   const featureGroupRef = useRef(null);
@@ -67,7 +66,7 @@ const CenterPointSetterMap = () => {
 
   return (
     <>
-      <MapContainer className='centerPointMapWrapper' center={center} zoom={ZOOM_LEVEL}>
+      <MapContainer className='centerPointMapWrapper' center={centerPoint.coordinates} zoom={centerPoint.zoom}>
         <ZoomCapture mapRef={mapRef} />
         <FeatureGroup ref={featureGroupRef}>
           <EditControl

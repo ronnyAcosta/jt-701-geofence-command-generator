@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {  MapContainer, TileLayer, FeatureGroup} from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
@@ -13,8 +12,7 @@ import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesA
 
 const MapComponent = ({geofences}) => {
   const dispatch = useDispatch();
-  const [center] = useState ({ lat: 18.4821, lng: -69.9099 });
-  const ZOOM_LEVEL = 13;
+  const centerPoint = useSelector(state => state.centerPoint);
 
   const handleCreate = (e) => dispatch(addGeofence(e)); 
 
@@ -24,7 +22,7 @@ const MapComponent = ({geofences}) => {
 
   return(
     <>
-      <MapContainer center={center} zoom={ZOOM_LEVEL} >
+      <MapContainer center={centerPoint.coordinates} zoom={centerPoint.zoom} >
         <FeatureGroup>
           <EditControl 
             position="topright" 

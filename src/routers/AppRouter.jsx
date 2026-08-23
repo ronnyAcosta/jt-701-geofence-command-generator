@@ -17,7 +17,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { login } from '../actions/authAction';
 import { loadGeofences } from '../actions/geofencesActions';
-
+import { loadCenterPoint } from '../actions/centerPointSetterAction';
 
 const AppRouter = () => {
   const dispatch = useDispatch()
@@ -29,6 +29,7 @@ const AppRouter = () => {
       if(user){
         dispatch(login(user.uid, user.displayName))
         dispatch(loadGeofences())
+        dispatch(loadCenterPoint())
         setLog(true)
       } else{
         setLog(false);

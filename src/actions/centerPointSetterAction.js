@@ -1,9 +1,15 @@
 import { centerPointSetterType } from "../types/centerPointSetterType";
 
-// import { auth, db } from "../firebase/config-firebase";
-// import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
+import { auth, db } from "../firebase/config-firebase";
+import { addDoc, collection, doc, getDocs, query, updateDoc, } from "firebase/firestore";
 
-
+const DEFAULT_CENTER_POINT = {
+  coordinates: {
+    lat: 26.752697611779812,
+    lng: -18.96302324800705,
+  },
+  zoom: 2
+}
 
 const set = (data) =>{
   return {
@@ -19,18 +25,18 @@ const edit = (data) => {
   };
 };
 
-const remove = () =>{
+const defaultPoint = () =>{
   return {
-    type: centerPointSetterType.delete,
+    type: centerPointSetterType.default,
   };
 }
 
-// const load = (data) =>{
-//   return {
-//     type: centerPointSetterType.load,
-//     payload: data
-//   }
-// }
+const load = (data) =>{
+  return {
+    type: centerPointSetterType.load,
+    payload: data
+  }
+}
 
 const setCenterPoint = (centerPoint) => {
   return async (dispatch) => {
@@ -72,7 +78,7 @@ const deleteCenterPoint = (e) => {
     // const id = auth.currentUser.uid;
     
 
-    dispatch(remove());
+    dispatch(defaultPoint());
   }
 };
 
@@ -82,16 +88,26 @@ const clearGeofences = () =>{
   }
 }
 
-const loadCenterPoint = () =>{
-  return async(dispatch) =>{
-    // const id = auth.currentUser.uid;
-   
-    // const centerPoint = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')));
+const loadCenterPoint = () => {
+  return async (dispatch) => {
+    const id = auth.currentUser.uid;
 
+    try {
+      const centerPointSnapshot = await getDocs(
+        query(collection(db, `users/${id}/centerPoint/`))
+      );
 
-    
-    // dispatch(load(centerPoint));
-  }
-}
+      if (centerPointSnapshot.empty) {
+        await addDoc(collection(db, `users/${id}/centerPoint/`), DEFAULT_CENTER_POINT);
+        dispatch(defaultPoint());
+      } else {
+        const centerPointData = centerPointSnapshot.docs[0].data();
+        dispatch(load(centerPointData));
+      }
+    } catch (error) {
+      console.error('Error al cargar centerPoint:', error.code, error.message);
+    }
+  };
+};
 
-export { setCenterPoint, editCenterPoint, deleteCenterPoint, loadCenterPoint, clearGeofences };
+export { setCenterPoint, editCenterPoint, deleteCenterPoint, loadCenterPoint, clearGeofences, DEFAULT_CENTER_POINT };

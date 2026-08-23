@@ -1,5 +1,5 @@
 import { centerPointSetterType } from "../types/centerPointSetterType";
-
+import { DEFAULT_CENTER_POINT } from "../actions/centerPointSetterAction";
 export const centerPointSetterReducer = (centerPoint = {}, action) => {
   switch (action.type) {
     
@@ -9,11 +9,11 @@ export const centerPointSetterReducer = (centerPoint = {}, action) => {
     case centerPointSetterType.edit:
       return action.payload;
 
-    // case centerPointSetterType.delete:
-    //   return centerPoint.filter((geofence) => !action.payload.some((g) => g._id === geofence._id || coordinatesAreEqual(g.coordinates, geofence.coordinates)));
+    case centerPointSetterType.default:
+      return DEFAULT_CENTER_POINT;
 
-    // case centerPointSetterType.load:
-    //   return action.payload;
+    case centerPointSetterType.load:
+      return action.payload;
 
     case centerPointSetterType.clear:
       return {};
