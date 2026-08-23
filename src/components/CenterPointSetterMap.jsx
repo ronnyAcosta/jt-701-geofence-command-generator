@@ -1,29 +1,80 @@
-import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-
-import {  MapContainer, TileLayer, FeatureGroup} from "react-leaflet";
+import { useState, useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
+import { useDispatch } from 'react-redux';
+import { setCenterPoint, editCenterPoint } from '../actions/centerPointSetterAction';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../map-providers';
 
+const ZoomCapture = ({ mapRef }) => {
+  const map = useMap();
 
-// import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesActions';
+  useEffect(() => {
+    mapRef.current = map;
+  }, [map, mapRef]);
 
-const CenterPointSetterMap = ({geofences}) => {
-  // const dispatch = useDispatch();
-  const [center] = useState ({ lat: 18.4821, lng: -69.9099 });
+  return null;
+};
+
+const CenterPointSetterMap = () => {
+  const dispatch = useDispatch();
+  const [center] = useState({ lat: 18.4821, lng: -69.9099 });
   const ZOOM_LEVEL = 13;
 
-  // const handleCreate = (e) => dispatch(addGeofence(e)); 
+  const mapRef = useRef(null);
+  const featureGroupRef = useRef(null);
 
-  return(
+  const handleCreate = (e) => {
+    const featureGroup = featureGroupRef.current;
+
+    if (featureGroup) {
+      featureGroup.eachLayer((layer) => {
+        if (layer !== e.layer) {
+          featureGroup.removeLayer(layer);
+        }
+      });
+    }
+
+    const { lat, lng } = e.layer.getLatLng();
+    const zoom = mapRef.current ? mapRef.current.getZoom() : null;
+
+    const centerPoint = {
+      coordinates: { lat, lng },
+      zoom
+    }
+    dispatch(setCenterPoint(centerPoint));
+    console.log(centerPoint);
+  };
+
+  const handleEdit = (e) => {
+    const { layers: { _layers } } = e;
+    const ids = Object.values(_layers).map(({ _leaflet_id }) => _leaflet_id);
+    const { lat, lng } = _layers[ids[0]].getLatLng();
+
+    const zoom = mapRef.current ? mapRef.current.getZoom() : null;
+
+    const centerPoint = {
+      coordinates: { lat, lng },
+      zoom
+    }
+
+    dispatch(editCenterPoint(centerPoint));
+    console.log(centerPoint);
+  };
+
+  const handleDelete = (e) => {console.log(e);};
+
+  return (
     <>
-      <MapContainer className='centerPointMapWrapper' center={center} zoom={ZOOM_LEVEL} >
-        <FeatureGroup>
-          <EditControl 
-            position="topright" 
-            // onCreated={handleCreate}
+      <MapContainer className='centerPointMapWrapper' center={center} zoom={ZOOM_LEVEL}>
+        <ZoomCapture mapRef={mapRef} />
+        <FeatureGroup ref={featureGroupRef}>
+          <EditControl
+            position="topright"
+            onCreated={handleCreate}
+            onEdited={handleEdit}
+            onDeleted={handleDelete}
             draw={{
               rectangle: false,
               circle: false,
@@ -32,9 +83,9 @@ const CenterPointSetterMap = ({geofences}) => {
               polyline: false,
               polygon: false
             }}
-          />  
+          />
         </FeatureGroup>
-        <TileLayer 
+        <TileLayer
           url={osm.maptiler.url}
           attribution={osm.maptiler.attribution}
         />

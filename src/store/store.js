@@ -3,13 +3,14 @@ import { thunk } from "redux-thunk";
 
 import { geofencesReducer } from "../reducers/geofencesReducer";
 import { authReducer } from "../reducers/authReducer";
-
+import { centerPointSetterReducer } from "../reducers/centerPointSetterReducer";
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const reducers = combineReducers({
   auth: authReducer,
-  geofences: geofencesReducer
+  geofences: geofencesReducer,
+  centerPoint: centerPointSetterReducer
 });
 
 export const store = createStore(
