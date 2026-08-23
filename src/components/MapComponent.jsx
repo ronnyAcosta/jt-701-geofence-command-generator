@@ -7,6 +7,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../map-providers';
 
 import Geofences from '../components/Geofences';
+import Spinner from '../components/Spinner';
 
 import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesActions';
 
@@ -19,6 +20,14 @@ const MapComponent = ({geofences}) => {
   const handleEdit = (e) => dispatch(editGeofence(e));       
 
   const handleDelete = (e) => dispatch(deleteGeofence(e));
+
+  if (!centerPoint?.coordinates) {
+  return (
+    <div className="mapLoadingPlaceholder">
+      <Spinner />
+    </div>
+  );
+}
 
   return(
     <>

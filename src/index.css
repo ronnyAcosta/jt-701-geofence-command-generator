@@ -150,6 +150,15 @@ input[type="password"]:focus {
   margin: 0 1vw;
 }
 
+.mapLoadingPlaceholder {
+  height: 91vh;
+  min-width: 58vw;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 800px) {
   .app-title{
     font-size: 1.6rem;
@@ -172,6 +181,13 @@ input[type="password"]:focus {
     min-width: 85vw;
     width: 100%;
     margin-left: 0px;
+  }
+
+  .mapLoadingPlaceholder {
+    height: 57vh;
+    min-width: 85vw;
+    width: 100%;
+    margin: 0;
   }
 
   .centerPointMapWrapper {
