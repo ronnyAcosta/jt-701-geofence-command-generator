@@ -27,13 +27,19 @@ const NavBar = () => {
     <>
       <nav >
         <div className="nav-wrapper">
-          <span className=" left app-title">JT701 - Geofence Commands Generator</span>
+          <Link to='/'>
+            <span className=" left app-title">JT701 - Geofence Commands Generator</span>
+          </Link>
 
           <Link data-target="dropdown1" className="dropdown-trigger right hide-on-large-only">
             <i className="material-icons">menu</i>
           </Link>
 
           <ul className="right hide-on-med-and-down">
+            <li>
+              <Link to='/set-map-location'>Set Map</Link>
+            </li>
+
             <li>
             <Link to='/edit' >{user.displayName}</Link>
             </li>
@@ -45,6 +51,9 @@ const NavBar = () => {
           <ul className="dropdown-content" id="dropdown1">
             <li>
             <Link className='waves-effect waves-red test' to='/edit' >{user.displayName}</Link>
+            </li>
+            <li>
+              <Link to='/set-map-location'>Set Map</Link>
             </li>
             <li>
               <Link className="red-text waves-effect waves-red" onClick={handleLogout}>Logout</Link>

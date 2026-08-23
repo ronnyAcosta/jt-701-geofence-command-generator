@@ -144,6 +144,11 @@ input[type="password"]:focus {
   color: red;
 }
 
+.centerPointMapWrapper {
+  width: 98vw;
+  height: 91vh;
+  margin: 0 1vw;
+}
 
 @media (max-width: 800px) {
   .app-title{
@@ -167,6 +172,12 @@ input[type="password"]:focus {
     min-width: 85vw;
     width: 100%;
     margin-left: 0px;
+  }
+
+  .centerPointMapWrapper {
+    width: 100vw;
+    height: 91vh;
+    margin: 0;
   }
 
   .commandsList{
