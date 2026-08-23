@@ -1,6 +1,6 @@
 {
   "name": "jt701-geofencee-command-generator",
-  "version": "0.1.0",
+  "version": "1.4.5",
   "private": true,
   "dependencies": {
     "@ionic/react": "^7.2.1",
@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "firebase": "12.7.0",
+    "ionicons": "^8.1.0",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
     "materialize-css": "^1.0.0-rc.2",
@@ -30,6 +31,14 @@
     "workbox-precaching": "^6.6.0",
     "workbox-routing": "^6.6.0",
     "workbox-strategies": "^6.6.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@firebase/util",
+      "core-js-pure",
+      "core-js",
+      "protobufjs"
+    ]
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -60,5 +69,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": ">=24.0.0"
   }
 }
