@@ -1,7 +1,7 @@
 import { centerPointSetterType } from "../types/centerPointSetterType";
 
 import { auth, db } from "../firebase/config-firebase";
-import { addDoc, collection, doc, getDocs, query, updateDoc, } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, updateDoc, } from "firebase/firestore";
 
 const DEFAULT_CENTER_POINT = {
   coordinates: {
@@ -40,17 +40,24 @@ const load = (data) =>{
 
 const setCenterPoint = (centerPoint) => {
   return async (dispatch) => {
-    // const id = auth.currentUser.uid;
-    
-    // const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
-    // const docId = docRef.id;
-    
-    // await updateDoc(docRef, { docId: docId });
+    const id = auth.currentUser.uid;
 
-    // data.docId = docId;
+    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`)));
+
+    if (snapshot.empty) {
+      const docRef = await addDoc(collection(db, `users/${id}/centerPoint/`), centerPoint);
+      const docId = docRef.id;
+
+      await updateDoc(docRef, { docId: docId });
+
+    } else {
+      const existingDoc = snapshot.docs[0];
+
+      await updateDoc(existingDoc.ref, centerPoint);
+
+    }
 
     dispatch(set(centerPoint));
-    return
   };
 };
 
@@ -58,31 +65,27 @@ const setCenterPoint = (centerPoint) => {
 
 const editCenterPoint = (centerPoint) =>{
   return async (dispatch) =>{
-    // const id = auth.currentUser.uid;
+    const id = auth.currentUser.uid;
 
-
-    
-    // await updateDoc(doc(db, `users/${id}/geofences/${geofence.docId}`), {
-    //   coordinates: data[i].coordinates
-    // }).catch((error) => console.log(error))
-    
-    
-   
+    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`))); 
+    const existingDoc = snapshot.docs[0];
+    await updateDoc(existingDoc.ref, centerPoint);
 
     dispatch(edit(centerPoint))
   }
 }
 
-const deleteCenterPoint = (e) => {
+const deleteCenterPoint = () => {
   return async (dispatch) =>{
-    // const id = auth.currentUser.uid;
-    
-
+    const id = auth.currentUser.uid;
+    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`))); 
+    const existingDoc = snapshot.docs[0];
+    await updateDoc(existingDoc.ref, DEFAULT_CENTER_POINT);
     dispatch(defaultPoint());
   }
 };
 
-const clearGeofences = () =>{
+const clearCenterPoint = () =>{
   return(dispatch) =>{
     dispatch({type: centerPointSetterType.clear,});
   }
@@ -105,9 +108,9 @@ const loadCenterPoint = () => {
         dispatch(load(centerPointData));
       }
     } catch (error) {
-      console.error('Error al cargar centerPoint:', error.code, error.message);
+      console.error('Error loading centerPoint:', error.code, error.message);
     }
   };
 };
 
-export { setCenterPoint, editCenterPoint, deleteCenterPoint, loadCenterPoint, clearGeofences, DEFAULT_CENTER_POINT };
+export { setCenterPoint, editCenterPoint, deleteCenterPoint, loadCenterPoint, clearCenterPoint, DEFAULT_CENTER_POINT };

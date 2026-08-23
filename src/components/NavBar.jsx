@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/authAction';
 import { clearGeofences } from '../actions/geofencesActions';
+import { clearCenterPoint } from '../actions/centerPointSetterAction';
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const NavBar = () => {
   const handleLogout = () =>{
     dispatch(logout());
     dispatch(clearGeofences());
+    dispatch(clearCenterPoint());
   }
 
   useEffect(() => {

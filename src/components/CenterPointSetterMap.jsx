@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCenterPoint, editCenterPoint } from '../actions/centerPointSetterAction';
+import { setCenterPoint, editCenterPoint, deleteCenterPoint } from '../actions/centerPointSetterAction';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../map-providers';
@@ -43,7 +43,6 @@ const CenterPointSetterMap = () => {
       zoom
     }
     dispatch(setCenterPoint(centerPoint));
-    console.log(centerPoint);
   };
 
   const handleEdit = (e) => {
@@ -59,10 +58,9 @@ const CenterPointSetterMap = () => {
     }
 
     dispatch(editCenterPoint(centerPoint));
-    console.log(centerPoint);
   };
 
-  const handleDelete = (e) => {console.log(e);};
+  const handleDelete = () => {dispatch(deleteCenterPoint())};
 
   return (
     <>
