@@ -2,7 +2,7 @@ import React from 'react'
 import { IonIcon } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 
-import { coordinatesFormatConverter } from '../helpers/helpers';
+import { coordinatesFormatConverter } from '../helpers/formatters';
 import { useCopyNotification } from '../context/CopyContext';
 
 

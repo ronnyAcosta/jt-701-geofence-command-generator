@@ -11,13 +11,5 @@ const coordinatesFormatConverter = (coordinate) =>{
   return `${coordinate[0]}${coordinate[1]}` 
 }
 
-const coordinatesAreEqual = (cords1, cods2) => {
-  if (cords1.length !== cods2.length) return false;
 
-  return cords1.every((coord1, index) => {
-    const coord2 = cods2[index];
-    return coord1.lat === coord2.lat && coord1.lng === coord2.lng;
-  });
-}
-
-export {coordinatesFormatConverter, coordinatesAreEqual}
+export {coordinatesFormatConverter}
