@@ -1,12 +1,5 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-/**
- * Reemplaza a `copyContent()` de helpers.js, que usaba
- * document.getElementById("copied") + classList.add/remove directamente.
- *
- * GetCommand ya no toca el DOM: solo copia al portapapeles y llama a
- * notifyCopied(), que vive en el mismo Provider que <CopiedToast />.
- */
 const CopyContext = createContext(null);
 
 export const CopyProvider = ({ children }) => {

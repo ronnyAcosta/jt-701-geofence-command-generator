@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCopyNotification } from '../context/CopyContext';
 
 // Mismo #copied de siempre (el CSS ya define opacity 0 -> 1 con .visible),

@@ -1,4 +1,3 @@
-import React from 'react'
 import Command from './Command'
 import Error from './Error'
 

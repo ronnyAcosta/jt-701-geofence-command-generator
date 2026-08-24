@@ -1,6 +1,3 @@
-// import { useSelector } from 'react-redux';
-
-
 import NavBar from '../components/NavBar';
 
 import CenterPointSetterMap from '../components/CenterPointSetterMap';
