@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import NavBar from '../components/NavBar';
-import FormField from '../components/FormField';
-import Toast from '../components/Toast';
+import NavBar from '../components/layout/NavBar';
+import FormField from '../components/input/FormField';
+import Toast from '../components/ui/Toast';
 
 import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName } from '../actions/authAction';

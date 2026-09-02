@@ -6,11 +6,11 @@ import { EditControl } from 'react-leaflet-draw';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import osm from '../map-providers';
+import osm from '../../map-providers';
 
-import Spinner from '../components/Spinner';
+import Spinner from '../ui/Spinner';
 
-import { addGeofence, editGeofence, deleteGeofence } from '../actions/geofencesActions';
+import { addGeofence, editGeofence, deleteGeofence } from '../../actions/geofencesActions';
 
 const MapComponent = ({geofences}) => {
   const dispatch = useDispatch();

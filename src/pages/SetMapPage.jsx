@@ -1,6 +1,6 @@
-import NavBar from '../components/NavBar';
+import NavBar from '../components/layout/NavBar';
 
-import CenterPointSetterMap from '../components/CenterPointSetterMap';
+import CenterPointSetterMap from '../components/containers/CenterPointSetterMap';
 
 const SetMapPage = () => {
   

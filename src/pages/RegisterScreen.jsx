@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { register } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
-import FormField from '../components/FormField';
-import Toast from '../components/Toast';
+import FormField from '../components/input/FormField';
+import Toast from '../components/ui/Toast';
 
 const initialFieldState = { error: false, message: false };
 

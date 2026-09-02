@@ -18,7 +18,7 @@ export const CopyProvider = ({ children }) => {
 export const useCopyNotification = () => {
   const ctx = useContext(CopyContext);
   if (!ctx) {
-    throw new Error('useCopyNotification debe usarse dentro de un CopyProvider');
+    throw new Error('useCopyNotification should be use inside a CopyProvider');
   }
   return ctx;
 };

@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase/config-firebase';
-import FormField from '../components/FormField';
-import Toast from '../components/Toast';
+import FormField from '../components/input/FormField';
+import Toast from '../components/ui/Toast';
 
 const RestorePassword = () => {
 

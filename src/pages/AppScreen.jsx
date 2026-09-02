@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
 
 
-import NavBar from '../components/NavBar';
+import NavBar from '../components/layout/NavBar';
 
-import CommandsCointainer from '../components/CommandsCointainer';
+import CommandsCointainer from '../components/containers/CommandsCointainer';
 
-import MapComponent from '../components/MapComponent';
-import CopiedToast from '../components/CopiedToast';
+import MapComponent from '../components/containers/MapComponent';
+import CopiedToast from '../components/ui/CopiedToast';
 import { CopyProvider } from '../context/CopyContext';
 
 const AppScreen = () => {

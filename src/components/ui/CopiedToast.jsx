@@ -1,4 +1,4 @@
-import { useCopyNotification } from '../context/CopyContext';
+import { useCopyNotification } from '../../context/CopyContext';
 
 // Mismo #copied de siempre (el CSS ya define opacity 0 -> 1 con .visible),
 // solo que ahora la clase la pone React en vez de classList.add/remove.

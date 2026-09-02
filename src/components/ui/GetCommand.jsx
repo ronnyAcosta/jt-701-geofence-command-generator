@@ -1,8 +1,8 @@
 import { IonIcon } from '@ionic/react';
 import { copyOutline } from 'ionicons/icons';
 
-import { coordinatesFormatConverter } from '../helpers/formatters';
-import { useCopyNotification } from '../context/CopyContext';
+import { coordinatesFormatConverter } from '../../helpers/formatters';
+import { useCopyNotification } from '../../context/CopyContext';
 
 
 const GetCommand = ({geofence, index}) => {

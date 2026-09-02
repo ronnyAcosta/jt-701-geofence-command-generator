@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
 import GoogleButton from 'react-google-button';
-import FormField from '../components/FormField';
-import Toast from '../components/Toast';
+import FormField from '../components/input/FormField';
+import Toast from '../components/ui/Toast';
 
 const LoginScreen = () => {
 

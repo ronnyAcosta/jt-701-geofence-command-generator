@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCenterPoint, editCenterPoint, deleteCenterPoint } from '../actions/centerPointSetterAction';
+import { setCenterPoint, editCenterPoint, deleteCenterPoint } from '../../actions/centerPointSetterAction';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import osm from '../map-providers';
+import osm from '../../map-providers';
 
 const ZoomCapture = ({ mapRef }) => {
   const map = useMap();

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import GetCommand from './GetCommand';
+import GetCommand from '../ui/GetCommand';
 
 
 const Command = ({geofence, index}) =>{

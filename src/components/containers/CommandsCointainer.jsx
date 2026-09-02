@@ -1,5 +1,5 @@
 import Command from './Command'
-import Error from './Error'
+import Error from '../ui/Error'
 
 const CommandsCointainer = ({geofences, COMMANDS_QTY}) => {
   return (
