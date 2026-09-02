@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // Wraps Materialize's native "Preloader" spinner markup.
 // See: https://materializecss.com/preloader.html
-const Spinner = ({ size, color, centered }) => {
+const Spinner = ({ size = 'default', color = 'blue', centered = true }) => {
   const sizeClass = size === 'small' ? 'small' : size === 'big' ? 'big' : '';
 
   return (
@@ -26,12 +26,6 @@ Spinner.propTypes = {
   size: PropTypes.oneOf(['small', 'default', 'big']),
   color: PropTypes.oneOf(['blue', 'red', 'yellow', 'green']),
   centered: PropTypes.bool,
-};
-
-Spinner.defaultProps = {
-  size: 'default',
-  color: 'blue',
-  centered: true,
 };
 
 export default Spinner;
