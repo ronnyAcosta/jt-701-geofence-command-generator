@@ -7,9 +7,9 @@ import FormField from '../components/input/FormField';
 import Toast from '../components/ui/Toast';
 
 import { loadGeofences } from '../actions/geofencesActions';
-import { logout, updateUserName } from '../actions/authAction';
+import { logout, updateUserName, googleLoginWithPopUp } from '../actions/authAction';
 
-import { updateProfile, updatePassword, deleteUser } from 'firebase/auth';
+import { updateProfile, updatePassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { auth, db } from '../firebase/config-firebase';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 
@@ -21,15 +21,23 @@ const EditUserInfo = () => {
 
   const user = auth.currentUser;
 
+  // If the "password" provider is not present, the account was created with
+  // Google only and there is no password to ask for or validate.
+  const hasPasswordProvider = user.providerData.some(
+    (provider) => provider.providerId === 'password'
+  );
+
   const [userInfo, setUserInfo] = useState({
     userName: user.displayName,
+    currentPassword: '',
     newPassword: '',
     confirmNewPassword: ''
   })
-  const {userName, newPassword, confirmNewPassword} = userInfo;
+  const {userName, currentPassword, newPassword, confirmNewPassword} = userInfo;
 
   const [fields, setFields] = useState({
     userName: { ...initialFieldState },
+    currentPassword: { ...initialFieldState },
     newPassword: { ...initialFieldState },
     confirmNewPassword: { ...initialFieldState },
   });
@@ -53,41 +61,99 @@ const EditUserInfo = () => {
     })
   }
 
+  // Password accounts: any save (username and/or password) requires the
+  // current password to be entered and valid.
+  const reauthenticateWithCurrentPassword = async () => {
+    if(currentPassword.length === 0){
+      setFieldError('currentPassword', true);
+      return false;
+    }
+
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+
+    try {
+      await reauthenticateWithCredential(auth.currentUser, credential);
+      return true;
+    } catch (error) {
+      console.log(error);
+      setFieldError('currentPassword', true);
+      return false;
+    }
+  }
+
+  // Google-only accounts: there is no password to check, so a fresh Google
+  // sign-in is used to satisfy Firebase's "recent login" requirement instead,
+  // for both username and password changes.
+  const reauthenticateWithGoogle = async () => {
+    try {
+      await dispatch(googleLoginWithPopUp());
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    const validator = { confirm: true };
 
-    if(newPassword.length >= 8){
-      if(confirmNewPassword === newPassword){
-        await updatePassword(user, newPassword).catch((error)=> {console.log(error)});
+    const wantsPasswordChange = newPassword.length > 0 || confirmNewPassword.length > 0;
+    let passwordFieldsValid = true;
 
+    if(wantsPasswordChange){
+      if(newPassword.length >= 8){
+        if(confirmNewPassword !== newPassword){
+          setFieldError('confirmNewPassword', true);
+          passwordFieldsValid = false;
+        }
       } else {
-        setFieldError('confirmNewPassword', true);
-        validator.confirm = false;
+        setFieldError('newPassword', true);
+        passwordFieldsValid = false;
       }
-    } else if(newPassword.length > 0){
-      setFieldError('newPassword', true);
-      validator.confirm = false;
     }
 
-    if(userName.length < 3 || userName.length > 20){
+    const userNameValid = userName.length >= 3 && userName.length <= 20;
+    if(!userNameValid){
       setFieldError('userName', true);
-
-    } else if(validator.confirm){
-      await updateProfile(user, {displayName: userName})
-        .then( () => {
-          dispatch(updateUserName(user.uid, user.displayName));
-
-          setUserInfo({
-            userName: user.displayName,
-            newPassword: '',
-            confirmNewPassword: ''
-          });
-
-          setShowDataUpdated(true);
-        })
-        .catch((error) => console.log(error));
     }
+
+    if(!passwordFieldsValid || !userNameValid) return;
+
+    // Password accounts always need the current password to save any change.
+    // Google-only accounts only need a fresh Google sign-in when they are
+    // actually setting a new password, not for a plain username edit.
+    const needsReauth = hasPasswordProvider || wantsPasswordChange;
+
+    if(needsReauth){
+      const reauthenticated = hasPasswordProvider
+        ? await reauthenticateWithCurrentPassword()
+        : await reauthenticateWithGoogle();
+
+      if(!reauthenticated) return;
+    }
+
+    if(wantsPasswordChange){
+      await updatePassword(auth.currentUser, newPassword).catch((error) => console.log(error));
+    }
+
+    // Read auth.currentUser fresh: a Google reauth may have refreshed the
+    // user instance, so the "user" reference captured at render time can be stale.
+    const currentUser = auth.currentUser;
+
+    await updateProfile(currentUser, {displayName: userName})
+      .then( () => {
+        dispatch(updateUserName(currentUser.uid, currentUser.displayName));
+
+        setUserInfo({
+          userName: currentUser.displayName,
+          currentPassword: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        });
+
+        setShowDataUpdated(true);
+      })
+      .catch((error) => console.log(error));
   }
 
   const handleDelete = async () =>{
@@ -133,6 +199,22 @@ const EditUserInfo = () => {
                 showErrorMessage={fields.userName.message}
                 errorMessage="Min lenght: 3  |  Max lenght: 20"
               />
+              {hasPasswordProvider && (
+                <FormField
+                  icon="vpn_key"
+                  id="currentPassword"
+                  name="currentPassword"
+                  type="password"
+                  label="Current password"
+                  value={currentPassword}
+                  onChange={handleChange}
+                  onBlurClearError={() => clearFieldErrorColor('currentPassword')}
+                  hasError={fields.currentPassword.error}
+                  showErrorMessage={fields.currentPassword.message}
+                  errorMessage="Current password is required to save changes"
+                  autoComplete="current-password"
+                />
+              )}
               <FormField
                 icon="vpn_key"
                 id="newPassword"

@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Toast = ({ id, message, show, onHide }) => {
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Keep the latest onHide without making the timer effect below depend on it:
+  // onHide is usually a new function on every parent render, and re-running
+  // the timers on every render would break the toast's timing.
+  const onHideRef = useRef(onHide);
+  useEffect(() => {
+    onHideRef.current = onHide;
+  }, [onHide]);
 
   useEffect(() => {
     if (!show) return undefined;
@@ -13,7 +21,7 @@ const Toast = ({ id, message, show, onHide }) => {
     const hideTimer = setTimeout(() => setVisible(false), 2000);
     const unmountTimer = setTimeout(() => {
       setMounted(false);
-      if (onHide) onHide();
+      if (onHideRef.current) onHideRef.current();
     }, 2500);
 
     return () => {
