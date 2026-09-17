@@ -1,7 +1,7 @@
 import { centerPointSetterType } from "../types/centerPointSetterType";
 
 import { auth, db } from "../firebase/config-firebase";
-import { addDoc, collection, getDocs, query, updateDoc, } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const DEFAULT_CENTER_POINT = {
   coordinates: {
@@ -11,7 +11,12 @@ const DEFAULT_CENTER_POINT = {
   zoom: 2
 }
 
-const set = (data) =>{
+const CENTER_POINT_DOC_ID = "default";
+
+const getCenterPointDocRef = (uid) =>
+  doc(db, `users/${uid}/centerPoint/${CENTER_POINT_DOC_ID}`);
+
+const set = (data) => {
   return {
     type: centerPointSetterType.set,
     payload: data
@@ -25,13 +30,13 @@ const edit = (data) => {
   };
 };
 
-const defaultPoint = () =>{
+const defaultPoint = () => {
   return {
     type: centerPointSetterType.default,
   };
 }
 
-const load = (data) =>{
+const load = (data) => {
   return {
     type: centerPointSetterType.load,
     payload: data
@@ -42,52 +47,35 @@ const setCenterPoint = (centerPoint) => {
   return async (dispatch) => {
     const id = auth.currentUser.uid;
 
-    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`)));
-
-    if (snapshot.empty) {
-      const docRef = await addDoc(collection(db, `users/${id}/centerPoint/`), centerPoint);
-      const docId = docRef.id;
-
-      await updateDoc(docRef, { docId: docId });
-
-    } else {
-      const existingDoc = snapshot.docs[0];
-
-      await updateDoc(existingDoc.ref, centerPoint);
-
-    }
+    await setDoc(getCenterPointDocRef(id), centerPoint);
 
     dispatch(set(centerPoint));
   };
 };
 
-
-
-const editCenterPoint = (centerPoint) =>{
-  return async (dispatch) =>{
+const editCenterPoint = (centerPoint) => {
+  return async (dispatch) => {
     const id = auth.currentUser.uid;
 
-    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`))); 
-    const existingDoc = snapshot.docs[0];
-    await updateDoc(existingDoc.ref, centerPoint);
+    await setDoc(getCenterPointDocRef(id), centerPoint, { merge: true });
 
     dispatch(edit(centerPoint))
   }
 }
 
 const deleteCenterPoint = () => {
-  return async (dispatch) =>{
+  return async (dispatch) => {
     const id = auth.currentUser.uid;
-    const snapshot = await getDocs(query(collection(db, `users/${id}/centerPoint/`))); 
-    const existingDoc = snapshot.docs[0];
-    await updateDoc(existingDoc.ref, DEFAULT_CENTER_POINT);
+
+    await setDoc(getCenterPointDocRef(id), DEFAULT_CENTER_POINT);
+
     dispatch(defaultPoint());
   }
 };
 
-const clearCenterPoint = () =>{
-  return(dispatch) =>{
-    dispatch({type: centerPointSetterType.clear,});
+const clearCenterPoint = () => {
+  return (dispatch) => {
+    dispatch({ type: centerPointSetterType.clear, });
   }
 }
 
@@ -96,16 +84,13 @@ const loadCenterPoint = () => {
     const id = auth.currentUser.uid;
 
     try {
-      const centerPointSnapshot = await getDocs(
-        query(collection(db, `users/${id}/centerPoint/`))
-      );
+      const centerPointSnapshot = await getDoc(getCenterPointDocRef(id));
 
-      if (centerPointSnapshot.empty) {
-        await addDoc(collection(db, `users/${id}/centerPoint/`), DEFAULT_CENTER_POINT);
-        dispatch(defaultPoint());
+      if (centerPointSnapshot.exists()) {
+        dispatch(load(centerPointSnapshot.data()));
       } else {
-        const centerPointData = centerPointSnapshot.docs[0].data();
-        dispatch(load(centerPointData));
+        await setDoc(getCenterPointDocRef(id), DEFAULT_CENTER_POINT);
+        dispatch(defaultPoint());
       }
     } catch (error) {
       console.error('Error loading centerPoint:', error.code, error.message);

@@ -25,19 +25,19 @@ const AppRouter = () => {
   const [log, setLog] = useState(false)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user)=>{
-      if(user){
-        dispatch(login(user.uid, user.displayName))
-        dispatch(loadGeofences())
-        dispatch(loadCenterPoint())
-        setLog(true)
-      } else{
-        setLog(false);
-      }
-    })
-  
-    
-  }, [dispatch, log])
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(login(user.uid, user.displayName))
+      dispatch(loadGeofences())
+      dispatch(loadCenterPoint())
+      setLog(true)
+    } else {
+      setLog(false);
+    }
+  })
+
+  return () => unsubscribe();
+}, [dispatch])
   
   return (
     <Router>

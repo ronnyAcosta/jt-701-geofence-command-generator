@@ -11,7 +11,7 @@ import { logout, updateUserName, googleLoginWithPopUp } from '../actions/authAct
 
 import { updateProfile, updatePassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { auth, db } from '../firebase/config-firebase';
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, getDocs } from 'firebase/firestore';
 
 const initialFieldState = { error: false, message: false };
 
@@ -156,18 +156,29 @@ const EditUserInfo = () => {
       .catch((error) => console.log(error));
   }
 
-  const handleDelete = async () =>{
-    const geofencesCollectionRef = collection(db, `users/${user.uid}/geofences`);
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete your account?")) return;
 
-    if(window.confirm("Are you sure you want to delete your account?")){
-      const geofencesSnapshot = await getDocs(geofencesCollectionRef);
+    const reauthenticated = hasPasswordProvider
+      ? await reauthenticateWithCurrentPassword()
+      : await reauthenticateWithGoogle();
 
-      await Promise.all(geofencesSnapshot.docs.map((geofDoc) => deleteDoc(geofDoc.ref)));
+    if (!reauthenticated) return;
 
-      await deleteDoc(doc(db, `users/${user.uid}`)).catch((error)=>console.log(error));
+    try {
+      const geofencesSnapshot = await getDocs(collection(db, `users/${user.uid}/geofences`));
+      const centerPointSnapshot = await getDocs(collection(db, `users/${user.uid}/centerPoint`));
 
-      await deleteUser(user).then(()=> dispatch(logout()))
-      .catch((error)=>{ console.log(error )})
+      await Promise.all([
+        ...geofencesSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
+        ...centerPointSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
+      ]);
+
+      await deleteUser(auth.currentUser);
+      dispatch(logout());
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
     }
   }
 
