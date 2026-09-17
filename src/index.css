@@ -159,6 +159,27 @@ input[type="password"]:focus {
   justify-content: center;
 }
 
+.leaflet-tooltip.geofence-label {
+  background-color: #096fa8;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.leaflet-tooltip.geofence-label::before {
+  display: none;
+}
+
 @media (max-width: 800px) {
   .app-title{
     font-size: 1.6rem;

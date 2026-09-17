@@ -21,18 +21,18 @@ const MapComponent = ({geofences}) => {
     if (node) setFeatureGroupNode(node);
   }, []);
 
-  const handleCreate = (e) => dispatch(addGeofence(e)); 
+  const handleCreate = useCallback((e) => dispatch(addGeofence(e)), [dispatch]);
 
-  const handleEdit = (e) => dispatch(editGeofence(e));       
+  const handleEdit = useCallback((e) => dispatch(editGeofence(e)), [dispatch]);
 
-  const handleDelete = (e) => dispatch(deleteGeofence(e));
+  const handleDelete = useCallback((e) => dispatch(deleteGeofence(e)), [dispatch]);
 
   useEffect(() => {
     const featureGroup = featureGroupNode;
     if (!featureGroup) return;
    
     geofences.forEach((geofence) => {
-      if (geofence.dbLoaded !== true) return;
+      if (!geofence || geofence.dbLoaded !== true) return;
 
       let alreadyAdded = false;
       featureGroup.eachLayer((layer) => {
@@ -44,6 +44,25 @@ const MapComponent = ({geofences}) => {
       const polygon = L.polygon(latlngs);
       polygon.docId = geofence.docId;
       polygon.addTo(featureGroup);
+    });
+
+    // Label every polygon on the map with its geofence's index (+1), so it
+    // can be matched with the generated command. Runs on every geofences
+    // change, which also keeps the label's position correct after edits.
+    featureGroup.eachLayer((layer) => {
+      if (!layer.docId) return;
+
+      const index = geofences.findIndex((geofence) => geofence?.docId === layer.docId);
+      if (index === -1) return;
+
+      const label = String(index + 1);
+      const tooltip = layer.getTooltip();
+      if (tooltip) {
+        layer.setTooltipContent(label);
+        tooltip.setLatLng(layer.getBounds().getCenter());
+      } else {
+        layer.bindTooltip(label, { permanent: true, direction: 'center', className: 'geofence-label' });
+      }
     });
   }, [geofences, featureGroupNode]);
 

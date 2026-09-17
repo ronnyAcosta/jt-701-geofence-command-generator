@@ -5,18 +5,19 @@ const CommandsCointainer = ({geofences, COMMANDS_QTY}) => {
   return (
     <div className='commandsBox'>
       {geofences.map((geofence, index) => {
-              
-        if(geofences.indexOf(geofence) < COMMANDS_QTY){
+        if (!geofence) return null;
+
+        if (index < COMMANDS_QTY) {
           return(
             <Command 
-              key = {geofence._id}
+              key = {geofence.docId ?? geofence._id}
               index = {index}
               geofence = {geofence}
             />)
         } else {
           return(
             <Error 
-            key = {geofence._id}
+            key = {geofence.docId ?? geofence._id}
             index = {index}
             />)
           }

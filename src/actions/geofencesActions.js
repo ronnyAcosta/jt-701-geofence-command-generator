@@ -3,6 +3,7 @@ import { actionType } from "../types/actionType";
 import { auth, db } from "../firebase/config-firebase";
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
 
+const MAX_GEOFENCES = 10;
 
 const add = (data) =>{
   return {
@@ -33,11 +34,24 @@ const load = (data) =>{
 }
 
 const addGeofence = (e) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const geofences = getState().geofences;
+
+    const activeGeofences = geofences.filter((geofence) => geofence != null).length;
+
+    if (activeGeofences >= MAX_GEOFENCES) {
+      e.layer.remove();
+      return;
+    }
+
+    let slot = geofences.findIndex((geofence) => geofence == null);
+    if (slot === -1) slot = geofences.length;
+
     const id = auth.currentUser.uid;
     const data = {
       date: new Date(),
       _id: e.layer._leaflet_id,
+      slot,
       coordinates: e.layer._latlngs[0].map((latlng) => ({
         lat: latlng.lat,
         lng: latlng.lng,
@@ -73,7 +87,7 @@ const editGeofence = (e) => {
     })});
 
     const editedGeofences = getState().geofences.filter((geofence) =>
-      data.some((g) => g.docId === geofence.docId)
+      geofence && data.some((g) => g.docId === geofence.docId)
     );
 
     await Promise.all(
@@ -101,7 +115,7 @@ const deleteGeofence = (e) => {
     }));
 
     const deletedGeofences = getState().geofences.filter((geofence) =>
-      data.some((g) => g.docId === geofence.docId)
+      geofence && data.some((g) => g.docId === geofence.docId)
     );
 
     await Promise.all(
@@ -123,20 +137,24 @@ const clearGeofences = () =>{
 const loadGeofences = () =>{
   return async(dispatch) =>{
     const id = auth.currentUser.uid;
-   
-    const data = [];
+
+    const docs = [];
     const response = await getDocs(query(collection(db, `users/${id}/geofences/`), orderBy('date')));
 
-    response.forEach(async (doc) => {
-      data.push(doc.data());
+    response.forEach((doc) => {
+      docs.push(doc.data());
     });
 
-    for(let geofence of data){
+    const lastSlot = docs.reduce((max, geofence) => Math.max(max, geofence.slot ?? 0), -1);
+    const data = new Array(lastSlot + 1).fill(null);
+
+    for (const geofence of docs) {
       geofence.dbLoaded = true;
+      data[geofence.slot ?? data.length] = geofence;
     }
-    
+
     dispatch(load(data));
   }
 }
 
-export { addGeofence, editGeofence, deleteGeofence, loadGeofences, clearGeofences };
+export { addGeofence, editGeofence, deleteGeofence, loadGeofences, clearGeofences, MAX_GEOFENCES };
