@@ -18,7 +18,7 @@ const GetCommand = ({geofence, index}) => {
   if(geofence.coordinates.length > 10){
     return(
       <span className='error'>
-        Coordinates limit exceeded. Edit the geofence.
+        Coordinates limit exceeded. Edit geofence. Maximum 10 points.
       </span>
     )   
   }

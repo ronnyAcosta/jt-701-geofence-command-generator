@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../actions/authAction';
 import { clearGeofences } from '../../actions/geofencesActions';
 import { clearCenterPoint } from '../../actions/centerPointSetterAction';
+import ThemeToggle from '../ui/ThemeToggle';
+
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -39,12 +41,17 @@ const NavBar = () => {
 
           <ul className="right hide-on-med-and-down">
             <li>
+              <ThemeToggle variant="nav" />
+            </li>
+
+            <li>
               <Link to='/set-map-location'>Set Map</Link>
             </li>
 
             <li>
             <Link to='/edit' >{user.displayName}</Link>
             </li>
+
             <li>
               <button className="btn red waves-effect waves-light" onClick={handleLogout}>Logout</button>
             </li>
@@ -54,9 +61,15 @@ const NavBar = () => {
             <li>
             <Link className='waves-effect waves-red test' to='/edit' >{user.displayName}</Link>
             </li>
+
             <li>
               <Link to='/set-map-location'>Set Map</Link>
             </li>
+
+            <li>
+              <ThemeToggle variant="dropdown" />
+            </li>
+
             <li>
               <Link className="red-text waves-effect waves-red" onClick={handleLogout}>Logout</Link>
             </li>

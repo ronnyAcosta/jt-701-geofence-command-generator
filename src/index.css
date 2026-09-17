@@ -1,14 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
 
+:root {
+  --color-bg: #ffffff;
+  --color-text: #212121;
+  --color-primary: #096fa8;
+  --color-primary-text: aliceblue;
+  --color-accent: #07bcff;
+  --color-accent-text: #140f07;
+  --color-border: #000000;
+  --color-error: red;
+  --color-copy-active: aqua;
+}
+
+[data-theme="dark"] {
+  --color-bg: #082132;
+  --color-text: #e8e8e8;
+  --color-primary: #0b5f8f;
+  --color-primary-text: #eaf6ff;
+  --color-accent: #07bcff;
+  --color-accent-text: #0a0a0a;
+  --color-border: #3a3a3a;
+  --color-error: #ff6b6b;
+  --color-copy-active: #4fd1ff;
+}
+
 *{
   font-family: 'Roboto', sans-serif;
   margin: 0;
-  
 }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 nav{
-  background-color: #096fa8;
+  background-color: var(--color-primary);
   padding: 0 0.5rem;
-  color: aliceblue;
+  color: var(--color-primary-text);
+}
+
+.nav-icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .app-title{
@@ -17,9 +51,9 @@ nav{
 
 
 header{
-  background-color: #096fa8;
+  background-color: var(--color-primary);
   padding: 0.4rem 0;
-  color: aliceblue;
+  color: var(--color-primary-text);
 }
 
 h1{
@@ -47,15 +81,15 @@ main{
 
 .commandsBox{
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   border-radius: 5px;
   min-height: 40vh;
   max-height: 60vh;
   width: 100%;
   margin-top: 15px;
   overflow-y: auto;
-  background-color: #096fa8;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   font-weight: 600;
 }
 
@@ -65,10 +99,10 @@ main{
 }
 .command, .error{
   margin: 0px 5px;
-  background-color: #07bcff;
+  background-color: var(--color-accent);
   border-radius: 5px;
   padding: 5px;
-  color: #140f07;
+  color: var(--color-accent-text);
 }
 
 
@@ -79,11 +113,11 @@ main{
   margin-left: 5px;
   
   &:hover{
-    color: #096fa8; 
+    color: var(--color-primary); 
   }
   
   &:active{
-    color: aqua;
+    color: var(--color-copy-active);
   }
 }
 
@@ -100,7 +134,7 @@ main{
   margin: 5px 0px;
   border-radius: 5px;
   padding: 0px;
-  color: #140f07;
+  color: var(--color-text);
   opacity: 0;
   transition: opacity 0.5s;
 
@@ -110,18 +144,25 @@ main{
 }
 
 .title{
-  background-color: #096fa8;
+  background-color: var(--color-primary);
   margin: 0;
   padding: 5px;
-  color: white;
+  color: var(--color-primary-text);
   text-align: center;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border-bottom: 1px solid #07bcff !important; 
-    box-shadow: 0 1px 0 0 #07bcff !important; 
+    border-bottom: 1px solid var(--color-accent) !important; 
+    box-shadow: 0 1px 0 0 var(--color-accent) !important; 
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  color: var(--color-text) !important;
+  background-color: transparent !important;
 }
 
 
@@ -129,7 +170,7 @@ input[type="password"]:focus {
   display: none;
   font-style: italic;
   font-size: small;
-  color: red;
+  color: var(--color-error);
   margin-top: -8px;
 }
 #duplicatedEmail, #invalidCredentials, #emailSent, #dataUpdated{
@@ -141,7 +182,7 @@ input[type="password"]:focus {
 }
 
 #duplicatedEmail, #invalidCredentials{
-  color: red;
+  color: var(--color-error);
 }
 
 .centerPointMapWrapper {

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const ACTIVE_COLOR = '#07bcff';
-const ERROR_COLOR = 'red';
+const ACTIVE_COLOR = 'var(--color-accent)';
+const ERROR_COLOR = 'var(--color-error)';
 const ON_FOCUS_STYLE = {
-  borderBottom: '1px solid #07bcff',
-  boxShadow: '0 1px 0 0 #07bcff'
+  borderBottom: '1px solid var(--color-accent)',
+  boxShadow: '0 1px 0 0 var(--color-accent)'
 };
 const ON_ERROR_STYLE = {
-  borderBottom: '2px solid red',
+  borderBottom: '2px solid var(--color-error)',
 };
 
 
@@ -30,7 +30,7 @@ const FormField = ({
 
   const iconColor = focused
     ? ACTIVE_COLOR
-    : (hasError ? ERROR_COLOR : '#000');
+    : (hasError ? ERROR_COLOR : 'var(--color-text)');
 
   const labelColor = focused
     ? ACTIVE_COLOR

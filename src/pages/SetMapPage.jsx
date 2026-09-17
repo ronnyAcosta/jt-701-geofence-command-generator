@@ -4,9 +4,6 @@ import CenterPointSetterMap from '../components/containers/CenterPointSetterMap'
 
 const SetMapPage = () => {
   
-  // const geofences = useSelector((state) => state.geofences);
-  
-
   return(
     <>
       <NavBar />

@@ -21,8 +21,6 @@ const EditUserInfo = () => {
 
   const user = auth.currentUser;
 
-  // If the "password" provider is not present, the account was created with
-  // Google only and there is no password to ask for or validate.
   const hasPasswordProvider = user.providerData.some(
     (provider) => provider.providerId === 'password'
   );
@@ -61,8 +59,6 @@ const EditUserInfo = () => {
     })
   }
 
-  // Password accounts: any save (username and/or password) requires the
-  // current password to be entered and valid.
   const reauthenticateWithCurrentPassword = async () => {
     if(currentPassword.length === 0){
       setFieldError('currentPassword', true);
@@ -81,9 +77,6 @@ const EditUserInfo = () => {
     }
   }
 
-  // Google-only accounts: there is no password to check, so a fresh Google
-  // sign-in is used to satisfy Firebase's "recent login" requirement instead,
-  // for both username and password changes.
   const reauthenticateWithGoogle = async () => {
     try {
       await dispatch(googleLoginWithPopUp());
@@ -119,9 +112,6 @@ const EditUserInfo = () => {
 
     if(!passwordFieldsValid || !userNameValid) return;
 
-    // Password accounts always need the current password to save any change.
-    // Google-only accounts only need a fresh Google sign-in when they are
-    // actually setting a new password, not for a plain username edit.
     const needsReauth = hasPasswordProvider || wantsPasswordChange;
 
     if(needsReauth){
@@ -136,8 +126,6 @@ const EditUserInfo = () => {
       await updatePassword(auth.currentUser, newPassword).catch((error) => console.log(error));
     }
 
-    // Read auth.currentUser fresh: a Google reauth may have refreshed the
-    // user instance, so the "user" reference captured at render time can be stale.
     const currentUser = auth.currentUser;
 
     await updateProfile(currentUser, {displayName: userName})

@@ -46,9 +46,6 @@ const MapComponent = ({geofences}) => {
       polygon.addTo(featureGroup);
     });
 
-    // Label every polygon on the map with its geofence's index (+1), so it
-    // can be matched with the generated command. Runs on every geofences
-    // change, which also keeps the label's position correct after edits.
     featureGroup.eachLayer((layer) => {
       if (!layer.docId) return;
 

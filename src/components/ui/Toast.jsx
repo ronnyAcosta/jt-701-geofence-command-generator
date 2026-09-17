@@ -5,9 +5,6 @@ const Toast = ({ id, message, show, onHide }) => {
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Keep the latest onHide without making the timer effect below depend on it:
-  // onHide is usually a new function on every parent render, and re-running
-  // the timers on every render would break the toast's timing.
   const onHideRef = useRef(onHide);
   useEffect(() => {
     onHideRef.current = onHide;

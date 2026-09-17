@@ -6,6 +6,7 @@ import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
 import GoogleButton from 'react-google-button';
 import FormField from '../components/input/FormField';
 import Toast from '../components/ui/Toast';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const LoginScreen = () => {
 
@@ -38,7 +39,11 @@ const LoginScreen = () => {
 
   return (
     <>
-      <h1 className='title'>JT701 - Geofence Commands Generator</h1>
+      <div style={{ position: 'relative' }}>
+        <h1 className='title'>JT701 - Geofence Commands Generator</h1>
+        <ThemeToggle style={{ position: 'absolute', top: '50%', right: '1.2vw', transform: 'translateY(-50%)', color: 'inherit' }} />
+      </div>
+
       <div className='container '>
         <h3>Login</h3>
         <div className="divider"></div>
