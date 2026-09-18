@@ -4,7 +4,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase/config-firebase';
 import FormField from '../components/input/FormField';
 import Toast from '../components/ui/Toast';
-import ThemeToggle from '../components/ui/ThemeToggle';
+import Title from '../components/layout/Title';
 
 const RestorePassword = () => {
 
@@ -23,10 +23,7 @@ const RestorePassword = () => {
 
   return (
     <>
-      <div style={{ position: 'relative' }}>
-        <h1 className='title'>JT701 - Geofence Commands Generator</h1>
-        <ThemeToggle style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', color: 'inherit' }} />
-      </div>
+      <Title />
 
       <div className='container '>
         <h3>Reset Password</h3>
