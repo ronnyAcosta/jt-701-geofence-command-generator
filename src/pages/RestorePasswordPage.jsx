@@ -6,7 +6,7 @@ import FormField from '../components/input/FormField';
 import Toast from '../components/ui/Toast';
 import Title from '../components/layout/Title';
 
-const RestorePassword = () => {
+const RestorePasswordPage = () => {
 
   const [email, setEmail] = useState('');
   const [showEmailSent, setShowEmailSent] = useState(false);
@@ -61,4 +61,4 @@ const RestorePassword = () => {
   )
 }
 
-export default RestorePassword;
+export default RestorePasswordPage;

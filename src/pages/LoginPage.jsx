@@ -8,7 +8,7 @@ import FormField from '../components/input/FormField';
 import Toast from '../components/ui/Toast';
 import Title from '../components/layout/Title';
 
-const LoginScreen = () => {
+const LoginPage = () => {
 
   const dispatch = useDispatch();
 
@@ -87,4 +87,4 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen;
+export default LoginPage;

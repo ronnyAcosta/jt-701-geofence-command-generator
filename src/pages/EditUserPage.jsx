@@ -15,7 +15,7 @@ import { collection, deleteDoc, getDocs } from 'firebase/firestore';
 
 const initialFieldState = { error: false, message: false };
 
-const EditUserInfo = () => {
+const EditUserPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -259,4 +259,4 @@ const EditUserInfo = () => {
   )
 }
 
-export default EditUserInfo;
+export default EditUserPage;

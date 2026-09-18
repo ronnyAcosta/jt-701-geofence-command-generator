@@ -10,7 +10,7 @@ import Title from '../components/layout/Title';
 
 const initialFieldState = { error: false, message: false };
 
-const RegisterScreen = () => {
+const RegisterPage = () => {
 
   const dispatch = useDispatch();
 
@@ -160,4 +160,4 @@ const RegisterScreen = () => {
   )
 }
 
-export default RegisterScreen;
+export default RegisterPage;

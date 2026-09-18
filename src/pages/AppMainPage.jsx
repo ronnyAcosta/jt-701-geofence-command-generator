@@ -10,7 +10,7 @@ import CopiedToast from '../components/ui/CopiedToast';
 import { CopyProvider } from '../context/CopyContext';
 import {MAX_GEOFENCES} from '../actions/geofencesActions';
 
-const AppScreen = () => {
+const AppMainPage = () => {
   
   const geofences = useSelector((state) => state.geofences);
 
@@ -30,4 +30,4 @@ const AppScreen = () => {
     </>
   );
 }
-export default AppScreen;
+export default AppMainPage;

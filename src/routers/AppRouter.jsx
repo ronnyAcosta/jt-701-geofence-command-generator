@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import PublicRoutes from './PublicRoutes';
 import PrivateRoute from './PrivateRoute';
 
-import LoginScreen from '../pages/LoginScreen';
-import AppScreen from '../pages/AppScreen';
-import RegisterScreen from '../pages/RegisterScreen';
-import EditUserInfo from '../pages/EditUserInfo';
-import RestorePassword from '../pages/RestorePassword';
+import LoginPage from '../pages/LoginPage';
+import AppMainPage from '../pages/AppMainPage';
+import RegisterPage from '../pages/RegisterPage';
+import EditUserPage from '../pages/EditUserPage';
+import RestorePasswordPage from '../pages/RestorePasswordPage';
 import SetMapPage from '../pages/SetMapPage';
 
 import { auth } from '../firebase/config-firebase';
@@ -42,12 +42,12 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<PrivateRoute log={log} component={AppScreen} /> } />
-        <Route exact path='/edit' element={<PrivateRoute log={log} component={EditUserInfo} /> } />
+        <Route path='/' element={<PrivateRoute log={log} component={AppMainPage} /> } />
+        <Route exact path='/edit' element={<PrivateRoute log={log} component={EditUserPage} /> } />
         <Route exact path='/set-map-location' element={<PrivateRoute log={log} component={SetMapPage} /> } />     
-        <Route exact path='/login' element={<PublicRoutes log={log} component={LoginScreen} /> } /> 
-        <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterScreen} /> } />
-        <Route exact path='/restore' element={<PublicRoutes log={log} component={RestorePassword} /> } />      
+        <Route exact path='/login' element={<PublicRoutes log={log} component={LoginPage} /> } /> 
+        <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterPage} /> } />
+        <Route exact path='/restore' element={<PublicRoutes log={log} component={RestorePasswordPage} /> } />      
       </Routes>
     </Router>)
       
