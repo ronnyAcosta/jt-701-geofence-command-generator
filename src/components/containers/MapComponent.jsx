@@ -12,6 +12,8 @@ import Spinner from '../ui/Spinner';
 
 import { addGeofence, editGeofence, deleteGeofence } from '../../actions/geofencesActions';
 
+import '../../utils/leafletDrawPatch';
+
 const MapComponent = ({geofences}) => {
   const dispatch = useDispatch();
   const centerPoint = useSelector(state => state.centerPoint);
