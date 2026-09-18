@@ -21,7 +21,7 @@ const AppMainPage = () => {
         <MapComponent geofences={geofences} />       
         <CopyProvider>
           <div className='commandsList'>
-            <h4 className=''>Commands</h4>
+            <h4>Commands</h4>
             <CommandsCointainer geofences={geofences} COMMANDS_QTY={MAX_GEOFENCES} />
             <CopiedToast />
           </div>
