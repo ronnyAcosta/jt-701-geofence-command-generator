@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MapContainer, TileLayer, FeatureGroup } from "react-leaflet";
+import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
@@ -29,6 +29,22 @@ const MapComponent = ({geofences}) => {
 
   const handleDelete = useCallback((e) => dispatch(deleteGeofence(e)), [dispatch]);
 
+  const DrawEvents = ({ onEdited, onDeleted }) => {
+    const map = useMap();
+
+    useEffect(() => {
+      map.on("draw:edited", onEdited);
+      map.on("draw:deleted", onDeleted);
+
+      return () => {
+        map.off("draw:edited", onEdited);
+        map.off("draw:deleted", onDeleted);
+      };
+    }, [map, onEdited, onDeleted]);
+
+    return null;
+  };
+
   useEffect(() => {
     const featureGroup = featureGroupNode;
     if (!featureGroup) return;
@@ -43,7 +59,13 @@ const MapComponent = ({geofences}) => {
       if (alreadyAdded) return;
 
       const latlngs = geofence.coordinates.map((c) => [c.lat, c.lng]);
-      const polygon = L.polygon(latlngs);
+      
+      const polygon = L.polygon(latlngs, {
+        color: '#3388ff',
+        weight: 4,
+        opacity: 0.5,
+        fillOpacity: 0.2,
+      });
       polygon.docId = geofence.docId;
       polygon.addTo(featureGroup);
     });
@@ -80,8 +102,6 @@ const MapComponent = ({geofences}) => {
           <EditControl 
             position="topright" 
             onCreated={handleCreate}
-            onEdited={handleEdit}
-            onDeleted={handleDelete}
             draw={{
               rectangle: false,
               circle: false,
@@ -91,6 +111,7 @@ const MapComponent = ({geofences}) => {
             }}
           />  
         </FeatureGroup>
+        <DrawEvents onEdited={handleEdit} onDeleted={handleDelete} />
         <TileLayer 
           url={osm.maptiler.url}
           attribution={osm.maptiler.attribution}

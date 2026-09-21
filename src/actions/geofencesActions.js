@@ -2,7 +2,8 @@ import { actionType } from "../types/actionType";
 
 import { auth, db } from "../firebase/config-firebase";
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, } from "firebase/firestore";
-
+import { toast } from "sonner";
+import { getSlots } from "../helpers/getSlots";
 const MAX_GEOFENCES = 10;
 
 const add = (data) =>{
@@ -58,20 +59,26 @@ const addGeofence = (e) => {
       })),
       dbLoaded: false,
     }
-    const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
-    const docId = docRef.id;
-    
-    await updateDoc(docRef, { docId: docId });
+    try{
+      const docRef = await addDoc(collection(db, `users/${id}/geofences/`), data);
+      const docId = docRef.id;
+      
+      await updateDoc(docRef, { docId: docId });
+  
+      data.docId = docId;
+      e.layer.docId = docId;
 
-    data.docId = docId;
+      toast.success(`Successfully added geofence ${getSlots([data])}.`);
 
-    e.layer.docId = docId;
-
-    dispatch(add(data));
+      dispatch(add(data));
+    } catch(_e){
+      toast.error("Error adding geofence");
+    }
   };
 };
 
 const editGeofence = (e) => {
+  console.log("editGeofence run");
   return async (dispatch, getState) => {
     const id = auth.currentUser.uid;
     const { layers: { _layers } } = e;
@@ -89,17 +96,22 @@ const editGeofence = (e) => {
     const editedGeofences = getState().geofences.filter((geofence) =>
       geofence && data.some((g) => g.docId === geofence.docId)
     );
+    try{   
+      await Promise.all(
+        editedGeofences.map( async (geofence) => {
+          const edited = data.find((g) => g.docId === geofence.docId);
+          return await updateDoc(doc(db, `users/${id}/geofences/${geofence.docId}`), {
+            coordinates: edited.coordinates
+          })
+        })
+      );
+      // console.log(editedGeofences);
+      toast.success(`Successfully edited ${editedGeofences.length === 1 ? "geofence" : "geofences"} ${getSlots(editedGeofences)}.`);
+      dispatch(edit(data))
+    } catch(_e){
+      toast.error("Error editing geofence");
+    }
 
-    await Promise.all(
-      editedGeofences.map((geofence) => {
-        const edited = data.find((g) => g.docId === geofence.docId);
-        return updateDoc(doc(db, `users/${id}/geofences/${geofence.docId}`), {
-          coordinates: edited.coordinates
-        }).catch((error) => console.log(error));
-      })
-    );
-
-    dispatch(edit(data))
   }
 }
 
@@ -118,13 +130,19 @@ const deleteGeofence = (e) => {
       geofence && data.some((g) => g.docId === geofence.docId)
     );
 
-    await Promise.all(
-      deletedGeofences.map((geofence) =>
-        deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`)).catch((error) => console.log(error))
-      )
-    );
+    try{
+      await Promise.all(
+        deletedGeofences.map((geofence) =>
+          deleteDoc(doc(db, `users/${id}/geofences/${geofence.docId}`))
+        )
+      );
 
-    dispatch(remove(data));
+      toast.success(`Successfully deleted ${deletedGeofences.length === 1 ? "geofence" : "geofences"} ${getSlots(deletedGeofences)}.`);
+      dispatch(remove(data));
+
+    }catch(_e){
+      toast.error("Error deleting geofence");
+    }
   }
 };
 

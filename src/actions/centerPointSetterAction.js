@@ -2,6 +2,7 @@ import { centerPointSetterType } from "../types/centerPointSetterType";
 
 import { auth, db } from "../firebase/config-firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { toast } from "sonner";
 
 const DEFAULT_CENTER_POINT = {
   coordinates: {
@@ -46,10 +47,16 @@ const load = (data) => {
 const setCenterPoint = (centerPoint) => {
   return async (dispatch) => {
     const id = auth.currentUser.uid;
+    try{
 
-    await setDoc(getCenterPointDocRef(id), centerPoint);
+      await setDoc(getCenterPointDocRef(id), centerPoint);
+      
+      toast.success("Center point setted successfully");
 
-    dispatch(set(centerPoint));
+      dispatch(set(centerPoint));
+    } catch (e) {
+      toast.error("Error setting center point");
+    }
   };
 };
 
@@ -57,9 +64,15 @@ const editCenterPoint = (centerPoint) => {
   return async (dispatch) => {
     const id = auth.currentUser.uid;
 
-    await setDoc(getCenterPointDocRef(id), centerPoint, { merge: true });
+    try{
+      await setDoc(getCenterPointDocRef(id), centerPoint, { merge: true });
+      
+      toast.success("Center point setted successfully");
+      dispatch(edit(centerPoint))
 
-    dispatch(edit(centerPoint))
+    }catch(e){
+      toast.error("Error setting center point");
+    }
   }
 }
 
@@ -67,9 +80,16 @@ const deleteCenterPoint = () => {
   return async (dispatch) => {
     const id = auth.currentUser.uid;
 
-    await setDoc(getCenterPointDocRef(id), DEFAULT_CENTER_POINT);
+    try{
+      await setDoc(getCenterPointDocRef(id), DEFAULT_CENTER_POINT);
 
-    dispatch(defaultPoint());
+      toast.success("Center point setted to default");
+      dispatch(defaultPoint());
+
+    } catch(e){
+      toast.error("Error deleting center point");
+    }
+
   }
 };
 

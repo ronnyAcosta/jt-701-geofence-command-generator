@@ -2,10 +2,8 @@ import { IonIcon } from "@ionic/react";
 import { copyOutline } from "ionicons/icons";
 
 import { coordinatesFormatConverter } from "../../helpers/formatters";
-import { useCopyNotification } from "../../context/CopyContext";
-
+import { toast } from "sonner";
 const GetCommand = ({ geofence, index }) => {
-  const { notifyCopied } = useCopyNotification();
 
   const handleCopy = (e) => {
     const content = e.target.parentNode.innerText;
@@ -17,8 +15,9 @@ const GetCommand = ({ geofence, index }) => {
 
     navigator.clipboard
       .writeText(content)
-      .then(() => notifyCopied())
+      .then(() => toast.info("Copied to clipboard"))
       .catch(() => console.log("Error copying content"));
+
   };
 
   if (geofence.coordinates.length > 10) {

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import NavBar from '../components/layout/NavBar';
 import FormField from '../components/input/FormField';
-import Toast from '../components/ui/Toast';
 
 import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName, googleLoginWithPopUp } from '../actions/authAction';
@@ -12,6 +11,7 @@ import { logout, updateUserName, googleLoginWithPopUp } from '../actions/authAct
 import { updateProfile, updatePassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { auth, db } from '../firebase/config-firebase';
 import { collection, deleteDoc, getDocs } from 'firebase/firestore';
+import { toast } from 'sonner';
 
 const initialFieldState = { error: false, message: false };
 
@@ -40,7 +40,6 @@ const EditUserPage = () => {
     confirmNewPassword: { ...initialFieldState },
   });
 
-  const [showDataUpdated, setShowDataUpdated] = useState(false);
 
   const setFieldError = (name, error) =>
     setFields((prev) => ({ ...prev, [name]: { ...prev[name], error, message: error } }));
@@ -79,7 +78,7 @@ const EditUserPage = () => {
 
   const reauthenticateWithGoogle = async () => {
     try {
-      await dispatch(googleLoginWithPopUp());
+      dispatch(googleLoginWithPopUp());
       return true;
     } catch (error) {
       console.log(error);
@@ -138,10 +137,10 @@ const EditUserPage = () => {
           newPassword: '',
           confirmNewPassword: ''
         });
-
-        setShowDataUpdated(true);
       })
       .catch((error) => console.log(error));
+
+      toast.success('User data updated successfully');
   }
 
   const handleDelete = async () => {
@@ -248,12 +247,6 @@ const EditUserPage = () => {
           <button onClick={handleBack} className='btn col s5  waves-effect waves-light'>Go Back</button>
           <button onClick={handleDelete} className='btn col s5 offset-s2 red waves-effect waves-light'>Delete Account</button>
         </div>
-        <Toast
-          id="dataUpdated"
-          message="Data updated successfully"
-          show={showDataUpdated}
-          onHide={() => setShowDataUpdated(false)}
-        />
       </div>
     </>
   )

@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase/config-firebase';
 import FormField from '../components/input/FormField';
-import Toast from '../components/ui/Toast';
+import { toast } from 'sonner';
 import Title from '../components/layout/Title';
 
 const RestorePasswordPage = () => {
 
   const [email, setEmail] = useState('');
-  const [showEmailSent, setShowEmailSent] = useState(false);
 
   const handleChange = (e) => setEmail(e.target.value);
 
@@ -17,8 +16,8 @@ const RestorePasswordPage = () => {
     e.preventDefault();
 
     await sendPasswordResetEmail(auth, email)
-      .then(() => setShowEmailSent(true))
-      .catch((error)=> console.log(error));
+      .then(() => toast.success("Password reset email sent"))
+      .catch((e)=> toast.error("Error sending password reset email"));
   }
 
   return (
@@ -49,12 +48,6 @@ const RestorePasswordPage = () => {
             <Link to="/register" className='col s12'>Register</Link>
             <Link to='/login'className='col s12' >Login</Link>
           </form>
-          <Toast
-            id="emailSent"
-            message="Password reset email sent"
-            show={showEmailSent}
-            onHide={() => setShowEmailSent(false)}
-          />
         </div>
       </div>
     </>

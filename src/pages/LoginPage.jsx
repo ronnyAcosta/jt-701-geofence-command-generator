@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
 import GoogleButton from 'react-google-button';
 import FormField from '../components/input/FormField';
-import Toast from '../components/ui/Toast';
+import { toast } from 'sonner';
 import Title from '../components/layout/Title';
 
 const LoginPage = () => {
@@ -18,7 +18,6 @@ const LoginPage = () => {
   })
   const {email, password} = userLogin;
 
-  const [showInvalidCredentials, setShowInvalidCredentials] = useState(false);
 
   const handleChange = (e) =>{
     setUserLogin({
@@ -32,7 +31,7 @@ const LoginPage = () => {
     dispatch(loginWithEmail(email, password))
       .catch((error) => {
         if(error.code === 'auth/invalid-credential'){
-          setShowInvalidCredentials(true);
+          toast.error("Invalid email or password");
         }
       });
   }
@@ -75,12 +74,6 @@ const LoginPage = () => {
             <Link to="/register" className='col s12'>Register</Link>
             <Link to='/restore' className='col s12' >Forgot Password</Link>
           </form>
-          <Toast
-            id="invalidCredentials"
-            message="Invalid email or password"
-            show={showInvalidCredentials}
-            onHide={() => setShowInvalidCredentials(false)}
-          />
         </div>
       </div>
     </>

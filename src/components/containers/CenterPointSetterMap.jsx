@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import { setCenterPoint, editCenterPoint, deleteCenterPoint, DEFAULT_CENTER_POINT } from '../../actions/centerPointSetterAction';
 import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCenterPoint, editCenterPoint, deleteCenterPoint } from '../../actions/centerPointSetterAction';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../../map-providers';
@@ -17,15 +18,22 @@ const ZoomCapture = ({ mapRef }) => {
   return null;
 };
 
+const isDefaultCenterPoint = ({ coordinates }) =>
+  coordinates.lat === DEFAULT_CENTER_POINT.coordinates.lat &&
+  coordinates.lng === DEFAULT_CENTER_POINT.coordinates.lng;
+
 const CenterPointSetterMap = () => {
   const dispatch = useDispatch();
   const centerPoint = useSelector(state => state.centerPoint);
 
   const mapRef = useRef(null);
-  const featureGroupRef = useRef(null);
+  const [featureGroupNode, setFeatureGroupNode] = useState(null);
+  const featureGroupRef = useCallback((node) => {
+    if (node) setFeatureGroupNode(node);
+  }, []);
 
   const handleCreate = (e) => {
-    const featureGroup = featureGroupRef.current;
+    const featureGroup = featureGroupNode;
 
     if (featureGroup) {
       featureGroup.eachLayer((layer) => {
@@ -62,6 +70,48 @@ const CenterPointSetterMap = () => {
 
   const handleDelete = () => {dispatch(deleteCenterPoint())};
 
+  const DrawEvents = ({ onEdited, onDeleted }) => {
+    const map = useMap();
+
+    useEffect(() => {
+      map.on("draw:edited", onEdited);
+      map.on("draw:deleted", onDeleted);
+
+      return () => {
+        map.off("draw:edited", onEdited);
+        map.off("draw:deleted", onDeleted);
+      };
+    }, [map, onEdited, onDeleted]);
+
+    return null;
+  };
+
+  useEffect(() => {
+    if (!featureGroupNode) return;
+
+    // The group holds at most one layer: the center point marker
+    const [marker] = featureGroupNode.getLayers();
+
+    if (isDefaultCenterPoint(centerPoint)) {
+      if (marker) featureGroupNode.removeLayer(marker);
+      return;
+    }
+
+    const { lat, lng } = centerPoint.coordinates;
+
+    if (marker) {
+      marker.setLatLng([lat, lng]);
+    } else {
+      
+      L.circleMarker([lat, lng], {
+        color: '#3388ff',
+        weight: 4,
+        opacity: 0.5,
+        fillOpacity: 0.2,
+      }).addTo(featureGroupNode);
+    }
+  }, [centerPoint, featureGroupNode]);
+
   return (
     <>
       <MapContainer className='centerPointMapWrapper' center={centerPoint.coordinates} zoom={centerPoint.zoom}>
@@ -70,8 +120,6 @@ const CenterPointSetterMap = () => {
           <EditControl
             position="topright"
             onCreated={handleCreate}
-            onEdited={handleEdit}
-            onDeleted={handleDelete}
             draw={{
               rectangle: false,
               circle: false,
@@ -82,6 +130,7 @@ const CenterPointSetterMap = () => {
             }}
           />
         </FeatureGroup>
+        <DrawEvents onEdited={handleEdit} onDeleted={handleDelete} />
         <TileLayer
           url={osm.maptiler.url}
           attribution={osm.maptiler.attribution}

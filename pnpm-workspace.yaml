@@ -5,3 +5,8 @@ allowBuilds:
   protobufjs: true
 minimumReleaseAge: 10080
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  - css-declaration-sorter@6.4.1
+  - react-redux@9.2.0
+  - rollup@2.80.0
+  - semver@6.3.1

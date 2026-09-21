@@ -5,7 +5,7 @@ import { register } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
 import FormField from '../components/input/FormField';
-import Toast from '../components/ui/Toast';
+import { toast } from 'sonner';
 import Title from '../components/layout/Title';
 
 const initialFieldState = { error: false, message: false };
@@ -28,8 +28,6 @@ const RegisterPage = () => {
     password: { ...initialFieldState },
     confirmPassword: { ...initialFieldState },
   });
-
-  const [showDuplicatedEmail, setShowDuplicatedEmail] = useState(false);
 
   const setFieldError = (name, error) =>
     setFields((prev) => ({ ...prev, [name]: { ...prev[name], error, message: error } }));
@@ -77,7 +75,7 @@ const RegisterPage = () => {
       dispatch(register(userName, email, password))
         .catch((error) => {
           if(error.code === 'auth/email-already-in-use'){
-            setShowDuplicatedEmail(true);
+            toast.error("Email already in use");
           }
         });
     }
@@ -148,12 +146,6 @@ const RegisterPage = () => {
             <hr />
             <Link to="/login">Login into account</Link>
           </form>
-          <Toast
-            id="duplicatedEmail"
-            message="Email is alredy in use"
-            show={showDuplicatedEmail}
-            onHide={() => setShowDuplicatedEmail(false)}
-          />
         </div>
       </div>
     </>
