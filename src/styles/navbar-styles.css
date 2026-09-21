@@ -1,0 +1,9 @@
+.nav-icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 485px) {
+  nav .nav-wrapper > a.dropdown-trigger > i.material-icons {
+    font-size: 6.3vw;
+  } 
+}

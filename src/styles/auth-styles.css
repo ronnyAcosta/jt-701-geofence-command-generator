@@ -3,27 +3,6 @@
    Append at the end of index.css
    ========================================================================== */
 
-:root {
-  --auth-page-bg: #f2f6f9;
-  --auth-surface: #ffffff;
-  --auth-border: #d9e2e9;
-  --auth-control-border: #7b8f9e;
-  --auth-muted: #566573;
-  --auth-link: var(--color-primary);
-  --auth-grid: rgba(9, 111, 168, 0.08);
-}
-
-[data-theme="dark"] {
-  --auth-page-bg: #061a28;
-  --auth-surface: #0d2c42;
-  --auth-border: #1e4661;
-  --auth-control-border: #4b7893;
-  --auth-muted: #9db4c4;
-  --auth-link: var(--color-accent);
-  --auth-grid: rgba(7, 188, 255, 0.07);
-}
-
-/* Tint the page only while an auth page is mounted */
 body:has(.auth-page) {
   background-color: var(--auth-page-bg);
 }
@@ -39,7 +18,6 @@ body:has(.auth-page) {
   padding: clamp(1.5rem, 8vh, 5rem) 1rem 3rem;
 }
 
-/* Map-style graticule that fades out towards the edges */
 .auth-page::before {
   content: '';
   position: absolute;
@@ -64,7 +42,6 @@ body:has(.auth-page) {
   box-shadow: 0 1px 2px rgba(8, 33, 50, 0.06), 0 16px 36px -16px rgba(8, 33, 50, 0.25);
 }
 
-/* Decorative geofence mark */
 .auth-mark {
   display: block;
   width: 56px;
@@ -97,7 +74,6 @@ body:has(.auth-page) {
   font: 700 12px 'Poppins', 'Roboto', sans-serif;
 }
 
-/* Text */
 .auth-heading {
   margin: 0;
   color: var(--color-text);
@@ -128,8 +104,6 @@ body:has(.auth-page) {
   border-radius: 2px;
 }
 
-/* Form: keeps Materialize's grid/prefix layout used by FormField,
-   only realigns it inside the card */
 .auth-form .row {
   margin-bottom: 0;
 }
@@ -153,7 +127,6 @@ body:has(.auth-page) {
   font-size: 0.875rem;
 }
 
-/* Primary button (overrides Materialize .btn) */
 .auth-card .auth-submit {
   display: block;
   width: 100%;
@@ -183,7 +156,6 @@ body:has(.auth-page) {
   outline-offset: 2px;
 }
 
-/* "or" divider */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -201,7 +173,6 @@ body:has(.auth-page) {
   background-color: var(--auth-border);
 }
 
-/* Google button (outlined, full width) */
 .auth-card .auth-google {
   display: flex;
   align-items: center;
@@ -238,166 +209,6 @@ body:has(.auth-page) {
   text-align: center;
 }
 
-.title-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.6rem 1.25rem;
-  background-color: var(--color-primary);
-  color: var(--color-primary-text);
-}
-
-.title-bar-name {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 0.75rem;
-  margin: 0;
-  font: 600 1.25rem/1.3 'Poppins', 'Roboto', sans-serif;
-  text-align: left;
-}
-
-.title-bar-descriptor {
-  font-size: 1rem;
-  font-weight: 400;
-  opacity: 0.9;
-}
-
-/* Danger zone (edit user page) */
-.danger-zone {
-  margin-top: 2rem;
-  padding: 1rem 1.25rem 1.25rem;
-  background-color: var(--danger-bg);
-  border: 1px solid var(--danger-border);
-  border-radius: 8px;
-}
-
-.danger-zone-title {
-  margin: 0;
-  color: var(--danger-text);
-  font: 600 1rem/1.3 'Poppins', 'Roboto', sans-serif;
-}
-
-.danger-zone-text {
-  margin: 0.35rem 0 1rem;
-  color: var(--danger-text);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-.auth-card .danger-btn {
-  display: block;
-  width: 100%;
-  height: 2.5rem;
-  border: 1px solid var(--danger-text);
-  border-radius: 8px;
-  background-color: var(--auth-surface);
-  color: var(--danger-text);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.auth-card .danger-btn:hover,
-.auth-card .danger-btn:focus {
-  background-color: color-mix(in srgb, var(--danger-text) 10%, var(--auth-surface));
-}
-
-.auth-card .danger-btn:focus-visible {
-  outline: 2px solid var(--danger-text);
-  outline-offset: 2px;
-}
-
-/* Radix alert-dialog: delete-account confirmation */
-.dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(6, 26, 40, 0.55);
-  animation: dialog-fade-in 0.15s ease-out;
-}
-
-.dialog-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 24rem;
-  padding: 1.5rem;
-  background-color: var(--auth-surface);
-  border: 1px solid var(--danger-border);
-  border-radius: 10px;
-  box-shadow: 0 16px 36px -16px rgba(8, 33, 50, 0.35);
-  animation: dialog-scale-in 0.15s ease-out;
-}
-
-.dialog-title {
-  margin: 0 0 0.5rem;
-  color: var(--color-text);
-  font: 600 1.125rem/1.3 'Poppins', 'Roboto', sans-serif;
-}
-
-.dialog-description {
-  margin: 0;
-  color: var(--auth-muted);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-.dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-.dialog-btn {
-  height: 2.375rem;
-  padding: 0 1rem;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.dialog-btn-cancel {
-  border: 1px solid var(--auth-control-border);
-  background-color: var(--auth-surface);
-  color: var(--color-text);
-}
-
-.dialog-btn-cancel:hover {
-  background-color: color-mix(in srgb, var(--auth-surface) 92%, var(--color-text));
-}
-
-.dialog-btn-danger {
-  border: 1px solid var(--danger-text);
-  background-color: var(--danger-text);
-  color: var(--auth-surface);
-}
-
-.dialog-btn-danger:hover {
-  background-color: color-mix(in srgb, var(--danger-text) 88%, #000);
-}
-
-.dialog-btn:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-@keyframes dialog-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes dialog-scale-in {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
 @media (max-width: 480px) {
   .auth-card {
     padding: 1.5rem 1.25rem 1.25rem;
@@ -406,29 +217,11 @@ body:has(.auth-page) {
   .auth-heading {
     font-size: 1.4rem;
   }
-
-  .title-bar {
-    padding: 0.5rem 1rem;
-  }
-
-  .title-bar-name {
-    flex-direction: column;
-    font-size: 1.1rem;
-  }
-
-  .title-bar-descriptor {
-    font-size: 0.85rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .auth-card .auth-submit,
   .auth-card .auth-google {
     transition: none;
-  }
-
-  .dialog-overlay,
-  .dialog-content {
-    animation: none;
   }
 }

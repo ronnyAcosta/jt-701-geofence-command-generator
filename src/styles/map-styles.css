@@ -1,0 +1,63 @@
+.leaflet-container{
+  height: 91vh;
+  min-width: 58vw;
+  margin-left: 5px;
+}
+
+.centerPointMapWrapper {
+  width: 98vw;
+  height: 91vh;
+  margin: 0 1vw;
+}
+
+.mapLoadingPlaceholder {
+  height: 91vh;
+  min-width: 58vw;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaflet-tooltip.geofence-label {
+  background-color: #096fa8;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.leaflet-tooltip.geofence-label::before {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .leaflet-container{
+    height: 57vh;
+    min-width: 85vw;
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .mapLoadingPlaceholder {
+    height: 57vh;
+    min-width: 85vw;
+    width: 100%;
+    margin: 0;
+  }
+
+  .centerPointMapWrapper {
+    width: 100vw;
+    height: 91vh;
+    margin: 0;
+  }
+}

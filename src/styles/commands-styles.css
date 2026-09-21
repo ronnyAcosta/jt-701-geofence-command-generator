@@ -1,0 +1,67 @@
+.commandsList{
+  position: relative;
+  top: 0px;
+  margin: 0 30px 0 15px;
+  width: 40vw;
+}
+
+.commandsBox{
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  min-height: 40vh;
+  max-height: 80vh;
+  width: 100%;
+  margin-top: 15px;
+  overflow-y: auto;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  font-weight: 600;
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+
+  margin: 0 5px;
+  background-color: var(--color-accent);
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--color-accent-text);
+}
+
+.copy {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 10px;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  &:active {
+    color: var(--color-copy-active);
+  }
+}
+
+.commandContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 800px) {
+  .commandsList{
+    width: 82vw;
+  }
+
+  .commandsBox{
+    min-height: 10vh;
+    max-height: 30vh;
+    width: 88vw;
+    margin-top: 0px;
+  } 
+}
