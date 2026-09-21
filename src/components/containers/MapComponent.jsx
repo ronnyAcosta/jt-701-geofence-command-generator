@@ -9,6 +9,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../../map-providers';
 
 import Spinner from '../ui/Spinner';
+import { DRAW_STYLE } from '../../utils/drawStyles';
 
 import { addGeofence, editGeofence, deleteGeofence } from '../../actions/geofencesActions';
 
@@ -60,12 +61,7 @@ const MapComponent = ({geofences}) => {
 
       const latlngs = geofence.coordinates.map((c) => [c.lat, c.lng]);
       
-      const polygon = L.polygon(latlngs, {
-        color: '#3388ff',
-        weight: 4,
-        opacity: 0.5,
-        fillOpacity: 0.2,
-      });
+      const polygon = L.polygon(latlngs, DRAW_STYLE);
       polygon.docId = geofence.docId;
       polygon.addTo(featureGroup);
     });
@@ -104,6 +100,7 @@ const MapComponent = ({geofences}) => {
             position="topright" 
             onCreated={handleCreate}
             draw={{
+              polygon: { shapeOptions: DRAW_STYLE },
               rectangle: false,
               circle: false,
               circlemarker: false,

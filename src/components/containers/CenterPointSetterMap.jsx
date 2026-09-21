@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../../map-providers';
+import { MARKER_STYLE } from '../../utils/drawStyles';
 
 const ZoomCapture = ({ mapRef }) => {
   const map = useMap();
@@ -103,12 +104,7 @@ const CenterPointSetterMap = () => {
       marker.setLatLng([lat, lng]);
     } else {
       
-      L.circleMarker([lat, lng], {
-        color: '#3388ff',
-        weight: 4,
-        opacity: 0.5,
-        fillOpacity: 0.2,
-      }).addTo(featureGroupNode);
+      L.circleMarker([lat, lng], MARKER_STYLE).addTo(featureGroupNode);
     }
   }, [centerPoint, featureGroupNode]);
 
@@ -121,9 +117,9 @@ const CenterPointSetterMap = () => {
             position="topright"
             onCreated={handleCreate}
             draw={{
+              circlemarker: MARKER_STYLE,
               rectangle: false,
               circle: false,
-              circlemarker: true,
               marker: false,
               polyline: false,
               polygon: false
