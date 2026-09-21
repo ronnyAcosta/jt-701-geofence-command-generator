@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import NavBar from '../components/layout/NavBar';
 import FormField from '../components/input/FormField';
@@ -11,10 +11,11 @@ import { updateProfile, updatePassword, deleteUser, EmailAuthProvider, reauthent
 import { auth, db } from '../firebase/config-firebase';
 import { collection, deleteDoc, getDocs } from 'firebase/firestore';
 import { toast } from 'sonner';
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 const initialFieldState = { error: false, message: false };
 
-const EditUserPage = () => {
+const UpdateUserPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,6 +39,8 @@ const EditUserPage = () => {
     newPassword: { ...initialFieldState },
     confirmNewPassword: { ...initialFieldState },
   });
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 
   const setFieldError = (name, error) =>
@@ -143,45 +146,40 @@ const EditUserPage = () => {
   }
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete your account?")) return;
+  const reauthenticated = hasPasswordProvider
+    ? await reauthenticateWithCurrentPassword()
+    : await reauthenticateWithGoogle();
 
-    const reauthenticated = hasPasswordProvider
-      ? await reauthenticateWithCurrentPassword()
-      : await reauthenticateWithGoogle();
+  if (!reauthenticated) return;
 
-    if (!reauthenticated) return;
+  try {
+    const geofencesSnapshot = await getDocs(collection(db, `users/${user.uid}/geofences`));
+    const centerPointSnapshot = await getDocs(collection(db, `users/${user.uid}/centerPoint`));
 
-    try {
-      const geofencesSnapshot = await getDocs(collection(db, `users/${user.uid}/geofences`));
-      const centerPointSnapshot = await getDocs(collection(db, `users/${user.uid}/centerPoint`));
+    await Promise.all([
+      ...geofencesSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
+      ...centerPointSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
+    ]);
 
-      await Promise.all([
-        ...geofencesSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
-        ...centerPointSnapshot.docs.map((docSnap) => deleteDoc(docSnap.ref)),
-      ]);
-
-      await deleteUser(auth.currentUser);
-      dispatch(logout());
-      navigate('/login');
-    } catch (error) {
-      console.log(error);
-    }
+    await deleteUser(auth.currentUser);
+    dispatch(logout());
+    navigate('/login');
+  } catch (error) {
+    console.log(error);
   }
-
-  const handleBack = () => {
-    navigate('/');
-  }
+}
 
 
   return (
     <>
       <NavBar />
-      <div className='container '>
-        <h3>Edit user info</h3>
-        <div className="divider"></div>
-        <br />
-        <div className="row container">
-          <form className="col s12" method='post' onSubmit={handleSubmit}>
+
+      <div className="auth-page">
+        <section className="auth-card" aria-labelledby="edit-user-heading">
+          <h2 id="edit-user-heading" className="auth-heading">Update user info</h2>
+          <p className="auth-subheading">Update your user name or choose a new password.</p>
+
+          <form className="auth-form" method='post' onSubmit={handleSubmit}>
             <div className="row">
               <FormField
                 icon="account_circle"
@@ -193,7 +191,8 @@ const EditUserPage = () => {
                 onBlurClearError={() => clearFieldErrorColor('userName')}
                 hasError={fields.userName.error}
                 showErrorMessage={fields.userName.message}
-                errorMessage="Min lenght: 3  |  Max lenght: 20"
+                errorMessage="Use between 3 and 20 characters"
+                autoComplete="nickname"
               />
               {hasPasswordProvider && (
                 <FormField
@@ -222,7 +221,8 @@ const EditUserPage = () => {
                 onBlurClearError={() => clearFieldErrorColor('newPassword')}
                 hasError={fields.newPassword.error}
                 showErrorMessage={fields.newPassword.message}
-                errorMessage="Min lenght: 8"
+                errorMessage="Use at least 8 characters"
+                autoComplete="new-password"
               />
               <FormField
                 icon="vpn_key"
@@ -235,19 +235,55 @@ const EditUserPage = () => {
                 onBlurClearError={() => clearFieldErrorColor('confirmNewPassword')}
                 hasError={fields.confirmNewPassword.error}
                 showErrorMessage={fields.confirmNewPassword.message}
-                errorMessage="Password do not match"
+                errorMessage="Passwords do not match"
+                autoComplete="new-password"
               />
-              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Submit</button>
             </div>
-            <hr />
-            <br />
+
+            <button type='submit' className='btn auth-submit waves-effect waves-light'>Save changes</button>
           </form>
-          <button onClick={handleBack} className='btn col s5  waves-effect waves-light'>Go Back</button>
-          <button onClick={handleDelete} className='btn col s5 offset-s2 red waves-effect waves-light'>Delete Account</button>
-        </div>
+
+          <div className="danger-zone">
+            <h3 className="danger-zone-title">Delete account</h3>
+            <p className="danger-zone-text">
+              This permanently removes your account, geofences and map center. It can&apos;t be undone.
+            </p>
+
+            <AlertDialog.Root open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+              <AlertDialog.Trigger asChild>
+                <button type="button" className="danger-btn">Delete account</button>
+              </AlertDialog.Trigger>
+
+              <AlertDialog.Portal>
+                <AlertDialog.Overlay className="dialog-overlay" />
+                <AlertDialog.Content className="dialog-content">
+                  <AlertDialog.Title className="dialog-title">Delete your account?</AlertDialog.Title>
+                  <AlertDialog.Description className="dialog-description">
+                    This permanently removes your account, geofences and map center. This action can&apos;t be undone.
+                  </AlertDialog.Description>
+
+                  <div className="dialog-actions">
+                    <AlertDialog.Cancel asChild>
+                      <button type="button" className="dialog-btn dialog-btn-cancel">Cancel</button>
+                    </AlertDialog.Cancel>
+                    <AlertDialog.Action asChild>
+                      <button type="button" className="dialog-btn dialog-btn-danger" onClick={handleDelete}>
+                        Delete account
+                      </button>
+                    </AlertDialog.Action>
+                  </div>
+                </AlertDialog.Content>
+              </AlertDialog.Portal>
+            </AlertDialog.Root>
+          </div>
+
+          <p className="auth-footer">
+            <Link to="/" className="auth-link">Back to map</Link>
+          </p>
+        </section>
       </div>
     </>
   )
 }
 
-export default EditUserPage;
+export default UpdateUserPage;

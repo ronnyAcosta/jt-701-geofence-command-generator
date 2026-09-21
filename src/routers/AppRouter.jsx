@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import LoginPage from '../pages/LoginPage';
 import AppMainPage from '../pages/AppMainPage';
 import RegisterPage from '../pages/RegisterPage';
-import EditUserPage from '../pages/EditUserPage';
+import UpdateUserPage from '../pages/UpdateUserPage';
 import RestorePasswordPage from '../pages/RestorePasswordPage';
 import SetMapPage from '../pages/SetMapPage';
 
@@ -43,7 +43,7 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route path='/' element={<PrivateRoute log={log} component={AppMainPage} /> } />
-        <Route exact path='/edit' element={<PrivateRoute log={log} component={EditUserPage} /> } />
+        <Route exact path='/edit' element={<PrivateRoute log={log} component={UpdateUserPage} /> } />
         <Route exact path='/set-map-location' element={<PrivateRoute log={log} component={SetMapPage} /> } />     
         <Route exact path='/login' element={<PublicRoutes log={log} component={LoginPage} /> } /> 
         <Route exact path='/register' element={<PublicRoutes log={log} component={RegisterPage} /> } />
