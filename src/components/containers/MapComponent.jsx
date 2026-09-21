@@ -48,7 +48,7 @@ const MapComponent = ({geofences}) => {
   useEffect(() => {
     const featureGroup = featureGroupNode;
     if (!featureGroup) return;
-   
+    
     geofences.forEach((geofence) => {
       if (!geofence || geofence.dbLoaded !== true) return;
 
@@ -70,6 +70,7 @@ const MapComponent = ({geofences}) => {
       polygon.addTo(featureGroup);
     });
 
+    // console.log(featureGroup);
     featureGroup.eachLayer((layer) => {
       if (!layer.docId) return;
 

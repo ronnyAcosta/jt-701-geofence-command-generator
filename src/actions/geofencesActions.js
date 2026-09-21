@@ -78,7 +78,6 @@ const addGeofence = (e) => {
 };
 
 const editGeofence = (e) => {
-  console.log("editGeofence run");
   return async (dispatch, getState) => {
     const id = auth.currentUser.uid;
     const { layers: { _layers } } = e;

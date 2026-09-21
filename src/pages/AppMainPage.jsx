@@ -1,15 +1,19 @@
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import NavBar from '../components/layout/NavBar';
 
 import CommandsCointainer from '../components/containers/CommandsCointainer';
 
 import MapComponent from '../components/containers/MapComponent';
-import {MAX_GEOFENCES} from '../actions/geofencesActions';
+import {loadGeofences, MAX_GEOFENCES} from '../actions/geofencesActions';
 
 const AppMainPage = () => {
-  
+  const dispatch = useDispatch();
   const geofences = useSelector((state) => state.geofences);
+
+  useEffect(()=>{
+    dispatch(loadGeofences())
+  }, [dispatch]);
 
   return(
     <>

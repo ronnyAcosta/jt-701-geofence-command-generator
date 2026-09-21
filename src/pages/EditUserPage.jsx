@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/layout/NavBar';
 import FormField from '../components/input/FormField';
 
-import { loadGeofences } from '../actions/geofencesActions';
 import { logout, updateUserName, googleLoginWithPopUp } from '../actions/authAction';
 
 import { updateProfile, updatePassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
@@ -170,7 +169,6 @@ const EditUserPage = () => {
   }
 
   const handleBack = () => {
-    dispatch(loadGeofences());
     navigate('/');
   }
 
