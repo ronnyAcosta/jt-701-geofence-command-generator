@@ -6,41 +6,16 @@ import { toast } from "sonner";
 const GetCommand = ({ geofence, index }) => {
 
   const handleCopy = async (e) => {
-    const content = e.currentTarget.parentNode.innerText;
+  const content = e.currentTarget.parentNode.innerText;
 
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(content);
-        toast.info("Copied to clipboard");
-        return;
-      }
-
-      // Fallback para navegadores sin Clipboard API
-      const textarea = document.createElement("textarea");
-
-      textarea.value = content;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      textarea.style.pointerEvents = "none";
-
-      document.body.appendChild(textarea);
-
-      textarea.focus();
-      textarea.select();
-
-      const successful = document.execCommand("copy");
-
-      document.body.removeChild(textarea);
-
-      if (successful) {
-        toast.info("Copied to clipboard");
-      } else {
-        console.log("Error copying content");
-      }
-    } catch (error) {
-      console.log("Error copying content", error);
-    }
-  };
+  try {
+    await navigator.clipboard.writeText(content);
+    toast.info("Copied to clipboard");
+  } catch (error) {
+    console.error("Error copying content", error);
+    toast.error("Could not copy to clipboard");
+  }
+};
 
   if (geofence.coordinates.length > 10) {
     return (
