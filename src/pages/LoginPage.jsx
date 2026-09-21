@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { loginWithEmail, googleLoginWithPopUp } from '../actions/authAction';
-import GoogleButton from 'react-google-button';
 import FormField from '../components/input/FormField';
+import GoogleLogo from '../components/icons/GoogleLogo';
+import AuthCard from '../components/layout/AuthCard';
 import { toast } from 'sonner';
-import Title from '../components/layout/Title';
 
 const LoginPage = () => {
 
@@ -37,46 +37,56 @@ const LoginPage = () => {
   }
 
   return (
-    <>
-      <Title />
-
-      <div className='container '>
-        <h3>Login</h3>
-        <div className="divider"></div>
-        <br />
-        <div className="row container">
-          <form className="col s12" method='post' onSubmit={handleSubmit}>
-            <div className="row">
-              <FormField
-                icon="email"
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                value={email}
-                onChange={handleChange}
-              />
-              <FormField
-                icon="vpn_key"
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                value={password}
-                onChange={handleChange}
-              />
-              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Login</button>
-            </div>
-            <hr />
-            <br />
-            <GoogleButton onClick={()=>{dispatch(googleLoginWithPopUp())}} />
-            <br />
-            <Link to="/register" className='col s12'>Register</Link>
-            <Link to='/restore' className='col s12' >Forgot Password</Link>
-          </form>
+    <AuthCard
+      title="Log in"
+      subtitle="Access your geofences and generate commands for your JT701 tracker."
+    >
+      <form className="auth-form" method='post' onSubmit={handleSubmit}>
+        <div className="row">
+          <FormField
+            icon="email"
+            id="email"
+            name="email"
+            type="email"
+            label="Email"
+            value={email}
+            onChange={handleChange}
+            autoComplete="email"
+          />
+          <FormField
+            icon="vpn_key"
+            id="password"
+            name="password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={handleChange}
+            autoComplete="current-password"
+          />
         </div>
-      </div>
-    </>
+
+        <div className="auth-form-aside">
+          <Link to="/restore" className="auth-link">Forgot password?</Link>
+        </div>
+
+        <button type='submit' className='btn auth-submit waves-effect waves-light'>Log in</button>
+      </form>
+
+      <div className="auth-divider"><span>or</span></div>
+
+      <button
+        type="button"
+        className="auth-google"
+        onClick={()=>{dispatch(googleLoginWithPopUp())}}
+      >
+        <GoogleLogo />
+        Continue with Google
+      </button>
+
+      <p className="auth-footer">
+        Don&apos;t have an account? <Link to="/register" className="auth-link">Create one</Link>
+      </p>
+    </AuthCard>
   )
 }
 

@@ -32,7 +32,7 @@ const NavBar = () => {
       <nav >
         <div className="nav-wrapper">
           <Link to='/'>
-            <span className=" left app-title">JT701 - Geofence Commands Generator</span>
+            <span className=" left app-title">JT701 - Geofence Command Generator</span>
           </Link>
 
           <Link data-target="dropdown1" className="dropdown-trigger right hide-on-large-only">

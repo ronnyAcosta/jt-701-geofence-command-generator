@@ -5,8 +5,8 @@ import { register } from '../actions/authAction';
 import { Link } from 'react-router-dom';
 
 import FormField from '../components/input/FormField';
+import AuthCard from '../components/layout/AuthCard';
 import { toast } from 'sonner';
-import Title from '../components/layout/Title';
 
 const initialFieldState = { error: false, message: false };
 
@@ -82,73 +82,75 @@ const RegisterPage = () => {
   }
 
   return (
-    <>
-      <Title />
-      <div className='container'>
-        <h3>Register</h3>
-        <div className="divider"></div>
-        <br />
-        <div className="row container">
-          <form className="col s12" method='post' onSubmit={handleRegister}>
-            <div className="row">
-              <FormField
-                icon="person"
-                id="userName"
-                name="userName"
-                label="User Name"
-                value={userName}
-                onChange={handleChange}
-                onBlurClearError={() => clearFieldErrorColor('userName')}
-                hasError={fields.userName.error}
-                showErrorMessage={fields.userName.message}
-                errorMessage="Min lenght: 3  |  Max lenght: 20"
-              />
-              <FormField
-                icon="email"
-                id="email"
-                name="email"
-                label="Email"
-                value={email}
-                onChange={handleChange}
-                onBlurClearError={() => clearFieldErrorColor('email')}
-                hasError={fields.email.error}
-                showErrorMessage={fields.email.message}
-                errorMessage="Invalid email"
-              />
-              <FormField
-                icon="vpn_key"
-                id="password"
-                name="password"
-                type="password"
-                label="Password"
-                value={password}
-                onChange={handleChange}
-                onBlurClearError={() => clearFieldErrorColor('password')}
-                hasError={fields.password.error}
-                showErrorMessage={fields.password.message}
-                errorMessage="Min lenght: 8"
-              />
-              <FormField
-                icon="vpn_key"
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                label="Confirm password"
-                value={confirmPassword}
-                onChange={handleChange}
-                onBlurClearError={() => clearFieldErrorColor('confirmPassword')}
-                hasError={fields.confirmPassword.error}
-                showErrorMessage={fields.confirmPassword.message}
-                errorMessage="Password do not match"
-              />
-              <button type='submit' className='btn col s12 blue waves-effect waves-light'>Register</button>
-            </div>
-            <hr />
-            <Link to="/login">Login into account</Link>
-          </form>
+    <AuthCard
+      title="Create your account"
+      subtitle="Generate geofences and use the commands for your JT701 devices."
+    >
+      <form className="auth-form" method='post' onSubmit={handleRegister}>
+        <div className="row">
+          <FormField
+            icon="person"
+            id="userName"
+            name="userName"
+            label="User name"
+            value={userName}
+            onChange={handleChange}
+            onBlurClearError={() => clearFieldErrorColor('userName')}
+            hasError={fields.userName.error}
+            showErrorMessage={fields.userName.message}
+            errorMessage="Use between 3 and 20 characters"
+            autoComplete="nickname"
+          />
+          <FormField
+            icon="email"
+            id="email"
+            name="email"
+            label="Email"
+            value={email}
+            onChange={handleChange}
+            onBlurClearError={() => clearFieldErrorColor('email')}
+            hasError={fields.email.error}
+            showErrorMessage={fields.email.message}
+            errorMessage="Enter a valid email address"
+            autoComplete="email"
+          />
+          <FormField
+            icon="vpn_key"
+            id="password"
+            name="password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={handleChange}
+            onBlurClearError={() => clearFieldErrorColor('password')}
+            hasError={fields.password.error}
+            showErrorMessage={fields.password.message}
+            errorMessage="Use at least 8 characters"
+            autoComplete="new-password"
+          />
+          <FormField
+            icon="vpn_key"
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            label="Confirm password"
+            value={confirmPassword}
+            onChange={handleChange}
+            onBlurClearError={() => clearFieldErrorColor('confirmPassword')}
+            hasError={fields.confirmPassword.error}
+            showErrorMessage={fields.confirmPassword.message}
+            errorMessage="Passwords do not match"
+            autoComplete="new-password"
+          />
         </div>
-      </div>
-    </>
+
+        <button type='submit' className='btn auth-submit waves-effect waves-light'>Create account</button>
+      </form>
+
+      <p className="auth-footer">
+        Already have an account? <Link to="/login" className="auth-link">Log in</Link>
+      </p>
+    </AuthCard>
   )
 }
 

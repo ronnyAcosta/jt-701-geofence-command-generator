@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+@import url('./auth-styles.css');
 
 :root {
   --color-bg: #ffffff;
@@ -309,9 +310,6 @@ input[type="password"] {
 
   nav .nav-wrapper > a.dropdown-trigger > i.material-icons {
     font-size: 6.3vw;
-    /* si cambias el tamaño, ajusta también estos dos para que quede centrado */
-    /* height: 56px;
-    line-height: 56px;*/
   }
   
 }
