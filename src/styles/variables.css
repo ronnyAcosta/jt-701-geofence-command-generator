@@ -24,6 +24,9 @@
   --auth-muted: #566573;
   --auth-link: var(--color-primary);
   --auth-grid: rgba(9, 111, 168, 0.08);
+  --auth-blob-1: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  --auth-blob-2: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  --auth-blob-3: color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 [data-theme="dark"] {
@@ -52,4 +55,7 @@
   --auth-muted: #9db4c4;
   --auth-link: var(--color-accent);
   --auth-grid: rgba(7, 188, 255, 0.07);
+  --auth-blob-1: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --auth-blob-2: color-mix(in srgb, var(--color-primary) 26%, transparent);
+  --auth-blob-3: color-mix(in srgb, var(--color-accent) 14%, transparent);
 }
