@@ -3,9 +3,8 @@ import { copyOutline } from "ionicons/icons";
 
 import { coordinatesFormatConverter } from "../../helpers/formatters";
 import { toast } from "sonner";
-const GetCommand = ({ geofence, index }) => {
 
-  const handleCopy = async (e) => {
+const handleCopy = async (e) => {
   const content = e.currentTarget.parentNode.innerText;
 
   try {
@@ -17,6 +16,7 @@ const GetCommand = ({ geofence, index }) => {
   }
 };
 
+const GetCommand = ({ geofence, index }) => {
   if (geofence.coordinates.length > 10) {
     return (
       <span className="error">

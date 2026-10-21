@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import osm from '../../map-providers';
 import { MARKER_STYLE } from '../../utils/drawStyles';
+import DrawEvents from './DrawEvents';
 
 const ZoomCapture = ({ mapRef }) => {
   const map = useMap();
@@ -70,22 +71,6 @@ const CenterPointSetterMap = () => {
   };
 
   const handleDelete = () => {dispatch(deleteCenterPoint())};
-
-  const DrawEvents = ({ onEdited, onDeleted }) => {
-    const map = useMap();
-
-    useEffect(() => {
-      map.on("draw:edited", onEdited);
-      map.on("draw:deleted", onDeleted);
-
-      return () => {
-        map.off("draw:edited", onEdited);
-        map.off("draw:deleted", onDeleted);
-      };
-    }, [map, onEdited, onDeleted]);
-
-    return null;
-  };
 
   useEffect(() => {
     if (!featureGroupNode) return;

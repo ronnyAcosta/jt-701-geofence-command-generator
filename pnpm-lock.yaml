@@ -47,9 +47,6 @@ importers:
       react-dom:
         specifier: 19.2.2
         version: 19.2.2(react@19.2.2)
-      react-google-button:
-        specifier: ^0.8.0
-        version: 0.8.0(react@19.2.2)
       react-leaflet:
         specifier: ^5.0.0
         version: 5.0.0(leaflet@1.9.4)(react-dom@19.2.2(react@19.2.2))(react@19.2.2)
@@ -5856,11 +5853,6 @@ packages:
 
   react-error-overlay@6.1.0:
     resolution: {integrity: sha512-SN/U6Ytxf1QGkw/9ve5Y+NxBbZM6Ht95tuXNMKs8EJyFa/Vy/+Co3stop3KBHARfn/giv+Lj1uUnTfOJ3moFEQ==}
-
-  react-google-button@0.8.0:
-    resolution: {integrity: sha512-0u6mbDcTUmWzgXsld8FJpbrXP+zDsNQVYPIt225aBqwgJ/CdrDiep1PZOpnyntyjsejWG0TtQr6uZB4eIaXlJQ==}
-    peerDependencies:
-      react: '>= 16.8.0'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -13833,11 +13825,6 @@ snapshots:
       scheduler: 0.27.0
 
   react-error-overlay@6.1.0: {}
-
-  react-google-button@0.8.0(react@19.2.2):
-    dependencies:
-      prop-types: 15.8.1
-      react: 19.2.2
 
   react-is@16.13.1: {}
 

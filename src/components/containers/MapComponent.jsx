@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MapContainer, TileLayer, FeatureGroup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, FeatureGroup } from "react-leaflet";
 import { EditControl } from 'react-leaflet-draw';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
@@ -14,6 +14,7 @@ import { DRAW_STYLE } from '../../utils/drawStyles';
 import { addGeofence, editGeofence, deleteGeofence } from '../../actions/geofencesActions';
 
 import '../../utils/leafletDrawPatch';
+import DrawEvents from './DrawEvents';
 
 const MapComponent = ({geofences}) => {
   const dispatch = useDispatch();
@@ -30,21 +31,6 @@ const MapComponent = ({geofences}) => {
 
   const handleDelete = useCallback((e) => dispatch(deleteGeofence(e)), [dispatch]);
 
-  const DrawEvents = ({ onEdited, onDeleted }) => {
-    const map = useMap();
-
-    useEffect(() => {
-      map.on("draw:edited", onEdited);
-      map.on("draw:deleted", onDeleted);
-
-      return () => {
-        map.off("draw:edited", onEdited);
-        map.off("draw:deleted", onDeleted);
-      };
-    }, [map, onEdited, onDeleted]);
-
-    return null;
-  };
 
   useEffect(() => {
     const featureGroup = featureGroupNode;
