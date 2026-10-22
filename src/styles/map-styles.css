@@ -1,17 +1,21 @@
 .leaflet-container{
-  height: 91vh;
+  /* alto del nav (64px) + margin-top de main (10px) */
+  height: calc(100vh - 74px);
+  height: calc(100dvh - 74px);
   min-width: 58vw;
   margin-left: 5px;
 }
 
 .centerPointMapWrapper {
   width: 98vw;
-  height: 91vh;
+  height: calc(100vh - 74px);
+  height: calc(100dvh - 74px);
   margin: 0 1vw;
 }
 
 .mapLoadingPlaceholder {
-  height: 91vh;
+  height: calc(100vh - 74px);
+  height: calc(100dvh - 74px);
   min-width: 58vw;
   margin-left: 5px;
   display: flex;

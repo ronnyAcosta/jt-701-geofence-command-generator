@@ -53,6 +53,20 @@
   margin-bottom: 5px;
 }
 
+@media (min-width: 801px) {
+  .commandsList{
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 74px);
+    max-height: calc(100dvh - 74px);
+  }
+
+  .commandsBox{
+    flex: 0 1 auto;
+    max-height: none;
+  }
+}
+
 @media (max-width: 800px) {
   .commandsList{
     width: 82vw;

@@ -21,7 +21,7 @@ body:has(.auth-page) {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: clamp(1.5rem, 8vh, 5rem) 1rem 3rem;
+  padding: clamp(0.75rem, 2vh, 5rem) 1rem;
 }
 
 .auth-page::before {
